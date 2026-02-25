@@ -1,5 +1,45 @@
 # Changelog
 
+## v0.3.0 — Multi-Lane Architecture
+
+### New Analysis Modules (11 modules, 18,779 lines, 507+ tests)
+- **Evidence framework** (`evidence.rs`) — 5-level evidence hierarchy (PatternMatch → PathVerified → SmtProven → SimulationConfirmed → Corroborated), SARIF codeFlow enrichment
+- **CWC Registry** (`cwc.rs`) — 30 Cardano Weakness Classification entries mapping all 75 detectors
+- **Scorecard** (`scorecard.rs`) — Detector promotion/demotion system (Experimental → Beta → Stable) with quality gates
+- **SSA IR** (`ssa.rs`) — Full SSA form with phi nodes, dominators, use-def chains, taint propagation
+- **Compliance analysis** (`compliance.rs`) — Securify2-style dual-pattern compliance + violation, 10 SecurityProperty variants
+- **SMT verification** (`smt.rs`) — Solver-independent interface with Cardano domain axioms, constraint solving
+- **Path-sensitive analysis** (`path_analysis.rs`) — CFG path enumeration, feasibility checking, guard detection
+- **Invariant spec** (`invariant_spec.rs`) — `.aikido-invariants.toml` DSL for value conservation, access control, state transition, temporal invariants
+- **Protocol patterns** (`protocol_patterns.rs`) — Automatic DeFi protocol detection (DEX/Lending/Staking/DAO/NFT/Options/Escrow), token flow + authority analysis
+- **Transaction simulation** (`tx_simulation.rs`) — ScriptContext builder, exploit scenario generation for 6 detector types
+- **Fuzz lane** (`fuzz_lane.rs`) — Grammar-aware Cardano tx generation, Echidna-style stateful protocol fuzzing
+
+### New Detectors (17 new, 58 → 75 total)
+- `tautological-comparison` (Critical), `value-comparison-semantics`, `output-count-validation`
+- Delegation-aware suppression on 6 detectors (missing-signature-check, missing-utxo-authentication, output-address-not-validated, missing-redeemer-validation, state-transition-integrity, missing-datum-field-validation)
+- Enhanced burn verification, datum continuity tracking
+
+### Core Engine Improvements
+- Delegation analysis (`delegation.rs`) — withdraw-zero pattern detection, `build_delegation_set()` for O(1) suppression
+- Transitive function merging — 2-phase fixed-point (max 5 rounds for fn→fn chains)
+- Datum continuity tracking — `has_datum_continuity_assertion` and `datum_equality_checks` in BodySignals
+- PKH output detection — positive evidence (VerificationKeyCredential), not absence of ScriptCredential
+- FP reduction: oracle time verification, guarded vars in fee-calculation-unchecked, var_references fallback
+
+### Strike Finance Audit Comparison
+- 85% coverage on TxPipe professional audit findings (12 full match, 5 partial, 3 false negatives on 20 unfixed findings)
+- 26 unique findings not in the professional audit
+- Full comparison report: `AUDIT_COMPARISON.md`
+
+### Stats
+- 1186+ tests (up from 526+)
+- 75 detectors (up from 58)
+- 11 new analysis modules
+- 30 CWC classifications
+
+---
+
 ## v0.2.0 — Ecosystem Validated
 
 ### New Detectors (23 new, 35 → 58 total)

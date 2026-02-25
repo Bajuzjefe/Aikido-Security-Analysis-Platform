@@ -1,0 +1,155 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 5 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 6 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 7 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+6 0 obj
+<< /Length 2653 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(AIKIDO SECURITY AUDIT REPORT) Tj T*
+(============================) Tj T*
+() Tj T*
+(Project: strike-finance/staking v0.0.0) Tj T*
+(Date: 2026-02-25) Tj T*
+(Tool: aikido v0.2.0) Tj T*
+() Tj T*
+(1. EXECUTIVE SUMMARY) Tj T*
+(--------------------) Tj T*
+() Tj T*
+(This automated security audit analyzed 23 modules \(1 validators, 22 libraries\) of the) Tj T*
+(  strike-finance/staking project.) Tj T*
+() Tj T*
+(Findings summary:) Tj T*
+(  Critical: 1) Tj T*
+(  High:     2) Tj T*
+(  Medium:   3) Tj T*
+(  Low:      0) Tj T*
+(  Info:     0) Tj T*
+(  Total:    6) Tj T*
+() Tj T*
+(2. METHODOLOGY) Tj T*
+(--------------) Tj T*
+() Tj T*
+(Analysis performed using aikido, a static analysis tool for Aiken) Tj T*
+(smart contracts. The tool examines:) Tj T*
+(  - Typed AST patterns for known vulnerability classes) Tj T*
+(  - Handler body signals \(field accesses, function calls, taint\)) Tj T*
+(  - Cross-module dependency analysis) Tj T*
+(  - UPLC compiled code metrics) Tj T*
+() Tj T*
+(Each finding includes severity, confidence, and remediation guidance.) Tj T*
+() Tj T*
+(3. FINDINGS) Tj T*
+(-----------) Tj T*
+() Tj T*
+(Finding #1: [Critical] Tautological comparison in staking.spend: datum.mint_policy_id ==) Tj T*
+(  datum.mint_policy_id) Tj T*
+(  Detector: tautological-comparison) Tj T*
+(  Module: staking) Tj T*
+(  Location: validators/staking.ak:30) Tj T*
+(Description: Handler staking.spend compares `datum.mint_policy_id == datum.mint_policy_id`) Tj T*
+(    — this is always True and likely a copy-paste bug. The intended validation is) Tj T*
+(    silently bypassed.) Tj T*
+(Recommendation: Replace one side of the comparison with the intended variable or) Tj T*
+(    parameter.) Tj T*
+() Tj T*
+(Finding #2: [High] Multiple quantity_of calls in staking.spend may allow double-counting) Tj T*
+(  Detector: quantity-of-double-counting) Tj T*
+(  Module: staking) Tj T*
+(  Location: validators/staking.ak:30) Tj T*
+(Description: Handler staking.spend calls `quantity_of` 5 times to check asset quantities.) Tj T*
+(    Without verifying mutual exclusivity, an attacker may satisfy multiple checks with) Tj T*
+(    overlapping assets.) Tj T*
+(Recommendation: Use `value.tokens` or `value.without_lovelace` for exact value matching) Tj T*
+(    instead of multiple independent quantity_of checks.) Tj T*
+() Tj T*
+(Finding #3: [High] Multiple quantity_of calls in staking.mint may allow double-counting) Tj T*
+(  Detector: quantity-of-double-counting) Tj T*
+(  Module: staking) Tj T*
+(  Location: validators/staking.ak:144) Tj T*
+(Description: Handler staking.mint calls `quantity_of` 7 times to check asset quantities.) Tj T*
+ET
+endstream
+endobj
+7 0 obj
+<< /Length 2204 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(    Without verifying mutual exclusivity, an attacker may satisfy multiple checks with) Tj T*
+(    overlapping assets.) Tj T*
+(Recommendation: Use `value.tokens` or `value.without_lovelace` for exact value matching) Tj T*
+(    instead of multiple independent quantity_of checks.) Tj T*
+() Tj T*
+(Finding #4: [Medium] Time-sensitive datum but no validity_range check in staking.spend) Tj T*
+(  Detector: missing-validity-range) Tj T*
+(  Module: staking) Tj T*
+(  Location: validators/staking.ak:30) Tj T*
+(Description: Datum field\(s\) [staked_at] suggest time-sensitive logic but handler never) Tj T*
+(    accesses transaction.validity_range.) Tj T*
+(Recommendation: Check validity_range against the time field\(s\) to enforce temporal) Tj T*
+(    constraints.) Tj T*
+() Tj T*
+(Finding #5: [Medium] Incomplete Value check via quantity_of in staking.mint) Tj T*
+(  Detector: incomplete-value-extraction) Tj T*
+(  Module: staking) Tj T*
+(  Location: validators/staking.ak:144) Tj T*
+(Description: Handler staking.mint uses quantity_of to check specific asset quantities but) Tj T*
+(    doesn't validate the full Value. Other native assets may be drained.) Tj T*
+(Recommendation: Complement quantity_of checks with assets.match for full Value validation.) Tj T*
+() Tj T*
+(Finding #6: [Medium] Withdrawal existence-only check in staking.spend) Tj T*
+(  Detector: withdraw-amount-check) Tj T*
+(  Module: staking) Tj T*
+(  Location: validators/staking.ak:30) Tj T*
+(Description: Handler staking.spend checks withdrawal existence but not the amount. An) Tj T*
+(    attacker can invoke the staking script with a 0-amount withdrawal.) Tj T*
+(  Recommendation: Verify the withdrawal amount is > 0 or matches an expected value.) Tj T*
+() Tj T*
+(4. RECOMMENDATIONS) Tj T*
+(------------------) Tj T*
+() Tj T*
+(CRITICAL/HIGH severity findings should be addressed before) Tj T*
+(deployment. Review each finding and apply the suggested fix.) Tj T*
+() Tj T*
+(MEDIUM severity findings indicate potential issues that should) Tj T*
+(be evaluated in the context of the project's threat model.) Tj T*
+() Tj T*
+(---) Tj T*
+(Generated by aikido) Tj T*
+(https://github.com/Bajuzjefe/aikido) Tj T*
+ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000189 00000 n 
+0000000315 00000 n 
+0000000441 00000 n 
+0000003145 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+5400
+%%EOF

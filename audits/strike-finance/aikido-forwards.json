@@ -1,0 +1,422 @@
+{
+  "schema_version": "aikido.findings.v1",
+  "project": "shan/forwards",
+  "version": "0.0.0",
+  "analysis_lanes": {
+    "detectors": {
+      "enabled": true,
+      "count": 75,
+      "runtime_integrated": true
+    },
+    "compliance": {
+      "enabled": true,
+      "runtime_integrated": true
+    },
+    "smt": {
+      "enabled": true,
+      "runtime_integrated": true,
+      "backend": "simple-solver"
+    },
+    "simulation": {
+      "enabled": true,
+      "runtime_integrated": true,
+      "context_builder_command_configured": false,
+      "corroborated_findings": 1
+    },
+    "path_cfg_ssa_symbolic": {
+      "enabled": false,
+      "runtime_integrated": false,
+      "status": "not_integrated",
+      "note": "Modules exist and are tested, but are not yet invoked in the standard runtime detector pipeline."
+    }
+  },
+  "findings": [
+    {
+      "detector": "unsafe-datum-deconstruction",
+      "reliability_tier": "stable",
+      "severity": "high",
+      "confidence": "likely",
+      "title": "Unsafe Option datum deconstruction in collateral.spend",
+      "description": "Datum parameter 'datum' is Option<T> but handler never uses `expect Some(..) = datum`. Accessing the datum without safe deconstruction may cause runtime errors.",
+      "module": "collateral",
+      "cwc": {
+        "id": "CWC-010",
+        "name": "Unsafe Datum Handling",
+        "severity": "High"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/collateral.ak",
+        "byte_start": 858,
+        "byte_end": 1005,
+        "line_start": 24,
+        "column_start": 3,
+        "line_end": 29,
+        "column_end": 4
+      },
+      "suggestion": "Use `expect Some(datum) = datum_opt` to safely deconstruct the Optional datum.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": {
+        "level": "PatternMatch",
+        "method": "smt-simple-solver",
+        "details": "SMT inconclusive: Expression contains constructs beyond the simple solver's capability (quantifiers, arrays, bit-vectors, or nonlinear arithmetic).",
+        "code_flow": [],
+        "witness": {
+          "constraints_used": 7,
+          "time_ms": 0,
+          "result": "unknown"
+        },
+        "confidence_boost": 0.0
+      }
+    },
+    {
+      "detector": "unsafe-datum-deconstruction",
+      "reliability_tier": "stable",
+      "severity": "high",
+      "confidence": "likely",
+      "title": "Unsafe Option datum deconstruction in forwards.spend",
+      "description": "Datum parameter 'datum' is Option<T> but handler never uses `expect Some(..) = datum`. Accessing the datum without safe deconstruction may cause runtime errors.",
+      "module": "forwards",
+      "cwc": {
+        "id": "CWC-010",
+        "name": "Unsafe Datum Handling",
+        "severity": "High"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/forwards.ak",
+        "byte_start": 661,
+        "byte_end": 781,
+        "line_start": 17,
+        "column_start": 3,
+        "line_end": 22,
+        "column_end": 4
+      },
+      "suggestion": "Use `expect Some(datum) = datum_opt` to safely deconstruct the Optional datum.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": {
+        "level": "PatternMatch",
+        "method": "smt-simple-solver",
+        "details": "SMT inconclusive: Expression contains constructs beyond the simple solver's capability (quantifiers, arrays, bit-vectors, or nonlinear arithmetic).",
+        "code_flow": [],
+        "witness": {
+          "constraints_used": 7,
+          "time_ms": 0,
+          "result": "unknown"
+        },
+        "confidence_boost": 0.0
+      }
+    },
+    {
+      "detector": "missing-datum-in-script-output",
+      "reliability_tier": "beta",
+      "severity": "high",
+      "confidence": "definite",
+      "title": "Outputs without datum verification in forwards.mint",
+      "description": "Handler accesses transaction outputs but never checks the datum field. Outputs to script addresses without datum make funds permanently unspendable.",
+      "module": "forwards",
+      "cwc": {
+        "id": "CWC-003",
+        "name": "Datum Integrity Violation",
+        "severity": "Critical"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/forwards.ak",
+        "byte_start": 1158,
+        "byte_end": 1229,
+        "line_start": 38,
+        "column_start": 3,
+        "line_end": 38,
+        "column_end": 74
+      },
+      "suggestion": "Verify that continuing outputs include the expected datum (e.g., `o.datum == InlineDatum(...)`).",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": {
+        "level": "Corroborated",
+        "method": "smt-simple-solver,tx-scenario-generation,tx-simulation-rejected",
+        "details": "SMT inconclusive: Expression contains constructs beyond the simple solver's capability (quantifiers, arrays, bit-vectors, or nonlinear arithmetic).; Exploit scenario generated for runtime simulation; Exploit transaction rejected by validator: UPLC evaluation failed: DeserialisationError(\"UnBData\", Con(Data(Constr(Constr { tag: 121, any_constructor: None, fields: Indef([BigInt(Int(Int(Int { neg: false, val: 42 })))]) })))). This may indicate a false positive for missing-datum-in-script-output.",
+        "code_flow": [],
+        "witness": {
+          "rejection_error": "UPLC evaluation failed: DeserialisationError(\"UnBData\", Con(Data(Constr(Constr { tag: 121, any_constructor: None, fields: Indef([BigInt(Int(Int(Int { neg: false, val: 42 })))]) }))))",
+          "detector": "missing-datum-in-script-output"
+        },
+        "confidence_boost": 1.0
+      }
+    },
+    {
+      "detector": "quantity-of-double-counting",
+      "reliability_tier": "beta",
+      "severity": "high",
+      "confidence": "possible",
+      "title": "Multiple quantity_of calls in collateral.spend may allow double-counting",
+      "description": "Handler collateral.spend calls `quantity_of` 12 times to check asset quantities. Without verifying mutual exclusivity, an attacker may satisfy multiple checks with overlapping assets.",
+      "module": "collateral",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/collateral.ak",
+        "byte_start": 858,
+        "byte_end": 1005,
+        "line_start": 24,
+        "column_start": 3,
+        "line_end": 29,
+        "column_end": 4
+      },
+      "suggestion": "Use `value.tokens` or `value.without_lovelace` for exact value matching instead of multiple independent quantity_of checks.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": {
+        "level": "PatternMatch",
+        "method": "smt-simple-solver",
+        "details": "SMT inconclusive: Expression contains constructs beyond the simple solver's capability (quantifiers, arrays, bit-vectors, or nonlinear arithmetic).",
+        "code_flow": [],
+        "witness": {
+          "constraints_used": 6,
+          "time_ms": 0,
+          "result": "unknown"
+        },
+        "confidence_boost": 0.0
+      }
+    },
+    {
+      "detector": "incomplete-value-extraction",
+      "reliability_tier": "experimental",
+      "severity": "medium",
+      "confidence": "possible",
+      "title": "Incomplete Value check via quantity_of in collateral.spend",
+      "description": "Handler collateral.spend uses quantity_of to check specific asset quantities but doesn't validate the full Value. Other native assets may be drained.",
+      "module": "collateral",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/collateral.ak",
+        "byte_start": 858,
+        "byte_end": 1005,
+        "line_start": 24,
+        "column_start": 3,
+        "line_end": 29,
+        "column_end": 4
+      },
+      "suggestion": "Complement quantity_of checks with assets.match for full Value validation.",
+      "related_findings": [],
+      "semantic_group": "cardano-semantics",
+      "evidence": null
+    },
+    {
+      "detector": "incomplete-value-extraction",
+      "reliability_tier": "experimental",
+      "severity": "medium",
+      "confidence": "possible",
+      "title": "Incomplete Value check via quantity_of in forwards.spend",
+      "description": "Handler forwards.spend uses quantity_of to check specific asset quantities but doesn't validate the full Value. Other native assets may be drained.",
+      "module": "forwards",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/forwards.ak",
+        "byte_start": 661,
+        "byte_end": 781,
+        "line_start": 17,
+        "column_start": 3,
+        "line_end": 22,
+        "column_end": 4
+      },
+      "suggestion": "Complement quantity_of checks with assets.match for full Value validation.",
+      "related_findings": [],
+      "semantic_group": "cardano-semantics",
+      "evidence": null
+    },
+    {
+      "detector": "incomplete-value-extraction",
+      "reliability_tier": "experimental",
+      "severity": "medium",
+      "confidence": "possible",
+      "title": "Incomplete Value check via quantity_of in forwards.mint",
+      "description": "Handler forwards.mint uses quantity_of to check specific asset quantities but doesn't validate the full Value. Other native assets may be drained.",
+      "module": "forwards",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/forwards.ak",
+        "byte_start": 1158,
+        "byte_end": 1229,
+        "line_start": 38,
+        "column_start": 3,
+        "line_end": 38,
+        "column_end": 74
+      },
+      "suggestion": "Complement quantity_of checks with assets.match for full Value validation.",
+      "related_findings": [],
+      "semantic_group": "cardano-semantics",
+      "evidence": null
+    },
+    {
+      "detector": "missing-min-ada-check",
+      "reliability_tier": "beta",
+      "severity": "info",
+      "confidence": "possible",
+      "title": "Handler collateral.spend produces outputs without minimum ADA check",
+      "description": "Handler creates outputs but doesn't verify the minimum ADA (lovelace) requirement. Cardano requires every UTXO to contain a minimum amount of ADA. Note: The Cardano ledger enforces this as a protocol rule — transactions with outputs below the minimum are rejected at submission time, so this is not exploitable but may cause unexpected transaction failures.",
+      "module": "collateral",
+      "cwc": {
+        "id": "CWC-028",
+        "name": "Missing Protocol Enforcement",
+        "severity": "Low"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/collateral.ak",
+        "byte_start": 858,
+        "byte_end": 1005,
+        "line_start": 24,
+        "column_start": 3,
+        "line_end": 29,
+        "column_end": 4
+      },
+      "suggestion": "Ensure outputs include sufficient ADA using `value.from_lovelace(2_000_000)` or check with `value.lovelace_of(output.value) >= min_required`.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": null
+    },
+    {
+      "detector": "missing-min-ada-check",
+      "reliability_tier": "beta",
+      "severity": "info",
+      "confidence": "possible",
+      "title": "Handler forwards.spend produces outputs without minimum ADA check",
+      "description": "Handler creates outputs but doesn't verify the minimum ADA (lovelace) requirement. Cardano requires every UTXO to contain a minimum amount of ADA. Note: The Cardano ledger enforces this as a protocol rule — transactions with outputs below the minimum are rejected at submission time, so this is not exploitable but may cause unexpected transaction failures.",
+      "module": "forwards",
+      "cwc": {
+        "id": "CWC-028",
+        "name": "Missing Protocol Enforcement",
+        "severity": "Low"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/forwards.ak",
+        "byte_start": 661,
+        "byte_end": 781,
+        "line_start": 17,
+        "column_start": 3,
+        "line_end": 22,
+        "column_end": 4
+      },
+      "suggestion": "Ensure outputs include sufficient ADA using `value.from_lovelace(2_000_000)` or check with `value.lovelace_of(output.value) >= min_required`.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": null
+    },
+    {
+      "detector": "dead-code-path",
+      "reliability_tier": "beta",
+      "severity": "info",
+      "confidence": "possible",
+      "title": "Unreachable function 'get_address_hash_based_on_party'",
+      "description": "Function 'get_address_hash_based_on_party' in module 'utils' is not reachable from any validator entry point via the call graph.",
+      "module": "utils",
+      "cwc": {
+        "id": "CWC-027",
+        "name": "Dead Code",
+        "severity": "Low"
+      },
+      "location": null,
+      "suggestion": "Remove the unused function or verify it is called through a dynamic pattern not captured by static analysis.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": null
+    },
+    {
+      "detector": "unused-import",
+      "reliability_tier": "beta",
+      "severity": "info",
+      "confidence": "possible",
+      "title": "No function calls in always_fail.spend — possible unused imports",
+      "description": "Handler 'always_fail.spend' references variables but calls no functions. Most validators use stdlib functions (list.has, interval checks, etc). This may indicate unused imports or missing validation logic.",
+      "module": "always_fail",
+      "cwc": {
+        "id": "CWC-030",
+        "name": "Code Quality",
+        "severity": "Info"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/always_fail.ak",
+        "byte_start": 65,
+        "byte_end": 137,
+        "line_start": 4,
+        "column_start": 3,
+        "line_end": 4,
+        "column_end": 75
+      },
+      "suggestion": "Review imports and add the expected validation logic.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": null
+    },
+    {
+      "detector": "quantity-of-double-counting",
+      "reliability_tier": "beta",
+      "severity": "info",
+      "confidence": "possible",
+      "title": "Multiple quantity_of calls in forwards.spend may allow double-counting",
+      "description": "Handler forwards.spend calls `quantity_of` 4 times to check asset quantities. Without verifying mutual exclusivity, an attacker may satisfy multiple checks with overlapping assets.",
+      "module": "forwards",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/forwards.ak",
+        "byte_start": 661,
+        "byte_end": 781,
+        "line_start": 17,
+        "column_start": 3,
+        "line_end": 22,
+        "column_end": 4
+      },
+      "suggestion": "Use `value.tokens` or `value.without_lovelace` for exact value matching instead of multiple independent quantity_of checks.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": null
+    },
+    {
+      "detector": "quantity-of-double-counting",
+      "reliability_tier": "beta",
+      "severity": "info",
+      "confidence": "possible",
+      "title": "Multiple quantity_of calls in forwards.mint may allow double-counting",
+      "description": "Handler forwards.mint calls `quantity_of` 4 times to check asset quantities. Without verifying mutual exclusivity, an attacker may satisfy multiple checks with overlapping assets.",
+      "module": "forwards",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/forwards/validators/forwards.ak",
+        "byte_start": 1158,
+        "byte_end": 1229,
+        "line_start": 38,
+        "column_start": 3,
+        "line_end": 38,
+        "column_end": 74
+      },
+      "suggestion": "Use `value.tokens` or `value.without_lovelace` for exact value matching instead of multiple independent quantity_of checks.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": null
+    }
+  ],
+  "total": 13
+}

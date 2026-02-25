@@ -1,12 +1,12 @@
 # Aikido
 
-**Static security analyzer for [Aiken](https://aiken-lang.org/) smart contracts on Cardano.**
+**Security analysis platform for [Aiken](https://aiken-lang.org/) smart contracts on Cardano.**
 
-Aikido finds vulnerabilities in Aiken smart contracts before they reach mainnet. It compiles your project, walks the typed AST, runs a broad detector suite with cross-module interprocedural analysis, and reports findings with source code context, severity ratings, CWE classifications, and actionable remediation guidance.
+Aikido goes beyond static analysis. It combines a 75-detector suite with SMT verification, transaction simulation, compliance analysis, protocol pattern detection, and grammar-aware fuzzing to find vulnerabilities in Aiken smart contracts before they reach mainnet. Multi-lane analysis cross-correlates evidence across techniques, producing findings with source context, severity ratings, CWE/CWC classifications, and actionable remediation guidance.
 
 Built in Rust. Fast. Zero configuration required.
 
-**Comprehensive test suite | Production detector suite | 10 real-world projects validated | 0 crashes**
+**1186+ tests | 75 detectors | 11 analysis modules | 10+ real-world projects validated | 0 crashes**
 
 Current detector count: **75**
 
@@ -14,13 +14,15 @@ Current detector count: **75**
 
 ## Why Aikido
 
-Cardano smart contracts are immutable once deployed. A vulnerability in production means lost funds with no recourse. Manual audits are expensive and slow. Aikido catches the classes of bugs that auditors find most often — double satisfaction, missing signature checks, unbounded iteration, unsafe datum handling — automatically, in seconds.
+Cardano smart contracts are immutable once deployed. A vulnerability in production means lost funds with no recourse. Manual audits are expensive, slow, and bottlenecked. Aikido catches the classes of bugs that auditors find most often — double satisfaction, missing signature checks, unbounded iteration, unsafe datum handling — automatically, in seconds.
 
-- **The only static analyzer for Aiken** — no alternatives exist
-- **Extensive detector coverage** derived from published audit reports by MLabs, Vacuumlabs, Anastasia Labs, and the Plutonomicon
-- **Ecosystem validated** — tested against 10 real-world projects including SundaeSwap, Anastasia Labs, Strike Finance, and Seedelf (176 findings, 0 crashes)
-- **Cross-module interprocedural analysis** — follows function calls across modules to reduce false positives
+- **The only security tool for Aiken** — no alternatives exist in the ecosystem
+- **75 detectors** with CWC (Cardano Weakness Classification) and CWE mappings
+- **Multi-lane analysis** — static detectors, compliance, SMT verification, transaction simulation, protocol detection, fuzzing
+- **Validated against professional audit** — 85% coverage on TxPipe's Strike Finance audit findings ([full comparison](AUDIT_COMPARISON.md))
+- **Evidence framework** — findings corroborated across multiple analysis techniques (PatternMatch → SmtProven → SimulationConfirmed)
 - **9 output formats** — terminal, JSON, SARIF, Markdown, HTML, PDF, CSV, GitLab SAST, reviewdog
+- **Ecosystem proven** — 10+ real-world projects including SundaeSwap, Anastasia Labs, Strike Finance, and Seedelf (0 crashes)
 
 ---
 
@@ -39,7 +41,7 @@ cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
 npx aikido-aiken /path/to/project
 
 # Docker
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.2.0 /project
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project
 
 # From source
 git clone https://github.com/Bajuzjefe/aikido.git
@@ -56,7 +58,7 @@ aikido /path/to/your-aiken-project
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  AIKIDO v0.2.0  Static Analysis Report
+  AIKIDO v0.3.0  Static Analysis Report
   Project: test/simple-treasury v0.1.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -83,9 +85,73 @@ aikido /path/to/your-aiken-project
 
 ---
 
+## Analysis Architecture
+
+Aikido uses a multi-lane approach where independent analysis techniques cross-validate each other:
+
+### Detector Suite (75 detectors)
+Cross-module interprocedural analysis that follows function calls across module boundaries. Taint tracking from untrusted redeemer fields to critical operations. Symbolic execution with constraint propagation. Delegation-aware suppression for withdraw-zero patterns. Transitive function signal merging with fixed-point convergence. Datum continuity tracking.
+
+### Compliance Analysis
+Securify2-style dual-pattern system: every security property has both a compliance pattern (safe) and a violation pattern (unsafe). 10 security property variants. Reduces false positives by requiring positive evidence of violation rather than absence of safety.
+
+### SMT Verification
+Solver-independent interface with Cardano domain axioms (value conservation, signature semantics, minting policy). Constraint solving for reachability analysis and property verification.
+
+### Transaction Simulation
+ScriptContext builder that generates concrete exploit scenarios. Tests 6 detector categories against simulated transactions to confirm exploitability.
+
+### Protocol Pattern Detection
+Automatic DeFi protocol classification (DEX, Lending, Staking, DAO, NFT, Options, Escrow). Token flow analysis and authority pattern detection. Protocol-specific detector tuning.
+
+### Evidence Framework
+5-level evidence hierarchy: **PatternMatch** → **PathVerified** → **SmtProven** → **SimulationConfirmed** → **Corroborated**. Higher evidence levels indicate higher confidence. SARIF output includes full codeFlow enrichment.
+
+### CWC Registry
+30 Cardano Weakness Classification entries mapping all 75 detectors to Cardano-specific vulnerability categories.
+
+### Scorecard
+Detector quality tracking: **Experimental** → **Beta** → **Stable** promotion with quality gates based on false positive rates and ecosystem validation.
+
+---
+
+## Real-World Validation
+
+### Strike Finance Audit Comparison
+
+Aikido was benchmarked against TxPipe's professional audit of Strike Finance (perpetuals + forwards contracts):
+
+| Metric | Result |
+|--------|--------|
+| TxPipe security findings analyzed | 24 |
+| Full match (true positive) | 12 |
+| Partial match | 5 |
+| Correctly not flagged (code fixed) | 4 |
+| False negatives | 3 |
+| Aikido unique findings | 26 |
+| **Coverage (unfixed findings)** | **85%** |
+
+Full methodology and per-finding breakdown: **[AUDIT_COMPARISON.md](AUDIT_COMPARISON.md)**
+
+### Ecosystem Validation
+
+Validated against **10+ real-world Aiken smart contract projects** with **zero crashes**:
+
+| Project | Findings | Severity Distribution |
+|---------|----------|-----------------------|
+| SundaeSwap DEX | 47 | 1 critical, 13 high, 24 medium, 3 low, 6 info |
+| Anastasia Design Patterns | 24 | 3 critical, 10 high, 8 medium, 2 low, 1 info |
+| Anastasia Multisig | 6 | 2 critical, 4 medium |
+| Seedelf Wallet | 4 | 1 high, 2 medium, 1 low |
+| Strike Finance (4 repos) | 75 | 5 critical, 18 high, 40 medium, 8 low, 4 info |
+| Acca | 20 | 20 medium |
+| **Total** | **176** | **81% estimated true positive rate** |
+
+---
+
 ## Detectors
 
-Detector categories are mapped to CWE identifiers.
+75 detectors mapped to CWE identifiers.
 
 ### Critical (5)
 
@@ -251,7 +317,7 @@ jobs:
 ### Docker
 
 ```bash
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.2.0 /project --format json
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project --format json
 ```
 
 ---
@@ -282,38 +348,6 @@ aikido --benchmark-manifest benchmarks/local-fixtures.toml --benchmark-enforce-g
 
 ---
 
-## Ecosystem Validation
-
-Aikido has been validated against **10 real-world Aiken smart contract projects** with **zero crashes**:
-
-| Project | Findings | Severity Distribution |
-|---------|----------|-----------------------|
-| SundaeSwap DEX | 47 | 1 critical, 13 high, 24 medium, 3 low, 6 info |
-| Anastasia Design Patterns | 24 | 3 critical, 10 high, 8 medium, 2 low, 1 info |
-| Anastasia Multisig | 6 | 2 critical, 4 medium |
-| Seedelf Wallet | 4 | 1 high, 2 medium, 1 low |
-| Strike Finance (4 repos) | 75 | 5 critical, 18 high, 40 medium, 8 low, 4 info |
-| Acca | 20 | 20 medium |
-| **Total** | **176** | **81% estimated true positive rate** |
-
-Ecosystem validation was performed across 10+ real-world Aiken projects with zero crashes.
-
----
-
-## Advanced Analysis
-
-Beyond simple pattern matching:
-
-- **Cross-module interprocedural analysis** — resolves qualified function calls across module boundaries
-- **Cross-handler analysis** — correlates signals across all handlers within a validator
-- **Taint tracking** — traces data flow from untrusted redeemer fields to critical operations
-- **Symbolic execution** — constraint propagation and branch analysis for reachability
-- **Call graph construction** — maps function dependencies for dead code detection
-- **UPLC budget estimation** — analyzes compiled Plutus bytecode for size and execution cost
-- **Confidence scoring** — rates findings as `definite`, `likely`, or `possible`
-
----
-
 ## Architecture
 
 ```
@@ -327,19 +361,32 @@ aikido/
 │   │   │   ├── call_graph.rs         # Function dependency graph
 │   │   │   ├── cross_module.rs       # Cross-module interprocedural analysis
 │   │   │   ├── symbolic.rs           # Symbolic execution & constraints
+│   │   │   ├── delegation.rs         # Delegation-aware suppression
+│   │   │   ├── evidence.rs           # 5-level evidence framework
+│   │   │   ├── cwc.rs               # Cardano Weakness Classification registry
+│   │   │   ├── scorecard.rs          # Detector quality tracking & promotion
+│   │   │   ├── ssa.rs               # SSA IR with phi nodes & use-def chains
+│   │   │   ├── compliance.rs         # Securify2-style compliance analysis
+│   │   │   ├── smt.rs               # SMT verification with Cardano axioms
+│   │   │   ├── path_analysis.rs      # Path-sensitive analysis & CFG
+│   │   │   ├── invariant_spec.rs     # .aikido-invariants.toml DSL
+│   │   │   ├── protocol_patterns.rs  # DeFi protocol detection & classification
+│   │   │   ├── tx_simulation.rs      # ScriptContext builder & exploit generation
+│   │   │   ├── fuzz_lane.rs          # Grammar-aware tx fuzzing
 │   │   │   ├── config.rs             # .aikido.toml configuration
 │   │   │   ├── suppression.rs        # Inline suppression comments
 │   │   │   ├── baseline.rs           # Baseline file support
 │   │   │   ├── uplc_analysis.rs      # UPLC bytecode analysis & budgets
-│   │   │   └── detector/             # Detector implementations
-│   │   └── tests/                    # Test suite
+│   │   │   └── detector/             # 75 detector implementations
+│   │   └── tests/                    # 1186+ tests
 │   └── aikido-cli/            # Binary: clap-based CLI
-├── fixtures/                  # Test contracts
+├── fixtures/                  # Test contracts (7 fixtures)
+├── audits/                    # Audit comparison artifacts
 ├── docs/detectors/            # Per-detector documentation
-├── .github/workflows/         # CI, cross-platform, release, mutation testing
+├── .github/workflows/         # CI, cross-platform, release, fuzz
 ├── homebrew/                  # Homebrew formula
 ├── npm/                       # npm wrapper package
-├── vscode-extension/          # VS Code extension scaffold
+├── vscode-extension/          # VS Code extension
 ├── fuzz/                      # cargo-fuzz targets
 └── Dockerfile                 # Multi-stage build
 ```
@@ -350,7 +397,7 @@ aikido/
 git clone https://github.com/Bajuzjefe/aikido.git
 cd aikido
 cargo build --release          # Binary at target/release/aikido
-cargo test                     # Run test suite
+cargo test                     # Run test suite (1186+ tests)
 cargo clippy --all-targets     # Lint (zero warnings)
 ```
 
@@ -368,7 +415,8 @@ Detectors are derived from real vulnerabilities found in published Cardano smart
 | Vacuumlabs audit reports | Unbounded value size, token dust attacks |
 | [Plutonomicon](https://github.com/Plutonomicon/plutonomicon) | Unrestricted minting, double satisfaction patterns |
 | Anastasia Labs audit reports | Staking credential theft, datum handling |
-| CWE Database | 45 detectors mapped to specific CWE identifiers |
+| TxPipe audit reports | Oracle manipulation, state transition integrity, value preservation |
+| CWE Database | 75 detectors mapped to specific CWE identifiers |
 
 ---
 
