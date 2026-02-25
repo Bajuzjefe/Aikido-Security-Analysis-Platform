@@ -60,7 +60,7 @@ pub fn findings_to_gitlab_sast(findings: &[Finding]) -> String {
                 "vendor": {
                     "name": "aikido"
                 },
-                "version": "0.1.0"
+                "version": "0.3.0"
             },
             "type": "sast",
             "status": "success"

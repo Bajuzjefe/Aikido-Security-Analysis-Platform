@@ -21,7 +21,7 @@ The text format outputs several sections:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  AIKIDO v0.2.0  Static Analysis Report
+  AIKIDO v0.3.0  Static Analysis Report
   Project: my-dex v1.0.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

@@ -12,7 +12,7 @@ stages:
 
 aikido-sast:
   stage: test
-  image: ghcr.io/bajuzjefe/aikido:0.2.0
+  image: ghcr.io/bajuzjefe/aikido:0.3.0
   script:
     - aikido . --format gitlab-sast > gl-sast-report.json || true
     - aikido . --fail-on high --quiet
@@ -81,7 +81,7 @@ Restrict analysis to files changed in the current merge request:
 ```yaml
 aikido-sast:
   stage: test
-  image: ghcr.io/bajuzjefe/aikido:0.2.0
+  image: ghcr.io/bajuzjefe/aikido:0.3.0
   script:
     - aikido . --diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME --format gitlab-sast > gl-sast-report.json || true
     - aikido . --diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME --fail-on high --quiet

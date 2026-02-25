@@ -130,7 +130,7 @@ pub fn format_report(
     let mut output = Vec::new();
 
     output.push(sep.clone());
-    output.push("  AIKIDO v0.2.0  Static Analysis Report".to_string());
+    output.push("  AIKIDO v0.3.0  Static Analysis Report".to_string());
     output.push(format!("  Project: {project_name} v{project_version}"));
     output.push(sep.clone());
     output.push(String::new());
