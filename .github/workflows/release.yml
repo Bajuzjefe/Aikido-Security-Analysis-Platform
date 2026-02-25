@@ -48,7 +48,7 @@ jobs:
       - name: Build
         run: |
           if [ "${{ matrix.cross }}" = "true" ]; then
-            cross build --release --target ${{ matrix.target }} --bin aikido
+            cross build --release --target ${{ matrix.target }} --bin aikido --features vendored-openssl
           else
             cargo build --release --target ${{ matrix.target }} --bin aikido
           fi
