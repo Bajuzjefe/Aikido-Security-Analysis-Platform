@@ -75,8 +75,8 @@ This section shows what Aikido found in your project. Validator modules contain 
 Each finding is a self-contained report:
 
 ```
-  [CRITICAL] (definite) double-satisfaction — Handler treasury.spend iterates
-    outputs without own OutputReference — validators/treasury.ak:23
+  [CRITICAL] (definite) double-satisfaction - Handler treasury.spend iterates
+    outputs without own OutputReference - validators/treasury.ak:23
 
     Spend handler accesses tx.outputs but never uses __own_ref to identify
     its own input. An attacker can satisfy multiple script inputs with a

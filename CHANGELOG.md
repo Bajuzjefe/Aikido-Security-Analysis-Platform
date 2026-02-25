@@ -1,19 +1,19 @@
 # Changelog
 
-## v0.3.0 — Multi-Lane Architecture
+## v0.3.0 - Multi-Lane Architecture
 
 ### New Analysis Modules (11 modules, 18,779 lines, 507+ tests)
-- **Evidence framework** (`evidence.rs`) — 5-level evidence hierarchy (PatternMatch → PathVerified → SmtProven → SimulationConfirmed → Corroborated), SARIF codeFlow enrichment
-- **CWC Registry** (`cwc.rs`) — 30 Cardano Weakness Classification entries mapping all 75 detectors
-- **Scorecard** (`scorecard.rs`) — Detector promotion/demotion system (Experimental → Beta → Stable) with quality gates
-- **SSA IR** (`ssa.rs`) — Full SSA form with phi nodes, dominators, use-def chains, taint propagation
-- **Compliance analysis** (`compliance.rs`) — Securify2-style dual-pattern compliance + violation, 10 SecurityProperty variants
-- **SMT verification** (`smt.rs`) — Solver-independent interface with Cardano domain axioms, constraint solving
-- **Path-sensitive analysis** (`path_analysis.rs`) — CFG path enumeration, feasibility checking, guard detection
-- **Invariant spec** (`invariant_spec.rs`) — `.aikido-invariants.toml` DSL for value conservation, access control, state transition, temporal invariants
-- **Protocol patterns** (`protocol_patterns.rs`) — Automatic DeFi protocol detection (DEX/Lending/Staking/DAO/NFT/Options/Escrow), token flow + authority analysis
-- **Transaction simulation** (`tx_simulation.rs`) — ScriptContext builder, exploit scenario generation for 6 detector types
-- **Fuzz lane** (`fuzz_lane.rs`) — Grammar-aware Cardano tx generation, Echidna-style stateful protocol fuzzing
+- **Evidence framework** (`evidence.rs`) - 5-level evidence hierarchy (PatternMatch -> PathVerified -> SmtProven -> SimulationConfirmed -> Corroborated), SARIF codeFlow enrichment
+- **CWC Registry** (`cwc.rs`) - 30 Cardano Weakness Classification entries mapping all 75 detectors
+- **Scorecard** (`scorecard.rs`) - Detector promotion/demotion system (Experimental -> Beta -> Stable) with quality gates
+- **SSA IR** (`ssa.rs`) - Full SSA form with phi nodes, dominators, use-def chains, taint propagation
+- **Compliance analysis** (`compliance.rs`) - Securify2-style dual-pattern compliance + violation, 10 SecurityProperty variants
+- **SMT verification** (`smt.rs`) - Solver-independent interface with Cardano domain axioms, constraint solving
+- **Path-sensitive analysis** (`path_analysis.rs`) - CFG path enumeration, feasibility checking, guard detection
+- **Invariant spec** (`invariant_spec.rs`) - `.aikido-invariants.toml` DSL for value conservation, access control, state transition, temporal invariants
+- **Protocol patterns** (`protocol_patterns.rs`) - Automatic DeFi protocol detection (DEX/Lending/Staking/DAO/NFT/Options/Escrow), token flow + authority analysis
+- **Transaction simulation** (`tx_simulation.rs`) - ScriptContext builder, exploit scenario generation for 6 detector types
+- **Fuzz lane** (`fuzz_lane.rs`) - Grammar-aware Cardano tx generation, Echidna-style stateful protocol fuzzing
 
 ### New Detectors (17 new, 58 → 75 total)
 - `tautological-comparison` (Critical), `value-comparison-semantics`, `output-count-validation`
@@ -21,10 +21,10 @@
 - Enhanced burn verification, datum continuity tracking
 
 ### Core Engine Improvements
-- Delegation analysis (`delegation.rs`) — withdraw-zero pattern detection, `build_delegation_set()` for O(1) suppression
-- Transitive function merging — 2-phase fixed-point (max 5 rounds for fn→fn chains)
-- Datum continuity tracking — `has_datum_continuity_assertion` and `datum_equality_checks` in BodySignals
-- PKH output detection — positive evidence (VerificationKeyCredential), not absence of ScriptCredential
+- Delegation analysis (`delegation.rs`) - withdraw-zero pattern detection, `build_delegation_set()` for O(1) suppression
+- Transitive function merging - 2-phase fixed-point (max 5 rounds for fn->fn chains)
+- Datum continuity tracking - `has_datum_continuity_assertion` and `datum_equality_checks` in BodySignals
+- PKH output detection - positive evidence (VerificationKeyCredential), not absence of ScriptCredential
 - FP reduction: oracle time verification, guarded vars in fee-calculation-unchecked, var_references fallback
 
 ### Strike Finance Audit Comparison
@@ -40,7 +40,7 @@
 
 ---
 
-## v0.2.0 — Ecosystem Validated
+## v0.2.0 - Ecosystem Validated
 
 ### New Detectors (23 new, 35 → 58 total)
 
@@ -86,7 +86,7 @@
 
 ---
 
-## v0.1.0 — Initial Release
+## v0.1.0 - Initial Release
 
 First public release of Aikido, a static security analyzer for Aiken smart contracts on Cardano.
 

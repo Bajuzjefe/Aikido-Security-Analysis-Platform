@@ -14,15 +14,15 @@ Current detector count: **75**
 
 ## Why Aikido
 
-Cardano smart contracts are immutable once deployed. A vulnerability in production means lost funds with no recourse. Manual audits are expensive, slow, and bottlenecked. Aikido catches the classes of bugs that auditors find most often — double satisfaction, missing signature checks, unbounded iteration, unsafe datum handling — automatically, in seconds.
+Cardano smart contracts are immutable once deployed. A vulnerability in production means lost funds with no recourse. Manual audits are expensive, slow, and bottlenecked. Aikido catches the classes of bugs that auditors find most often - double satisfaction, missing signature checks, unbounded iteration, unsafe datum handling - automatically, in seconds.
 
-- **The only security tool for Aiken** — no alternatives exist in the ecosystem
+- **The only security tool for Aiken** - no alternatives exist in the ecosystem
 - **75 detectors** with CWC (Cardano Weakness Classification) and CWE mappings
-- **Multi-lane analysis** — static detectors, compliance, SMT verification, transaction simulation, protocol detection, fuzzing
-- **Validated against professional audit** — 85% coverage on TxPipe's Strike Finance audit findings ([full comparison](AUDIT_COMPARISON.md))
-- **Evidence framework** — findings corroborated across multiple analysis techniques (PatternMatch → SmtProven → SimulationConfirmed)
-- **9 output formats** — terminal, JSON, SARIF, Markdown, HTML, PDF, CSV, GitLab SAST, reviewdog
-- **Ecosystem proven** — 10+ real-world projects including SundaeSwap, Anastasia Labs, Strike Finance, and Seedelf (0 crashes)
+- **Multi-lane analysis** - static detectors, compliance, SMT verification, transaction simulation, protocol detection, fuzzing
+- **Validated against professional audit** - 85% coverage on TxPipe's Strike Finance audit findings ([full comparison](AUDIT_COMPARISON.md))
+- **Evidence framework** - findings corroborated across multiple analysis techniques (PatternMatch -> SmtProven -> SimulationConfirmed)
+- **9 output formats** - terminal, JSON, SARIF, Markdown, HTML, PDF, CSV, GitLab SAST, reviewdog
+- **Ecosystem proven** - 10+ real-world projects including SundaeSwap, Anastasia Labs, Strike Finance, and Seedelf (0 crashes)
 
 ---
 
@@ -62,8 +62,8 @@ aikido /path/to/your-aiken-project
   Project: test/simple-treasury v0.1.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  [CRITICAL] (definite) double-satisfaction — Handler treasury.spend iterates
-    outputs without own OutputReference — validators/treasury.ak:23
+  [CRITICAL] (definite) double-satisfaction - Handler treasury.spend iterates
+    outputs without own OutputReference - validators/treasury.ak:23
 
     Spend handler accesses tx.outputs but never uses __own_ref to identify
     its own input. An attacker can satisfy multiple script inputs with a

@@ -8,9 +8,9 @@
 
 ## Disclaimer / Methodology Note
 
-> This comparison report was prepared by the Aikido team as supplementary analysis. The manual classification of true positives, false positives, and false negatives is additional expert review performed by our security team — this is not an automated capability of the Aikido tool itself. Aikido produces the raw findings; human expert review was applied to classify them against professional audit results.
+> This comparison report was prepared by the Aikido team as supplementary analysis. The manual classification of true positives, false positives, and false negatives is additional expert review performed by our security team -this is not an automated capability of the Aikido tool itself. Aikido produces the raw findings; human expert review was applied to classify them against professional audit results.
 
-> **Important**: The code analyzed by Aikido is the current open-source version of each Strike Finance repository. The TxPipe audits were performed on specific earlier commits (perpetuals: `2497f687`, forwards: `589b55f9` and later). Many findings in the TxPipe reports have status "Resolved," meaning the code was patched after the audit. Aikido is analyzing the post-fix code, so findings that were fixed will naturally not appear. This is noted in the classification as "Correctly Not Flagged — Code Fixed."
+> **Important**: The code analyzed by Aikido is the current open-source version of each Strike Finance repository. The TxPipe audits were performed on specific earlier commits (perpetuals: `2497f687`, forwards: `589b55f9` and later). Many findings in the TxPipe reports have status "Resolved," meaning the code was patched after the audit. Aikido is analyzing the post-fix code, so findings that were fixed will naturally not appear. This is noted in the classification as "Correctly Not Flagged - Code Fixed."
 
 ---
 
@@ -33,7 +33,7 @@
 | **Weighted** (partial = 0.5) | 56% (5/9) | 86% (9.5/11) | 73% (14.5/20) |
 | **Coverage** (any match) | 67% (6/9) | **100%** (11/11) | **85%** (17/20) |
 
-**Key Takeaway**: Aikido provides at least partial coverage on **85% of all professionally audited security findings** on unfixed code (100% on perpetuals). It also surfaces 26 additional findings that TxPipe did not flag. The only 3 undetected findings (STF-002, STF-006, STF-202) are pure business logic issues requiring multi-step protocol flow understanding — exactly where manual auditors add the most value.
+**Key Takeaway**: Aikido provides at least partial coverage on **85% of all professionally audited security findings** on unfixed code (100% on perpetuals). It also surfaces 26 additional findings that TxPipe did not flag. The only 3 undetected findings (STF-002, STF-006, STF-202) are pure business logic issues requiring multi-step protocol flow understanding - exactly where manual auditors add the most value.
 
 ---
 
@@ -64,10 +64,10 @@ TxPipe performs professional security audits including:
 | Classification | Definition | Binary Score | Weighted Score |
 |---------------|-----------|:------------:|:--------------:|
 | **Full Match (TP)** | Aikido flags a finding that directly matches or subsumes a TxPipe finding | 1.0 | 1.0 |
-| **Partial Match** | Aikido flags a related finding on the same validator/field — an auditor investigating the Aikido finding would discover the TxPipe issue | 0.0 | 0.5 |
-| **Correctly Not Flagged** | TxPipe finding was resolved in current code — Aikido correctly doesn't flag it | — | — |
+| **Partial Match** | Aikido flags a related finding on the same validator/field - an auditor investigating the Aikido finding would discover the TxPipe issue | 0.0 | 0.5 |
+| **Correctly Not Flagged** | TxPipe finding was resolved in current code - Aikido correctly doesn't flag it | - | - |
 | **False Negative (FN)** | TxPipe identified a real issue with no Aikido coverage at all | 0.0 | 0.0 |
-| **Aikido Unique** | Aikido flags an issue that TxPipe did not identify | — | — |
+| **Aikido Unique** | Aikido flags an issue that TxPipe did not identify | - | - |
 
 **Scoring models**:
 - **Binary**: Only full matches count. Conservative lower bound.
@@ -96,21 +96,21 @@ TxPipe found 17 issues: 7 Critical, 1 Major, 3 Minor, 5 Info, 1 Style section (c
 |-----------|-------|----------|--------|-------------|----------------|-----------------|
 | STF-001 | UTxO address not validated in Create Forward | Critical | Resolved | Partial | TP (partial) | `missing-datum-in-script-output` flags output without datum verification on `forwards.mint`, which is the same mint handler where the address check was missing |
 | STF-002 | Potential loss of collateral if neither party deposits | Critical | Resolved | No | FN | Business logic: requires understanding that both `*_has_deposited_asset = False` creates permanently locked UTxO. Static analysis cannot model 2-party deposit lifecycle |
-| STF-003 | Double satisfaction in operations requiring token burning | Critical | Resolved | Yes | TP | `quantity-of-double-counting` on `collateral.spend` — detects that multiple similar operations in the same TX could share burn counts |
-| STF-004 | Missing validations in Accept Forward operation | Critical | Resolved | Yes | TP | `missing-datum-in-script-output` and `quantity-of-double-counting` on `forwards.mint` and `collateral.spend` — flags the missing token count and datum checks |
-| STF-005 | Double counting of tokens in values | Critical | Resolved | Yes | TP | `quantity-of-double-counting` on `collateral.spend` (4 calls) and `forwards.mint/spend` — directly detects the `quantity_of`-based double counting vulnerability |
-| STF-006 | One Side Deposit can be performed multiple times | Critical | Resolved | No | FN | Requires redeemer action + state machine analysis — the boolean fields in `CollateralDatum` are not checked against the input datum before update |
-| STF-007 | Missing datum fields validation in Create Forward | Critical | Resolved | Yes | TP | `incomplete-value-extraction` and `unsafe-datum-deconstruction` on `forwards` — detects that datum fields from the output are not validated during creation |
+| STF-003 | Double satisfaction in operations requiring token burning | Critical | Resolved | Yes | TP | `quantity-of-double-counting` on `collateral.spend` - detects that multiple similar operations in the same TX could share burn counts |
+| STF-004 | Missing validations in Accept Forward operation | Critical | Resolved | Yes | TP | `missing-datum-in-script-output` and `quantity-of-double-counting` on `forwards.mint` and `collateral.spend` - flags the missing token count and datum checks |
+| STF-005 | Double counting of tokens in values | Critical | Resolved | Yes | TP | `quantity-of-double-counting` on `collateral.spend` (4 calls) and `forwards.mint/spend` - directly detects the `quantity_of`-based double counting vulnerability |
+| STF-006 | One Side Deposit can be performed multiple times | Critical | Resolved | No | FN | Requires redeemer action + state machine analysis - the boolean fields in `CollateralDatum` are not checked against the input datum before update |
+| STF-007 | Missing datum fields validation in Create Forward | Critical | Resolved | Yes | TP | `incomplete-value-extraction` and `unsafe-datum-deconstruction` on `forwards` - detects that datum fields from the output are not validated during creation |
 | STF-101 | Users could deposit assets after exercise date | Major | Resolved | No | Correctly Not Flagged | The code was fixed to compare against `get_upper_bound`. Aikido's `missing-validity-range` detector now validates the current code correctly |
 | STF-201 | Prevent inclusion of reference scripts | Minor | Resolved | N/A | Correctly Not Flagged | Code was fixed post-audit. Reference script injection prevention added |
 | STF-202 | One Side Deposit can be bypassed | Minor | Resolved | No | FN | Business logic: requires understanding that `BothSidesDeposit` can be called without prior `OneSideDeposit`, bypassing the intended two-step flow |
 | STF-203 | Party identity can be forged | Minor | Resolved | Partial | TP (partial) | `unsafe-datum-deconstruction` detects unsafe pattern matching in deposit operations, which is related to the party identity forgery vector |
-| STF-301 | Do Datum comparisons in Data | Info | Resolved | Yes | TP | `unsafe-datum-deconstruction` — directly related to the costly type-casting pattern for datum comparison |
-| STF-302 | Clean up output lookup in Both Sides Deposit | Info | Resolved | N/A | N/A | Code quality — not security-relevant |
-| STF-303 | Standardize the output lookups | Info | Resolved | N/A | N/A | Code quality — not security-relevant |
-| STF-304 | Cleanup output lookup in Accept Forwards | Info | Resolved | N/A | N/A | Code quality — not security-relevant |
-| STF-305 | Various recommendations for the Types module | Info | Resolved | N/A | N/A | Code quality — not security-relevant |
-| Style | Style Recommendations (20.a-20.e) | Info | Resolved | N/A | N/A | Code style — not security-relevant |
+| STF-301 | Do Datum comparisons in Data | Info | Resolved | Yes | TP | `unsafe-datum-deconstruction` - directly related to the costly type-casting pattern for datum comparison |
+| STF-302 | Clean up output lookup in Both Sides Deposit | Info | Resolved | N/A | N/A | Code quality - not security-relevant |
+| STF-303 | Standardize the output lookups | Info | Resolved | N/A | N/A | Code quality - not security-relevant |
+| STF-304 | Cleanup output lookup in Accept Forwards | Info | Resolved | N/A | N/A | Code quality - not security-relevant |
+| STF-305 | Various recommendations for the Types module | Info | Resolved | N/A | N/A | Code quality - not security-relevant |
+| Style | Style Recommendations (20.a-20.e) | Info | Resolved | N/A | N/A | Code style - not security-relevant |
 
 ### Forwards Summary
 
@@ -140,26 +140,26 @@ Aikido flagged **13 findings** on forwards. Beyond those matching TxPipe finding
 ## Strike Perpetuals Comparison
 
 **TxPipe Audit**: Undated (commit `2497f6870c55c72a63d0550105afa251538d7eb8`)
-**Total findings**: 13 (10 High, 2 Medium, 1 unclassified — all effectively High severity)
+**Total findings**: 13 (10 High, 2 Medium, 1 unclassified - all effectively High severity)
 **Audited files**: `validators/orders.ak`, `validators/manage_positions.ak`, `validators/position_mint.ak`, `validators/pool.ak`, `validators/liquidity_mint.ak`, `lib/math.ak`, `lib/orders_validations.ak`
 
 ### Detailed Comparison Table
 
 | TxPipe ID | Title | Severity | Aikido Match | Classification | Aikido Detector |
 |-----------|-------|----------|-------------|----------------|-----------------|
-| ID-1 | Use of Lower Bound for Current Time | High | Yes | **TP** | `missing-validity-range` on `orders.spend` and `position_mint.mint` — flags lower bound time manipulation risk, exactly matching this finding |
-| ID-2 | Missing Validation and Unbounded Fields in Position Datum | High | Yes | **TP** | `missing-datum-field-validation` on `pool` and `settings` — detects unbounded/unvalidated datum fields. Also `unsafe-redeemer-arithmetic` on `position_mint.mint` for the redeemer-sourced values |
-| ID-3 | Lack of Supply Check / Division by Zero | High | Yes | **TP** | `division-by-zero-risk` on `orders.spend` and `position_mint.mint` — directly detects the division that may fail when pool supply is zero |
+| ID-1 | Use of Lower Bound for Current Time | High | Yes | **TP** | `missing-validity-range` on `orders.spend` and `position_mint.mint` - flags lower bound time manipulation risk, exactly matching this finding |
+| ID-2 | Missing Validation and Unbounded Fields in Position Datum | High | Yes | **TP** | `missing-datum-field-validation` on `pool` and `settings` - detects unbounded/unvalidated datum fields. Also `unsafe-redeemer-arithmetic` on `position_mint.mint` for the redeemer-sourced values |
+| ID-3 | Lack of Supply Check / Division by Zero | High | Yes | **TP** | `division-by-zero-risk` on `orders.spend` and `position_mint.mint` - directly detects the division that may fail when pool supply is zero |
 | ID-4 | Unsafe Asset Comparison Allows Over-Lending | High | N/A | Correctly Not Flagged | Code was fixed post-audit to use `==` instead of `match(>=)`. Aikido correctly doesn't flag the fixed version |
 | ID-5 | Misuse of match for Multi-Asset Value Comparison | High | N/A | Correctly Not Flagged | Code was fixed post-audit. The `match(>=)` pattern was replaced |
-| ID-6 | Missing Update to total_lended_amount in Pool Datum | High | Partial | **Partial Match** | Aikido's `missing-datum-field-validation` on `pool` explicitly names `total_lended_amount` as an unvalidated field. While Aikido doesn't detect the *missing update* specifically, it flags the exact field as lacking validation — an auditor investigating would discover the update omission |
-| ID-7 | Missing Validation for position_asset_amount | High | Yes | **TP** | `missing-datum-field-validation` and `unsafe-redeemer-arithmetic` on `position_mint.mint` — detects that user-submitted datum fields are used without validation |
-| ID-8 | Missing Validation of current_usd_price in Close Position | High | Yes | **TP** | `unsafe-redeemer-arithmetic` on `orders.spend` — flags redeemer-tainted arithmetic where `current_usd_price` from the redeemer flows into calculations without bounds checking |
-| ID-9 | Missing Validation of Lent Amount Returned to Pool | High | Yes | **TP** | `fee-calculation-unchecked` on `manage_positions.spend` — detects that the repayment calculation lacks validation against the expected return amount |
-| ID-10 | Incorrect Liquidation Condition Due to Improper Loss Calc | High | Yes | **TP** | `integer-underflow-risk` on `manage_positions.spend` — flags the subtraction that can underflow when `total_value_loss` is negative, causing the liquidation logic to behave incorrectly |
-| ID-11 | Token Dust Attack on Pool Output | Medium | Partial | **Partial Match** | Aikido's `incomplete-value-extraction` warns "doesn't validate the full Value — other native assets may be drained," which is the exact attack vector of token dust injection. The specific `match(>=)` mechanism differs but the vulnerability class is correctly identified |
-| ID-12 | Missing Token Burn in liquidate_position Flow | Medium | Partial | **Partial Match** | Aikido's `state-machine-violation` on `manage_positions` flags "Terminal action 'Close' doesn't access mint field (may need token burn)" — correctly identifying that termination paths lack burn verification. The specific path (liquidate vs close) differs but the burn-omission pattern is detected |
-| ID-13 | Missing Token Validation in Output Value | Medium | Yes | **TP** | `quantity-of-double-counting` on `manage_positions.spend` — detects that output token composition is not fully validated, allowing unauthorized tokens to slip through |
+| ID-6 | Missing Update to total_lended_amount in Pool Datum | High | Partial | **Partial Match** | Aikido's `missing-datum-field-validation` on `pool` explicitly names `total_lended_amount` as an unvalidated field. While Aikido doesn't detect the *missing update* specifically, it flags the exact field as lacking validation -an auditor investigating would discover the update omission |
+| ID-7 | Missing Validation for position_asset_amount | High | Yes | **TP** | `missing-datum-field-validation` and `unsafe-redeemer-arithmetic` on `position_mint.mint` - detects that user-submitted datum fields are used without validation |
+| ID-8 | Missing Validation of current_usd_price in Close Position | High | Yes | **TP** | `unsafe-redeemer-arithmetic` on `orders.spend` - flags redeemer-tainted arithmetic where `current_usd_price` from the redeemer flows into calculations without bounds checking |
+| ID-9 | Missing Validation of Lent Amount Returned to Pool | High | Yes | **TP** | `fee-calculation-unchecked` on `manage_positions.spend` - detects that the repayment calculation lacks validation against the expected return amount |
+| ID-10 | Incorrect Liquidation Condition Due to Improper Loss Calc | High | Yes | **TP** | `integer-underflow-risk` on `manage_positions.spend` - flags the subtraction that can underflow when `total_value_loss` is negative, causing the liquidation logic to behave incorrectly |
+| ID-11 | Token Dust Attack on Pool Output | Medium | Partial | **Partial Match** | Aikido's `incomplete-value-extraction` warns "doesn't validate the full Value -other native assets may be drained," which is the exact attack vector of token dust injection. The specific `match(>=)` mechanism differs but the vulnerability class is correctly identified |
+| ID-12 | Missing Token Burn in liquidate_position Flow | Medium | Partial | **Partial Match** | Aikido's `state-machine-violation` on `manage_positions` flags "Terminal action 'Close' doesn't access mint field (may need token burn)" -correctly identifying that termination paths lack burn verification. The specific path (liquidate vs close) differs but the burn-omission pattern is detected |
+| ID-13 | Missing Token Validation in Output Value | Medium | Yes | **TP** | `quantity-of-double-counting` on `manage_positions.spend` - detects that output token composition is not fully validated, allowing unauthorized tokens to slip through |
 
 ### Perpetuals Summary
 
@@ -179,7 +179,7 @@ Aikido flagged **34 findings** on perpetuals. Beyond those matching TxPipe findi
 
 | Detector | Severity | Module | Description |
 |----------|----------|--------|-------------|
-| `missing-minting-policy-check` | Critical | `liquidity_mint` | Minting policy never accesses the transaction's mint field — arbitrary tokens can be minted under this policy |
+| `missing-minting-policy-check` | Critical | `liquidity_mint` | Minting policy never accesses the transaction's mint field -arbitrary tokens can be minted under this policy |
 | `unrestricted-minting` | Critical | `liquidity_mint` | Complementary finding: the minting policy has no restrictions on what can be minted |
 | `withdraw-zero-trick` | High | `liquidity_mint`, `pool` | The withdraw-zero trick allows bypassing staking credential checks |
 | `invariant-violation` | High | `manage_positions` | Value conservation not verified across the position management flow |
@@ -230,7 +230,7 @@ These findings weren't precisely identified but Aikido flagged a closely related
 
 ### Gap Significance
 
-The 3 completely missed findings all require **protocol-level semantic understanding** of multi-step transaction flows — exactly where professional manual auditing adds the most value. Aikido and manual audits are **complementary rather than competing** approaches: Aikido handles the 85% of findings catchable through static patterns, freeing auditors to focus on complex business logic.
+The 3 completely missed findings all require **protocol-level semantic understanding** of multi-step transaction flows -exactly where professional manual auditing adds the most value. Aikido and manual audits are **complementary rather than competing** approaches: Aikido handles the 85% of findings catchable through static patterns, freeing auditors to focus on complex business logic.
 
 ---
 
@@ -259,14 +259,14 @@ No professional audit exists for these two Strike Finance contracts. Aikido find
 
 | Detector | Severity | Confidence | Module | Description |
 |----------|----------|------------|--------|-------------|
-| `tautological-comparison` | Critical | Definite | `staking` | Tautological comparison: `datum.mint_policy_id == datum.mint_policy_id` — always true, meaning the intended check is completely bypassed |
+| `tautological-comparison` | Critical | Definite | `staking` | Tautological comparison: `datum.mint_policy_id == datum.mint_policy_id` -always true, meaning the intended check is completely bypassed |
 | `quantity-of-double-counting` | High | Possible | `staking` | Multiple `quantity_of` calls may allow double-counting (spend) |
 | `quantity-of-double-counting` | High | Possible | `staking` | Multiple `quantity_of` calls may allow double-counting (mint) |
 | `missing-validity-range` | Medium | Definite | `staking` | Time-sensitive datum but no validity range check |
 | `incomplete-value-extraction` | Medium | Possible | `staking` | Incomplete Value check via `quantity_of` |
-| `withdraw-amount-check` | Medium | Possible | `staking` | Withdrawal existence-only check — amount not verified |
+| `withdraw-amount-check` | Medium | Possible | `staking` | Withdrawal existence-only check -amount not verified |
 
-**Notable**: The tautological comparison (`datum.mint_policy_id == datum.mint_policy_id`) is a definite-confidence Critical finding — this is a likely copy-paste bug where the developer compared a field to itself instead of to an expected value.
+**Notable**: The tautological comparison (`datum.mint_policy_id == datum.mint_policy_id`) is a definite-confidence Critical finding -this is a likely copy-paste bug where the developer compared a field to itself instead of to an expected value.
 
 ---
 
@@ -292,9 +292,9 @@ We evaluate Aikido's performance against unfixed security findings using three c
 |-------|-------------|:--------:|:----------:|:------------:|
 | **Binary** | Only full matches count (conservative lower bound) | 44% (4/9) | 73% (8/11) | **60%** (12/20) |
 | **Weighted** | Full match = 1.0, Partial = 0.5 | 56% (5/9) | 86% (9.5/11) | **73%** (14.5/20) |
-| **Coverage** | Any match (full or partial) counts — "would an auditor using Aikido have been pointed toward this issue?" | 67% (6/9) | **100%** (11/11) | **85%** (17/20) |
+| **Coverage** | Any match (full or partial) counts - "would an auditor using Aikido have been pointed toward this issue?" | 67% (6/9) | **100%** (11/11) | **85%** (17/20) |
 
-**Interpretation**: The Coverage metric answers the most practical question — "If I used Aikido before a manual audit, would every TxPipe finding have been at least partially flagged?" On perpetuals, the answer is **yes, 100%**. On forwards, 3 findings (STF-002, STF-006, STF-202) have zero Aikido coverage — all three are pure business logic issues requiring multi-step protocol flow understanding.
+**Interpretation**: The Coverage metric answers the most practical question - "If I used Aikido before a manual audit, would every TxPipe finding have been at least partially flagged?" On perpetuals, the answer is **yes, 100%**. On forwards, 3 findings (STF-002, STF-006, STF-202) have zero Aikido coverage - all three are pure business logic issues requiring multi-step protocol flow understanding.
 
 ### Recall by Severity (Coverage Model)
 
@@ -302,7 +302,7 @@ We evaluate Aikido's performance against unfixed security findings using three c
 |----------------|:-----:|:----------:|:-------:|:-------------:|
 | Critical | 7 | 5 | 0 | **71%** |
 | High | 10 | 7 | 1 | **80%** |
-| Major | 1 | — | — | Code was fixed |
+| Major | 1 | -| -| Code was fixed |
 | Medium | 3 | 1 | 2 | **100%** |
 | Minor | 3 | 0 | 1 | **33%** |
 | Info | 5 | 1 | 0 | 20% |
@@ -317,7 +317,7 @@ We evaluate Aikido's performance against unfixed security findings using three c
 | Aikido-only findings (not in TxPipe) | 26 |
 | **Unique finding rate** | **60%** of all Aikido findings are additive |
 
-These 26 unique findings include 2 Critical (`missing-minting-policy-check`, `unrestricted-minting`), 4 High, and 12 Medium-severity issues that TxPipe did not flag — demonstrating that Aikido provides additive security value even alongside professional audits.
+These 26 unique findings include 2 Critical (`missing-minting-policy-check`, `unrestricted-minting`), 4 High, and 12 Medium-severity issues that TxPipe did not flag -demonstrating that Aikido provides additive security value even alongside professional audits.
 
 ---
 
@@ -325,15 +325,15 @@ These 26 unique findings include 2 Critical (`missing-minting-policy-check`, `un
 
 ### Aikido as a Pre-Audit Tool
 
-1. **85% coverage on unfixed security findings**: Aikido provides at least partial coverage on 17 of 20 unfixed findings from professional TxPipe audits. On perpetuals specifically, coverage is **100%** — every single TxPipe finding was flagged in some form.
+1. **85% coverage on unfixed security findings**: Aikido provides at least partial coverage on 17 of 20 unfixed findings from professional TxPipe audits. On perpetuals specifically, coverage is **100%** -every single TxPipe finding was flagged in some form.
 
 2. **60-73% precision**: Using binary scoring (conservative), Aikido directly matches 60% of findings. Using weighted scoring (partial = 0.5), this rises to 73%.
 
-3. **Complementary coverage**: Aikido surfaces 26 additional findings that TxPipe did not flag, including critical minting policy issues and the withdraw-zero trick — demonstrating additive value even alongside professional audits.
+3. **Complementary coverage**: Aikido surfaces 26 additional findings that TxPipe did not flag, including critical minting policy issues and the withdraw-zero trick -demonstrating additive value even alongside professional audits.
 
-4. **Highest accuracy where it matters most**: 80% coverage on High-severity findings and 100% on Medium — Aikido is most reliable at detecting the vulnerability classes with highest exploitability.
+4. **Highest accuracy where it matters most**: 80% coverage on High-severity findings and 100% on Medium - Aikido is most reliable at detecting the vulnerability classes with highest exploitability.
 
-5. **Minimal, well-defined blind spots**: Only 3 of 20 unfixed findings have zero Aikido coverage. All 3 are pure business logic issues requiring multi-step protocol flow understanding — exactly where professional auditors add the most value.
+5. **Minimal, well-defined blind spots**: Only 3 of 20 unfixed findings have zero Aikido coverage. All 3 are pure business logic issues requiring multi-step protocol flow understanding -exactly where professional auditors add the most value.
 
 6. **Zero-cost scaling**: Unlike manual audits (typically $30,000-$100,000+ per engagement), Aikido runs in seconds and can be integrated into CI/CD for continuous monitoring.
 

@@ -48,8 +48,8 @@ Project: my-dex v0.1.0
   FINDINGS (3 issues found)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  [CRITICAL] (definite) double-satisfaction — Handler swap.spend iterates
-    outputs without own OutputReference — validators/swap.ak:15
+  [CRITICAL] (definite) double-satisfaction - Handler swap.spend iterates
+    outputs without own OutputReference - validators/swap.ak:15
 
     Spend handler accesses tx.outputs but never uses __own_ref to
     identify its own input. An attacker can satisfy multiple script
@@ -63,12 +63,12 @@ Project: my-dex v0.1.0
     Suggestion: Use the OutputReference parameter to correlate outputs
     to this specific input.
 
-  [HIGH] (likely) value-not-preserved — Handler pool.spend does not
-    verify output value — validators/pool.ak:42
+  [HIGH] (likely) value-not-preserved - Handler pool.spend does not
+    verify output value - validators/pool.ak:42
     ...
 
-  [MEDIUM] (possible) unbounded-list-iteration — Direct iteration over
-    self.inputs — lib/helpers.ak:8
+  [MEDIUM] (possible) unbounded-list-iteration - Direct iteration over
+    self.inputs - lib/helpers.ak:8
     ...
 
   1 critical, 1 high, 1 medium, 0 low, 0 info

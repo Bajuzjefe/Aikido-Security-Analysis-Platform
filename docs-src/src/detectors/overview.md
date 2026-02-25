@@ -15,18 +15,18 @@ Aikido ships with **58 security detectors** organized into four severity levels.
 
 Each detector:
 
-1. **Walks the typed AST** — Aikido compiles your Aiken project and traverses the fully typed abstract syntax tree
-2. **Extracts signals** — Identifies patterns like handler types, datum access, value operations, signature checks
-3. **Performs cross-module analysis** — Follows function calls across module boundaries to reduce false positives
-4. **Applies taint tracking** — Traces data flow from untrusted sources (redeemer, datum) to critical operations
-5. **Scores confidence** — Rates each finding as `definite`, `likely`, or `possible`
-6. **Maps to CWE** — Links findings to standardized Common Weakness Enumeration identifiers
+1. **Walks the typed AST** - Aikido compiles your Aiken project and traverses the fully typed abstract syntax tree
+2. **Extracts signals** - Identifies patterns like handler types, datum access, value operations, signature checks
+3. **Performs cross-module analysis** - Follows function calls across module boundaries to reduce false positives
+4. **Applies taint tracking** - Traces data flow from untrusted sources (redeemer, datum) to critical operations
+5. **Scores confidence** - Rates each finding as `definite`, `likely`, or `possible`
+6. **Maps to CWE** - Links findings to standardized Common Weakness Enumeration identifiers
 
 ## Confidence Levels
 
-- **definite** — The vulnerability pattern is unambiguous and exploitable
-- **likely** — The pattern strongly suggests a vulnerability, but context may provide mitigation
-- **possible** — The pattern is suspicious and warrants manual review
+- **definite** - The vulnerability pattern is unambiguous and exploitable
+- **likely** - The pattern strongly suggests a vulnerability, but context may provide mitigation
+- **possible** - The pattern is suspicious and warrants manual review
 
 ## Listing Detectors
 
