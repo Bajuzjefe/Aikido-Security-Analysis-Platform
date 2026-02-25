@@ -349,7 +349,9 @@ fn main() {
         content.push_str("# Legacy dynamic plugins are disabled in ABI v2.\n");
         content.push_str("\n[analysis]\n");
         content.push_str("# Optional external simulation context-builder command:\n");
-        content.push_str("# simulation_context_builder_command = \"node /path/to/simulation-context-builder\"\n");
+        content.push_str(
+            "# simulation_context_builder_command = \"node /path/to/simulation-context-builder\"\n",
+        );
         content.push('\n');
         content.push_str("# Available detectors:\n");
         for d in &detectors {
