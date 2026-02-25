@@ -54,7 +54,7 @@ In a merge request pipeline, diff against the target branch:
 ```yaml
 aikido-diff:
   stage: test
-  image: ghcr.io/bajuzjefe/aikido:0.3.0
+  image: ghcr.io/bajuzjefe/aikido:0.3.1
   script:
     - aikido . --diff origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME \
         --format gitlab-sast > gl-sast-report.json || true

@@ -7,7 +7,7 @@ const path = require("path");
 const os = require("os");
 const { execSync } = require("child_process");
 
-const VERSION = "0.3.0";
+const VERSION = "0.3.1";
 const BASE_URL = `https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/releases/download/v${VERSION}`;
 
 const PLATFORM_MAP = {

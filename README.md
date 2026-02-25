@@ -50,7 +50,7 @@ cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platfo
 npx aikido-aiken /path/to/project
 
 # Docker
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.1 /project
 
 # From source
 git clone https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform.git
@@ -67,7 +67,7 @@ aikido /path/to/your-aiken-project
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  AIKIDO v0.3.0  Static Analysis Report
+  AIKIDO v0.3.1  Static Analysis Report
   Project: test/simple-treasury v0.1.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -369,7 +369,7 @@ jobs:
 ### Docker
 
 ```bash
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project --format json
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.1 /project --format json
 ```
 
 ---

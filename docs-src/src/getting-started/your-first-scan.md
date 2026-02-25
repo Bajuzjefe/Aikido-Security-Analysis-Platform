@@ -46,7 +46,7 @@ Each detector walks the typed AST looking for specific vulnerability patterns. D
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  AIKIDO v0.3.0  Static Analysis Report
+  AIKIDO v0.3.1  Static Analysis Report
   Project: my-treasury v0.1.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

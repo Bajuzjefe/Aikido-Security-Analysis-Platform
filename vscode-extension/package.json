@@ -2,7 +2,7 @@
   "name": "aikido-vscode",
   "displayName": "Aikido — Aiken Security Analyzer",
   "description": "Show aikido static analysis findings inline in VS Code for Aiken smart contracts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "publisher": "Bajuzjefe",
   "license": "MIT",
   "repository": {

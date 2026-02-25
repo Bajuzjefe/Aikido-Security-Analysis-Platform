@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.3.1 - Production Readiness
+
+### Fixes
+- Fix checksums generation in release workflow (hashes were being stripped)
+- Fix npm postinstall to download `.tar.gz` archives instead of bare binaries
+- Fix Dockerfile missing `patch` package (broke libquickjs-sys build)
+- Fix repository URLs across all files (repo rename)
+- Add VS Code extension build tooling (`@types/node`, `@vscode/vsce`)
+- Optimize GitHub Action to download pre-built binaries with cargo fallback
+- Create Homebrew tap (`Bajuzjefe/homebrew-tap`)
+- Publish `aikido-aiken@0.3.1` to npm
+
 ## v0.3.0 - Multi-Lane Architecture
 
 ### New Analysis Modules (11 modules, 18,779 lines, 507+ tests)
