@@ -364,10 +364,10 @@ Detectors are derived from real vulnerabilities found in published Cardano smart
 
 | Source | Findings Covered |
 |--------|-----------------|
-| [MLabs Audit Findings](https://github.com/nicholasburka/mlabs-audit) | Double satisfaction, missing minting policy, arbitrary datum, unbounded size |
-| [Vacuumlabs Audit Reports](https://vacuumlabs.com/blockchain/smart-contract-auditing/) | Unbounded value size, token dust attacks |
+| MLabs audit reports | Double satisfaction, missing minting policy, arbitrary datum, unbounded size |
+| Vacuumlabs audit reports | Unbounded value size, token dust attacks |
 | [Plutonomicon](https://github.com/Plutonomicon/plutonomicon) | Unrestricted minting, double satisfaction patterns |
-| [Anastasia Labs](https://www.anastasialabs.com/) | Staking credential theft, datum handling |
+| Anastasia Labs audit reports | Staking credential theft, datum handling |
 | CWE Database | 45 detectors mapped to specific CWE identifiers |
 
 ---
