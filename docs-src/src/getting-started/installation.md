@@ -24,7 +24,7 @@ aikido --version
 If you have a Rust toolchain installed (Rust >= 1.88.0):
 
 ```bash
-cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
 ```
 
 This compiles the binary from source and installs it to `~/.cargo/bin/aikido`. The compilation takes roughly 2-3 minutes on a modern machine.
@@ -82,7 +82,7 @@ docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project --fai
 
 ## Pre-built binaries (GitHub Releases)
 
-Download a pre-compiled binary for your platform from the [GitHub Releases page](https://github.com/Bajuzjefe/aikido/releases):
+Download a pre-compiled binary for your platform from the [GitHub Releases page](https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/releases):
 
 | Platform | Architecture | Filename |
 |----------|-------------|----------|
@@ -96,7 +96,7 @@ Extract and move to a directory on your PATH:
 
 ```bash
 # Example for macOS Apple Silicon
-curl -L https://github.com/Bajuzjefe/aikido/releases/latest/download/aikido-aarch64-apple-darwin.tar.gz | tar xz
+curl -L https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/releases/latest/download/aikido-aarch64-apple-darwin.tar.gz | tar xz
 chmod +x aikido
 sudo mv aikido /usr/local/bin/
 ```
@@ -106,7 +106,7 @@ sudo mv aikido /usr/local/bin/
 Clone the repository and build with Cargo:
 
 ```bash
-git clone https://github.com/Bajuzjefe/aikido.git
+git clone https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform.git
 cd aikido
 cargo build --release
 ```

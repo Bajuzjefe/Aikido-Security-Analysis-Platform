@@ -117,7 +117,7 @@ on:
 
 jobs:
   aikido:
-    uses: Bajuzjefe/aikido/.github/workflows/aikido.yml@main
+    uses: Bajuzjefe/Aikido-Security-Analysis-Platform/.github/workflows/aikido.yml@main
     permissions:
       security-events: write
     with:

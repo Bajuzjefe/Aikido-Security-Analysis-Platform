@@ -333,7 +333,7 @@ fn main() {
         let detectors = all_detectors();
         let mut content = String::new();
         content.push_str("# Aikido Configuration\n");
-        content.push_str("# See: https://github.com/Bajuzjefe/aikido\n");
+        content.push_str("# See: https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform\n");
         content.push('\n');
         content.push_str("[detectors]\n");
         content.push_str("# Uncomment to disable specific detectors:\n");
@@ -742,7 +742,7 @@ fn main() {
         let config_path = project_path.join(".aikido.toml");
         let mut content = String::new();
         content.push_str("# Aikido Configuration — auto-generated from current findings\n");
-        content.push_str("# See: https://github.com/Bajuzjefe/aikido\n\n");
+        content.push_str("# See: https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform\n\n");
         content.push_str("[detectors]\n");
         if triggered_detectors.is_empty() {
             content.push_str("# No findings detected — all detectors remain enabled.\n");

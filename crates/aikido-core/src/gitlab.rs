@@ -23,7 +23,7 @@ pub fn findings_to_gitlab_sast(findings: &[Finding]) -> String {
                     "name": f.detector_name,
                     "value": f.detector_name,
                     "url": format!(
-                        "https://github.com/Bajuzjefe/aikido/blob/main/docs/detectors/{}.md",
+                        "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/blob/main/docs/detectors/{}.md",
                         f.detector_name
                     )
                 }]
@@ -56,7 +56,7 @@ pub fn findings_to_gitlab_sast(findings: &[Finding]) -> String {
             "scanner": {
                 "id": "aikido",
                 "name": "Aikido",
-                "url": "https://github.com/Bajuzjefe/aikido",
+                "url": "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform",
                 "vendor": {
                     "name": "aikido"
                 },

@@ -1,4 +1,4 @@
-name: "Aikido — Aiken Security Analyzer"
+name: "Aikido - Aiken Security Analyzer"
 description: "Run Aikido static analysis on Aiken smart contracts and upload SARIF results"
 author: "Bajuzjefe"
 
@@ -28,7 +28,7 @@ inputs:
     required: false
     default: "true"
   version:
-    description: "Aikido version to install (git tag, branch, or 'latest')"
+    description: "Aikido version to install (e.g. v0.3.0, or 'latest')"
     required: false
     default: "latest"
   config:
@@ -53,24 +53,70 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Install Rust toolchain
-      uses: dtolnay/rust-toolchain@stable
+    - name: Determine platform
+      id: platform
+      shell: bash
+      run: |
+        OS="${{ runner.os }}"
+        ARCH="${{ runner.arch }}"
+
+        if [ "$OS" = "Linux" ] && [ "$ARCH" = "X64" ]; then
+          echo "target=aikido-x86_64-unknown-linux-gnu" >> "$GITHUB_OUTPUT"
+        elif [ "$OS" = "Linux" ] && [ "$ARCH" = "ARM64" ]; then
+          echo "target=aikido-aarch64-unknown-linux-gnu" >> "$GITHUB_OUTPUT"
+        elif [ "$OS" = "macOS" ] && [ "$ARCH" = "X64" ]; then
+          echo "target=aikido-x86_64-apple-darwin" >> "$GITHUB_OUTPUT"
+        elif [ "$OS" = "macOS" ] && [ "$ARCH" = "ARM64" ]; then
+          echo "target=aikido-aarch64-apple-darwin" >> "$GITHUB_OUTPUT"
+        elif [ "$OS" = "Windows" ] && [ "$ARCH" = "X64" ]; then
+          echo "target=aikido-x86_64-pc-windows-msvc" >> "$GITHUB_OUTPUT"
+        else
+          echo "::error::Unsupported platform: $OS-$ARCH"
+          exit 1
+        fi
 
     - name: Cache Aikido binary
       id: cache
       uses: actions/cache@v4
       with:
-        path: ~/.cargo/bin/aikido
+        path: /usr/local/bin/aikido
         key: aikido-${{ runner.os }}-${{ runner.arch }}-${{ inputs.version }}
 
-    - name: Install Aikido
+    - name: Install Aikido from release
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
+        REPO="Bajuzjefe/Aikido-Security-Analysis-Platform"
+        TARGET="${{ steps.platform.outputs.target }}"
+
         if [ "${{ inputs.version }}" = "latest" ]; then
-          cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+          TAG=$(gh release view --repo "$REPO" --json tagName -q .tagName 2>/dev/null || echo "")
+          if [ -z "$TAG" ]; then
+            TAG=$(curl -sI "https://github.com/$REPO/releases/latest" | grep -i location | sed 's|.*/||' | tr -d '\r\n')
+          fi
         else
-          cargo install --git https://github.com/Bajuzjefe/aikido --tag "${{ inputs.version }}" aikido-cli
+          TAG="${{ inputs.version }}"
+        fi
+
+        URL="https://github.com/$REPO/releases/download/$TAG/${TARGET}.tar.gz"
+        echo "Downloading $URL..."
+        curl -fsSL "$URL" | tar xz
+        chmod +x aikido
+        sudo mv aikido /usr/local/bin/aikido
+
+    - name: Fallback to cargo install
+      if: steps.cache.outputs.cache-hit != 'true' && failure()
+      shell: bash
+      run: |
+        echo "Binary download failed, falling back to cargo install..."
+        if ! command -v cargo &> /dev/null; then
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          source "$HOME/.cargo/env"
+        fi
+        if [ "${{ inputs.version }}" = "latest" ]; then
+          cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
+        else
+          cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform --tag "${{ inputs.version }}" aikido-cli
         fi
 
     - name: Run analysis (text)

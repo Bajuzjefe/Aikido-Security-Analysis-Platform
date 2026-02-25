@@ -452,7 +452,7 @@ pub fn findings_to_sarif(
                 driver: SarifDriver {
                     name: "aikido".to_string(),
                     version: "0.3.0".to_string(),
-                    information_uri: "https://github.com/Bajuzjefe/aikido".to_string(),
+                    information_uri: "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform".to_string(),
                     rules,
                 },
             },

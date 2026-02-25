@@ -11,7 +11,7 @@ build-dir = "../website/docs"
 [output.html]
 default-theme = "coal"
 preferred-dark-theme = "coal"
-git-repository-url = "https://github.com/Bajuzjefe/aikido"
+git-repository-url = "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform"
 additional-css = ["theme/css/custom.css"]
 no-section-label = false
 site-url = "/docs/"

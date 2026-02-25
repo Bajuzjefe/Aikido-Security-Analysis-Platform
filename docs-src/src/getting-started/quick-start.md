@@ -11,7 +11,7 @@ Pick the method that suits you (see [Installation](installation.md) for full det
 brew install Bajuzjefe/tap/aikido
 
 # Or Cargo (Rust >= 1.88.0)
-cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
 
 # Or npx (no install needed)
 npx aikido-aiken /path/to/project

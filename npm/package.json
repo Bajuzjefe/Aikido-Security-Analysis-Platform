@@ -6,11 +6,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Bajuzjefe/aikido"
+    "url": "git+https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform.git"
   },
-  "keywords": ["aiken", "cardano", "static-analysis", "security", "smart-contracts"],
+  "keywords": [
+    "aiken",
+    "cardano",
+    "static-analysis",
+    "security",
+    "smart-contracts"
+  ],
   "bin": {
-    "aikido": "./bin/aikido-wrapper.js"
+    "aikido-aiken": "bin/aikido-wrapper.js"
   },
   "scripts": {
     "postinstall": "node ./scripts/install.js"
@@ -19,6 +25,13 @@
     "bin/",
     "scripts/"
   ],
-  "os": ["darwin", "linux", "win32"],
-  "cpu": ["x64", "arm64"]
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
 }

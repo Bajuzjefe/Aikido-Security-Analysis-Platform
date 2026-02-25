@@ -8,8 +8,8 @@ version = "0.3.0"
 edition = "2021"
 rust-version = "1.88.0"
 license = "MIT"
-repository = "https://github.com/Bajuzjefe/aikido"
-homepage = "https://github.com/Bajuzjefe/aikido"
+repository = "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform"
+homepage = "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform"
 
 [profile.release]
 strip = true

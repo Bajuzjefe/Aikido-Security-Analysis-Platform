@@ -141,7 +141,7 @@ Check the exit code to gate your pipeline:
 To build from source:
 
 ```bash
-git clone https://github.com/Bajuzjefe/aikido.git
+git clone https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform.git
 cd aikido
 docker build -t aikido .
 ```

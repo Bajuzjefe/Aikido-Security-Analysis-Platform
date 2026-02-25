@@ -189,7 +189,7 @@ pub trait Detector: Send + Sync {
     /// URL to the documentation page for this detector.
     fn doc_url(&self) -> String {
         format!(
-            "https://github.com/Bajuzjefe/aikido/blob/main/docs/detectors/{}.md",
+            "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/blob/main/docs/detectors/{}.md",
             self.name()
         )
     }

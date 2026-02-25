@@ -44,7 +44,7 @@ Cardano smart contracts are immutable once deployed. A vulnerability in producti
 brew install Bajuzjefe/tap/aikido
 
 # Cargo (Rust >= 1.88.0)
-cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
 
 # npm (wrapper)
 npx aikido-aiken /path/to/project
@@ -53,7 +53,7 @@ npx aikido-aiken /path/to/project
 docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project
 
 # From source
-git clone https://github.com/Bajuzjefe/aikido.git
+git clone https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform.git
 cd aikido && cargo build --release
 ```
 
@@ -356,7 +356,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Aikido
-        run: cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+        run: cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
       - name: Run analysis
         run: aikido . --format sarif --fail-on high > results.sarif
       - name: Upload SARIF
@@ -446,7 +446,7 @@ aikido/
 ### Building from Source
 
 ```bash
-git clone https://github.com/Bajuzjefe/aikido.git
+git clone https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform.git
 cd aikido
 cargo build --release          # Binary at target/release/aikido
 cargo test                     # Run test suite (1186+ tests)
