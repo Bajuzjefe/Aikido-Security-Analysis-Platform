@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 
-const VERSION = "0.1.0";
+const VERSION = "0.3.0";
 const BASE_URL = `https://github.com/Bajuzjefe/aikido/releases/download/v${VERSION}`;
 
 const PLATFORM_MAP = {
