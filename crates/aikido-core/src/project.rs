@@ -208,7 +208,8 @@ mod tests {
 
     #[test]
     fn test_no_aiken_toml() {
-        let result = AikenProject::new(PathBuf::from("/tmp"));
+        let dir = tempfile::tempdir().unwrap();
+        let result = AikenProject::new(dir.path().to_path_buf());
         assert!(result.is_err());
         assert!(matches!(result.unwrap_err(), AikidoError::NoAikenToml(_)));
     }
