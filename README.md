@@ -10,9 +10,6 @@ Built in Rust. Fast. Zero configuration required.
 
 Current detector count: **75**
 
-Execution plan and quality gates: [docs/execution-board.md](docs/execution-board.md)
-Release checklist: [docs/release-quality-checklist.md](docs/release-quality-checklist.md)
-
 ---
 
 ## Why Aikido
