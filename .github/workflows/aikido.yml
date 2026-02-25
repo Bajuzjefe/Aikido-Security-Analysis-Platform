@@ -1,0 +1,72 @@
+name: Aikido Security Analysis
+description: Reusable workflow that runs Aikido static analysis and uploads SARIF to GitHub Security tab
+
+on:
+  workflow_call:
+    inputs:
+      project-path:
+        description: "Path to the Aiken project directory"
+        required: false
+        default: "."
+        type: string
+      fail-on:
+        description: "Minimum severity that triggers failure (info, low, medium, high, critical)"
+        required: false
+        default: "high"
+        type: string
+      min-severity:
+        description: "Minimum severity to report (info, low, medium, high, critical)"
+        required: false
+        default: "info"
+        type: string
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install Aikido
+        run: cargo install --path crates/aikido-cli
+
+      - name: Run Aikido (text)
+        run: |
+          aikido ${{ inputs.project-path }} \
+            --min-severity ${{ inputs.min-severity }} \
+            --fail-on ${{ inputs.fail-on }} || true
+
+      - name: Run Aikido (SARIF)
+        run: |
+          aikido ${{ inputs.project-path }} \
+            --format sarif \
+            --min-severity ${{ inputs.min-severity }} \
+            --fail-on critical > aikido-results.sarif || true
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: aikido-results.sarif
+          category: aikido
+
+      - name: Check exit code
+        run: |
+          aikido ${{ inputs.project-path }} \
+            --min-severity ${{ inputs.min-severity }} \
+            --fail-on ${{ inputs.fail-on }} \
+            --quiet

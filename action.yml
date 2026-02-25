@@ -1,0 +1,134 @@
+name: "Aikido — Aiken Security Analyzer"
+description: "Run Aikido static analysis on Aiken smart contracts and upload SARIF results"
+author: "Bajuzjefe"
+
+branding:
+  icon: "shield"
+  color: "red"
+
+inputs:
+  project-path:
+    description: "Path to the Aiken project directory"
+    required: false
+    default: "."
+  fail-on:
+    description: "Minimum severity that triggers a non-zero exit (info, low, medium, high, critical)"
+    required: false
+    default: "high"
+  min-severity:
+    description: "Minimum severity to include in output (info, low, medium, high, critical)"
+    required: false
+    default: "info"
+  format:
+    description: "Output format (text, json, sarif, markdown)"
+    required: false
+    default: "text"
+  upload-sarif:
+    description: "Upload SARIF results to GitHub Security tab"
+    required: false
+    default: "true"
+  version:
+    description: "Aikido version to install (git tag, branch, or 'latest')"
+    required: false
+    default: "latest"
+  config:
+    description: "Path to .aikido.toml config file (default: auto-detected from project path)"
+    required: false
+    default: ""
+
+outputs:
+  findings-count:
+    description: "Total number of findings"
+    value: ${{ steps.analyze.outputs.findings-count }}
+  critical-count:
+    description: "Number of critical findings"
+    value: ${{ steps.analyze.outputs.critical-count }}
+  exit-code:
+    description: "Aikido exit code (0 = pass, 1 = error, 2 = findings exceed threshold)"
+    value: ${{ steps.analyze.outputs.exit-code }}
+  sarif-file:
+    description: "Path to SARIF output file (if generated)"
+    value: ${{ steps.sarif.outputs.sarif-file }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Cache Aikido binary
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cargo/bin/aikido
+        key: aikido-${{ runner.os }}-${{ runner.arch }}-${{ inputs.version }}
+
+    - name: Install Aikido
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        if [ "${{ inputs.version }}" = "latest" ]; then
+          cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+        else
+          cargo install --git https://github.com/Bajuzjefe/aikido --tag "${{ inputs.version }}" aikido-cli
+        fi
+
+    - name: Run analysis (text)
+      id: analyze
+      shell: bash
+      run: |
+        set +e
+
+        CONFIG_FLAG=""
+        if [ -n "${{ inputs.config }}" ]; then
+          CONFIG_FLAG="--config ${{ inputs.config }}"
+        fi
+
+        OUTPUT=$(aikido "${{ inputs.project-path }}" \
+          --min-severity "${{ inputs.min-severity }}" \
+          --fail-on "${{ inputs.fail-on }}" \
+          $CONFIG_FLAG \
+          2>&1)
+        EXIT_CODE=$?
+
+        echo "$OUTPUT"
+        echo "exit-code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+
+        # Parse findings count from summary line
+        FINDINGS=$(echo "$OUTPUT" | grep -oE '[0-9]+ critical' | grep -oE '[0-9]+' || echo "0")
+        echo "critical-count=$FINDINGS" >> "$GITHUB_OUTPUT"
+        TOTAL=$(echo "$OUTPUT" | grep -oE '[0-9]+ critical, [0-9]+ high, [0-9]+ medium, [0-9]+ low, [0-9]+ info' | grep -oE '[0-9]+' | paste -sd+ - | bc || echo "0")
+        echo "findings-count=$TOTAL" >> "$GITHUB_OUTPUT"
+
+    - name: Generate SARIF
+      id: sarif
+      if: inputs.upload-sarif == 'true'
+      shell: bash
+      run: |
+        CONFIG_FLAG=""
+        if [ -n "${{ inputs.config }}" ]; then
+          CONFIG_FLAG="--config ${{ inputs.config }}"
+        fi
+
+        aikido "${{ inputs.project-path }}" \
+          --format sarif \
+          --min-severity "${{ inputs.min-severity }}" \
+          $CONFIG_FLAG \
+          > aikido-results.sarif 2>/dev/null || true
+
+        echo "sarif-file=aikido-results.sarif" >> "$GITHUB_OUTPUT"
+
+    - name: Upload SARIF to GitHub Security
+      if: inputs.upload-sarif == 'true' && always()
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: aikido-results.sarif
+        category: aikido
+
+    - name: Check threshold
+      shell: bash
+      run: |
+        if [ "${{ steps.analyze.outputs.exit-code }}" = "2" ]; then
+          echo "::error::Aikido found findings exceeding the --fail-on ${{ inputs.fail-on }} threshold"
+          exit 2
+        fi

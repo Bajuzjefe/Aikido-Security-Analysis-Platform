@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  checks: write
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: -D warnings
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.88.0"
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --all-targets --all-features
+      - run: cargo test --all
+      - name: Benchmark quality gates
+        run: |
+          cargo run -p aikido-cli -- \
+            --benchmark-manifest benchmarks/local-fixtures.toml \
+            --format json \
+            --benchmark-enforce-gates > benchmark-summary.json
+      - name: Upload benchmark summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-summary-${{ github.sha }}
+          path: benchmark-summary.json
+
+  multi-lane-validation:
+    name: Multi-Lane Analysis Validation
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.88.0"
+      - uses: Swatinem/rust-cache@v2
+      - name: Run new module unit tests
+        run: |
+          cargo test --lib -p aikido-core \
+            evidence:: \
+            cwc:: \
+            scorecard:: \
+            ssa:: \
+            compliance:: \
+            smt:: \
+            path_analysis:: \
+            invariant_spec:: \
+            protocol_patterns:: \
+            tx_simulation:: \
+            fuzz_lane:: \
+            2>&1 | tee multi-lane-tests.txt
+      - name: Verify minimum new test count
+        run: |
+          PASSED=$(grep -oP '\d+ passed' multi-lane-tests.txt | head -1 | grep -oP '\d+')
+          echo "New module tests passed: $PASSED"
+          if [ "$PASSED" -lt 400 ]; then
+            echo "FAIL: Expected at least 400 new module tests, got $PASSED"
+            exit 1
+          fi
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: multi-lane-tests-${{ github.sha }}
+          path: multi-lane-tests.txt
+
+  msrv:
+    name: MSRV (1.88.0)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.88.0"
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo check --all
+
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rustsec/audit-check@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

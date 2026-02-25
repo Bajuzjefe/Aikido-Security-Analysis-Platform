@@ -1,0 +1,17 @@
+[package]
+name = "aikido-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "CLI for Aikido static analysis of Aiken smart contracts"
+
+[[bin]]
+name = "aikido"
+path = "src/main.rs"
+
+[dependencies]
+aikido-core = { path = "../aikido-core" }
+clap = { version = "4", features = ["derive"] }
+colored = "3"
+serde_json = "1"

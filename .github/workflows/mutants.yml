@@ -1,0 +1,75 @@
+# Feature #103: Mutation testing — verify test suite catches code mutations
+name: Mutation Testing
+
+on:
+  schedule:
+    # Weekly on Sunday at 02:00 UTC — mutation testing is slow
+    - cron: "0 2 * * 0"
+  workflow_dispatch:
+    inputs:
+      timeout:
+        description: "Timeout per mutant (seconds)"
+        required: false
+        default: "120"
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  mutants:
+    name: cargo-mutants
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.86.0"
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install cargo-mutants
+        run: cargo install cargo-mutants
+
+      - name: Run mutation testing
+        run: |
+          cargo mutants \
+            --timeout ${{ inputs.timeout || '120' }} \
+            --output mutants-results \
+            -- --all
+        continue-on-error: true
+
+      - name: Upload mutation results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutation-results
+          path: mutants-results/
+
+      - name: Report summary
+        if: always()
+        run: |
+          if [ -f mutants-results/outcomes.json ]; then
+            echo "## Mutation Testing Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            total=$(jq 'length' mutants-results/outcomes.json)
+            caught=$(jq '[.[] | select(.outcome == "CaughtMutant")] | length' mutants-results/outcomes.json)
+            missed=$(jq '[.[] | select(.outcome == "MissedMutant")] | length' mutants-results/outcomes.json)
+            timeout=$(jq '[.[] | select(.outcome == "Timeout")] | length' mutants-results/outcomes.json)
+            echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Total mutants | $total |" >> $GITHUB_STEP_SUMMARY
+            echo "| Caught | $caught |" >> $GITHUB_STEP_SUMMARY
+            echo "| Missed | $missed |" >> $GITHUB_STEP_SUMMARY
+            echo "| Timeout | $timeout |" >> $GITHUB_STEP_SUMMARY
+            if [ "$total" -gt 0 ]; then
+              score=$(( (caught * 100) / total ))
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Mutation score: ${score}%**" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "No mutation results found" >> $GITHUB_STEP_SUMMARY
+          fi

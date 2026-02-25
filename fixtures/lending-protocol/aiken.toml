@@ -1,0 +1,16 @@
+name = "lenfi/lending"
+version = "0.1.0"
+compiler = "v1.1.21"
+plutus = "v3"
+license = "Apache-2.0"
+description = "Lending protocol for aikido testing (inspired by Lenfi)"
+
+[repository]
+user = "test"
+project = "lending"
+platform = "github"
+
+[[dependencies]]
+name = "aiken-lang/stdlib"
+version = "v3.0.0"
+source = "github"

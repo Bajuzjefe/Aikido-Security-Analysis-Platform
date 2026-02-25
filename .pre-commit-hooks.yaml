@@ -1,0 +1,9 @@
+- id: aikido
+  name: aikido
+  description: Static analysis for Aiken smart contracts
+  entry: aikido
+  language: rust
+  types: [file]
+  files: '\.ak$'
+  pass_filenames: false
+  args: ['--fail-on', 'high', '--quiet']

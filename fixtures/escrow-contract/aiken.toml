@@ -1,0 +1,16 @@
+name = "test/escrow-contract"
+version = "0.1.0"
+compiler = "v1.1.21"
+plutus = "v3"
+license = "Apache-2.0"
+description = "Escrow contract for aikido testing (inspired by Fusion maker)"
+
+[repository]
+user = "test"
+project = "escrow-contract"
+platform = "github"
+
+[[dependencies]]
+name = "aiken-lang/stdlib"
+version = "v3.0.0"
+source = "github"

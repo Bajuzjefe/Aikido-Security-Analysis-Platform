@@ -1,0 +1,62 @@
+{
+  "name": "aikido-vscode",
+  "displayName": "Aikido — Aiken Security Analyzer",
+  "description": "Show aikido static analysis findings inline in VS Code for Aiken smart contracts",
+  "version": "0.1.0",
+  "publisher": "Bajuzjefe",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bajuzjefe/aikido"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Linters", "Programming Languages"],
+  "keywords": ["aiken", "cardano", "security", "static-analysis"],
+  "activationEvents": [
+    "workspaceContains:aiken.toml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "aikido.analyze",
+        "title": "Aikido: Run Analysis"
+      },
+      {
+        "command": "aikido.clearDiagnostics",
+        "title": "Aikido: Clear Diagnostics"
+      }
+    ],
+    "configuration": {
+      "title": "Aikido",
+      "properties": {
+        "aikido.path": {
+          "type": "string",
+          "default": "aikido",
+          "description": "Path to the aikido binary"
+        },
+        "aikido.autoAnalyze": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically run analysis on file save"
+        },
+        "aikido.minSeverity": {
+          "type": "string",
+          "default": "info",
+          "enum": ["info", "low", "medium", "high", "critical"],
+          "description": "Minimum severity to display"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  }
+}

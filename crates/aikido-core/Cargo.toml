@@ -1,0 +1,29 @@
+[package]
+name = "aikido-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Static analysis engine for Aiken smart contracts"
+
+[dependencies]
+aiken-project = "=1.1.21"
+aiken-lang = "=1.1.21"
+uplc = "=1.1.21"
+petgraph = "0.7"
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+colored = "3"
+libloading = "0.8"
+
+[dev-dependencies]
+insta = { version = "1", features = ["yaml"] }
+proptest = "1"
+criterion = { version = "0.5", features = ["html_reports"] }
+tempfile = "3"
+
+[[bench]]
+name = "analysis_bench"
+harness = false

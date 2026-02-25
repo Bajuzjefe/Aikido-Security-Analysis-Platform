@@ -1,0 +1,16 @@
+name = "sentaku/contracts"
+version = "0.1.0"
+compiler = "v1.1.21"
+plutus = "v3"
+license = "Apache-2.0"
+description = "Sentaku binary options on-chain settlement validators"
+
+[repository]
+user = "Bajuzjefe"
+project = "sentaku_io"
+platform = "github"
+
+[[dependencies]]
+name = "aiken-lang/stdlib"
+version = "v3.0.0"
+source = "github"

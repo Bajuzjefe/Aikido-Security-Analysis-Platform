@@ -1,0 +1,34 @@
+[[labels]]
+detector = "unrestricted-minting"
+classification = "TP"
+rationale = "DEX fixture includes an intentionally under-constrained mint path."
+audit_id = "DEX-TP-001"
+source = "fixture-dex-contracts"
+
+[[labels]]
+detector = "missing-minting-policy-check"
+classification = "TP"
+rationale = "Expected vulnerable path does not enforce mint policy checks in spend coordination."
+audit_id = "DEX-TP-002"
+source = "fixture-dex-contracts"
+
+[[labels]]
+detector = "double-satisfaction"
+classification = "TP"
+rationale = "Order handling path is intentionally vulnerable to double satisfaction conditions."
+audit_id = "DEX-TP-003"
+source = "fixture-dex-contracts"
+
+[[labels]]
+detector = "dead-code-path"
+classification = "TP"
+rationale = "Fixture intentionally includes unreachable branches for static-quality coverage."
+audit_id = "DEX-TP-004"
+source = "fixture-dex-contracts"
+
+[[labels]]
+detector = "missing-signature-check"
+classification = "FP"
+rationale = "DEX fixture scenario under test is not expected to violate signature checks."
+audit_id = "DEX-FP-001"
+source = "fixture-dex-contracts"

@@ -1,0 +1,27 @@
+[book]
+authors = ["Aikido Contributors"]
+language = "en"
+src = "src"
+title = "Aikido Documentation"
+description = "Static security analyzer for Aiken smart contracts on Cardano"
+
+[build]
+build-dir = "../website/docs"
+
+[output.html]
+default-theme = "coal"
+preferred-dark-theme = "coal"
+git-repository-url = "https://github.com/Bajuzjefe/aikido"
+additional-css = ["theme/css/custom.css"]
+no-section-label = false
+site-url = "/docs/"
+
+[output.html.search]
+enable = true
+limit-results = 30
+teaser-word-count = 30
+boost-hierarchy = 2
+
+[output.html.fold]
+enable = true
+level = 1
