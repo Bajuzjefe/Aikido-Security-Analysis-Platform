@@ -73,7 +73,7 @@ pub struct DetectorConfig {
     pub severity_profile: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Default)]
 pub struct AnalysisConfig {
     /// Enable dual-pattern compliance suppression/reduction.
     #[serde(default)]
@@ -91,17 +91,6 @@ pub struct AnalysisConfig {
     /// `{ "context": <SimPlutusData-compatible value> }`.
     #[serde(default)]
     pub simulation_context_builder_command: Option<String>,
-}
-
-impl Default for AnalysisConfig {
-    fn default() -> Self {
-        Self {
-            dual_pattern: false,
-            smt: false,
-            simulation: false,
-            simulation_context_builder_command: None,
-        }
-    }
 }
 
 impl AikidoConfig {
