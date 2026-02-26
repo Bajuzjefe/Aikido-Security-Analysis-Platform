@@ -6,24 +6,24 @@ class Aikido < Formula
   desc "Static analysis tool for Aiken smart contracts (Cardano)"
   homepage "https://github.com/Bajuzjefe/aikido"
   license "MIT"
-  version "0.2.0"
+  version "0.3.0"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/Bajuzjefe/aikido/releases/download/v0.2.0/aikido-aarch64-apple-darwin.tar.gz"
+      url "https://github.com/Bajuzjefe/aikido/releases/download/v0.3.0/aikido-aarch64-apple-darwin.tar.gz"
       sha256 "PLACEHOLDER_SHA256_ARM64"
     else
-      url "https://github.com/Bajuzjefe/aikido/releases/download/v0.2.0/aikido-x86_64-apple-darwin.tar.gz"
+      url "https://github.com/Bajuzjefe/aikido/releases/download/v0.3.0/aikido-x86_64-apple-darwin.tar.gz"
       sha256 "PLACEHOLDER_SHA256_X64"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/Bajuzjefe/aikido/releases/download/v0.2.0/aikido-aarch64-unknown-linux-gnu.tar.gz"
+      url "https://github.com/Bajuzjefe/aikido/releases/download/v0.3.0/aikido-aarch64-unknown-linux-gnu.tar.gz"
       sha256 "PLACEHOLDER_SHA256_LINUX_ARM64"
     else
-      url "https://github.com/Bajuzjefe/aikido/releases/download/v0.2.0/aikido-x86_64-unknown-linux-gnu.tar.gz"
+      url "https://github.com/Bajuzjefe/aikido/releases/download/v0.3.0/aikido-x86_64-unknown-linux-gnu.tar.gz"
       sha256 "PLACEHOLDER_SHA256_LINUX_X64"
     end
   end

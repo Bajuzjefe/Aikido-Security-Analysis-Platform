@@ -21,7 +21,7 @@ The text format outputs several sections:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  AIKIDO v0.2.0  Static Analysis Report
+  AIKIDO v0.3.0  Static Analysis Report
   Project: my-dex v1.0.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -42,7 +42,7 @@ SUMMARY
   FINDINGS (3 issues found)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  [CRITICAL] (definite) double-satisfaction — Validator vulnerable to double satisfaction — validators/pool.ak:42
+  [CRITICAL] (definite) double-satisfaction - Validator vulnerable to double satisfaction - validators/pool.ak:42
     Multiple UTXOs at this script address can be spent in a single transaction
     without the validator distinguishing which UTXO is being authorized.
 
@@ -55,14 +55,14 @@ SUMMARY
     Suggestion: Reference the validator's own input via the output reference parameter
     to ensure each UTXO is uniquely identified.
 
-  [HIGH] (likely) value-not-preserved — Token value may not be preserved — validators/pool.ak:58
+  [HIGH] (likely) value-not-preserved - Token value may not be preserved - validators/pool.ak:58
     The validator does not verify that the total value locked at the script
     address is maintained after the transaction.
 
     Suggestion: Compare input value with continuing output value to ensure
     no tokens are drained.
 
-  [MEDIUM] (likely) missing-validity-range — No validity range check — validators/pool.ak:41
+  [MEDIUM] (likely) missing-validity-range - No validity range check - validators/pool.ak:41
     The validator does not check transaction validity range, which may allow
     replay or time-dependent attacks.
 

@@ -1,0 +1,209 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 5 0 R 6 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 7 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 8 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 9 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+7 0 obj
+<< /Length 2741 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(AIKIDO SECURITY AUDIT REPORT) Tj T*
+(============================) Tj T*
+() Tj T*
+(Project: aiken-lang/options-trading-cardano v0.0.0) Tj T*
+(Date: 2026-02-25) Tj T*
+(Tool: aikido v0.2.0) Tj T*
+() Tj T*
+(1. EXECUTIVE SUMMARY) Tj T*
+(--------------------) Tj T*
+() Tj T*
+(This automated security audit analyzed 19 modules \(1 validators, 18 libraries\) of the) Tj T*
+(  aiken-lang/options-trading-cardano project.) Tj T*
+() Tj T*
+(Findings summary:) Tj T*
+(  Critical: 0) Tj T*
+(  High:     6) Tj T*
+(  Medium:   2) Tj T*
+(  Low:      0) Tj T*
+(  Info:     2) Tj T*
+(  Total:    10) Tj T*
+() Tj T*
+(2. METHODOLOGY) Tj T*
+(--------------) Tj T*
+() Tj T*
+(Analysis performed using aikido, a static analysis tool for Aiken) Tj T*
+(smart contracts. The tool examines:) Tj T*
+(  - Typed AST patterns for known vulnerability classes) Tj T*
+(  - Handler body signals \(field accesses, function calls, taint\)) Tj T*
+(  - Cross-module dependency analysis) Tj T*
+(  - UPLC compiled code metrics) Tj T*
+() Tj T*
+(Each finding includes severity, confidence, and remediation guidance.) Tj T*
+() Tj T*
+(3. FINDINGS) Tj T*
+(-----------) Tj T*
+() Tj T*
+(Finding #1: [High] Lower bound time manipulation risk in options.spend) Tj T*
+(  Detector: missing-validity-range) Tj T*
+(  Module: options) Tj T*
+(  Location: validators/options.ak:696) Tj T*
+(Description: Handler uses get_lower_bound for time-sensitive logic with field\(s\)) Tj T*
+(    [deadline] but never checks the upper bound. An attacker can set the lower bound) Tj T*
+(    arbitrarily far in the past, manipulating time-based calculations \(interest accrual,) Tj T*
+(    fee computation, deadline checks\).) Tj T*
+(Recommendation: Use get_upper_bound instead of get_lower_bound for time-sensitive) Tj T*
+(    calculations. The upper bound cannot be set arbitrarily into the past.) Tj T*
+() Tj T*
+(Finding #2: [High] Unsafe match\(..., >=\) value comparison in options.spend) Tj T*
+(  Detector: unsafe-match-comparison) Tj T*
+(  Module: options) Tj T*
+(  Location: validators/options.ak:696) Tj T*
+(Description: Handler options.spend uses `match` for Value comparison. The `>=` operator) Tj T*
+(    only verifies Lovelace sufficiency and may miss native token imbalances, allowing) Tj T*
+(    over-lending or protocol insolvency.) Tj T*
+(Recommendation: Replace `match\(..., >=\)` with explicit per-asset quantity checks. Use) Tj T*
+(    `value.without_lovelace` for exact token matching or check individual asset quantities) Tj T*
+(    directly.) Tj T*
+() Tj T*
+(Finding #3: [High] Unsafe match\(..., >=\) value comparison in options.mint) Tj T*
+(  Detector: unsafe-match-comparison) Tj T*
+(  Module: options) Tj T*
+(  Location: validators/options.ak:760) Tj T*
+ET
+endstream
+endobj
+8 0 obj
+<< /Length 3735 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(Description: Handler options.mint uses `match` for Value comparison. The `>=` operator) Tj T*
+(    only verifies Lovelace sufficiency and may miss native token imbalances, allowing) Tj T*
+(    over-lending or protocol insolvency.) Tj T*
+(Recommendation: Replace `match\(..., >=\)` with explicit per-asset quantity checks. Use) Tj T*
+(    `value.without_lovelace` for exact token matching or check individual asset quantities) Tj T*
+(    directly.) Tj T*
+() Tj T*
+(Finding #4: [High] Redeemer-tainted arithmetic in options.spend) Tj T*
+(  Detector: unsafe-redeemer-arithmetic) Tj T*
+(  Module: options) Tj T*
+(  Location: validators/options.ak:696) Tj T*
+(Description: Handler options.spend uses division with redeemer-derived variables) Tj T*
+(    \(tainted: [redeemer]\). The redeemer is attacker-controlled — using it directly in) Tj T*
+(    arithmetic risks division-by-zero, overflow, or precision manipulation.) Tj T*
+(Recommendation: Validate redeemer values before arithmetic: `expect redeemer.value > 0` or) Tj T*
+(    use datum-sourced values instead.) Tj T*
+() Tj T*
+(Finding #5: [High] Multi-asset comparison bypass possible in options.spend) Tj T*
+(  Detector: multi-asset-comparison-bypass) Tj T*
+(  Module: options) Tj T*
+(  Location: validators/options.ak:696) Tj T*
+(Description: Handler options.spend uses assets.match with inequality comparator. An) Tj T*
+(    attacker can inject extra assets not covered by the comparison.) Tj T*
+(  Recommendation: Use == comparator in assets.match for exact Value matching.) Tj T*
+() Tj T*
+(Finding #6: [High] Multi-asset comparison bypass possible in options.mint) Tj T*
+(  Detector: multi-asset-comparison-bypass) Tj T*
+(  Module: options) Tj T*
+(  Location: validators/options.ak:760) Tj T*
+(Description: Handler options.mint uses assets.match with inequality comparator. An) Tj T*
+(    attacker can inject extra assets not covered by the comparison.) Tj T*
+(  Recommendation: Use == comparator in assets.match for exact Value matching.) Tj T*
+() Tj T*
+(Finding #7: [Medium] Datum field 'issuer_bech32_address' in options.spend has unbounded) Tj T*
+(  type) Tj T*
+(  Detector: unbounded-datum-size) Tj T*
+(  Module: types) Tj T*
+(  Location: lib/types.ak:51) Tj T*
+(Description: Field 'issuer_bech32_address' has type 'ByteArray' which can grow) Tj T*
+(    unboundedly. Processing a large datum may exceed Plutus execution budget.) Tj T*
+(Recommendation: Consider using bounded alternatives or enforcing size limits in validator) Tj T*
+(    logic.) Tj T*
+() Tj T*
+(Finding #8: [Medium] Inequality match comparator on Value in options.spend may miss assets) Tj T*
+(  Detector: value-comparison-semantics) Tj T*
+(  Module: options) Tj T*
+(  Location: validators/options.ak:696) Tj T*
+(Description: Handler options.spend uses `assets.match` with an inequality comparator \(>=,) Tj T*
+(    >\) alongside value arithmetic. This only checks that listed assets meet minimums —) Tj T*
+(    extra unexpected assets in the output are silently accepted.) Tj T*
+(Recommendation: Use `==` comparator in `assets.match` for exact Value matching, or) Tj T*
+(    explicitly check that no unexpected assets are present.) Tj T*
+() Tj T*
+(Finding #9: [Info] Unreachable function 'get_asset_to_address') Tj T*
+(  Detector: dead-code-path) Tj T*
+(  Module: utils) Tj T*
+(Description: Function 'get_asset_to_address' in module 'utils' is not reachable from any) Tj T*
+(    validator entry point via the call graph.) Tj T*
+(Recommendation: Remove the unused function or verify it is called through a dynamic) Tj T*
+(    pattern not captured by static analysis.) Tj T*
+() Tj T*
+(Finding #10: [Info] Validator 'options' has 5 parameters \(max recommended: 4\)) Tj T*
+ET
+endstream
+endobj
+9 0 obj
+<< /Length 890 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(  Detector: excessive-validator-params) Tj T*
+(  Module: options) Tj T*
+(  Location: validators/options.ak:696) Tj T*
+(Description: Parameters: __underlying_asset_policy_id, __underlying_asset_asset_name,) Tj T*
+(    stable_policy_id, stable_asset_name, asset_name. Consider grouping related parameters.) Tj T*
+(  Recommendation: Group related parameters into a configuration datum or reference script.) Tj T*
+() Tj T*
+(4. RECOMMENDATIONS) Tj T*
+(------------------) Tj T*
+() Tj T*
+(CRITICAL/HIGH severity findings should be addressed before) Tj T*
+(deployment. Review each finding and apply the suggested fix.) Tj T*
+() Tj T*
+(MEDIUM severity findings indicate potential issues that should) Tj T*
+(be evaluated in the context of the project's threat model.) Tj T*
+() Tj T*
+(---) Tj T*
+(Generated by aikido) Tj T*
+(https://github.com/Bajuzjefe/aikido) Tj T*
+ET
+endstream
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000127 00000 n 
+0000000195 00000 n 
+0000000321 00000 n 
+0000000447 00000 n 
+0000000573 00000 n 
+0000003365 00000 n 
+0000007151 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
+startxref
+8091
+%%EOF

@@ -48,7 +48,7 @@ fn build_audit_text(
     out.push_str("============================\n\n");
     out.push_str(&format!("Project: {project_name} v{project_version}\n"));
     out.push_str(&format!("Date: {}\n", chrono_date()));
-    out.push_str("Tool: aikido v0.2.0\n\n");
+    out.push_str("Tool: aikido v0.3.0\n\n");
 
     // Executive Summary
     out.push_str("1. EXECUTIVE SUMMARY\n");

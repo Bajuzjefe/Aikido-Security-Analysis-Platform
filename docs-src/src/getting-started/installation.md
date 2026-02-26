@@ -16,7 +16,7 @@ Verify the installation:
 
 ```bash
 aikido --version
-# aikido 0.2.0
+# aikido 0.3.0
 ```
 
 ## Cargo (from source via crates registry)
@@ -65,7 +65,7 @@ The npm package is a thin wrapper that downloads the appropriate native binary f
 No installation required -- just mount your project directory:
 
 ```bash
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.2.0 /project
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project
 ```
 
 This pulls a small multi-stage image with the Aikido binary pre-compiled. Useful for CI/CD pipelines and environments where you cannot install native binaries.
@@ -74,10 +74,10 @@ Pass additional flags after the project path:
 
 ```bash
 # JSON output
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.2.0 /project --format json
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project --format json
 
 # Fail on high severity
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.2.0 /project --fail-on high
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project --fail-on high
 ```
 
 ## Pre-built binaries (GitHub Releases)

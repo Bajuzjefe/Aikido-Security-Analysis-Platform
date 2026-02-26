@@ -1093,7 +1093,7 @@ fn sim_plutus_to_data(value: &SimPlutusData) -> uplc::PlutusData {
 fn hex_or_utf8_bytes(s: &str) -> Vec<u8> {
     let cleaned = s.strip_prefix("0x").unwrap_or(s);
     if cleaned.len() >= 2
-        && cleaned.len() % 2 == 0
+        && cleaned.len().is_multiple_of(2)
         && cleaned.chars().all(|c| c.is_ascii_hexdigit())
     {
         (0..cleaned.len())

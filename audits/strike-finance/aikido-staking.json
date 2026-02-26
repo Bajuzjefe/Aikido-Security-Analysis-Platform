@@ -1,0 +1,241 @@
+{
+  "schema_version": "aikido.findings.v1",
+  "project": "strike-finance/staking",
+  "version": "0.0.0",
+  "analysis_lanes": {
+    "detectors": {
+      "enabled": true,
+      "count": 75,
+      "runtime_integrated": true
+    },
+    "compliance": {
+      "enabled": true,
+      "runtime_integrated": true
+    },
+    "smt": {
+      "enabled": true,
+      "runtime_integrated": true,
+      "backend": "simple-solver"
+    },
+    "simulation": {
+      "enabled": true,
+      "runtime_integrated": true,
+      "context_builder_command_configured": false,
+      "corroborated_findings": 1
+    },
+    "path_cfg_ssa_symbolic": {
+      "enabled": false,
+      "runtime_integrated": false,
+      "status": "not_integrated",
+      "note": "Modules exist and are tested, but are not yet invoked in the standard runtime detector pipeline."
+    }
+  },
+  "findings": [
+    {
+      "detector": "tautological-comparison",
+      "reliability_tier": "beta",
+      "severity": "critical",
+      "confidence": "definite",
+      "title": "Tautological comparison in staking.spend: datum.mint_policy_id == datum.mint_policy_id",
+      "description": "Handler staking.spend compares `datum.mint_policy_id == datum.mint_policy_id` — this is always True and likely a copy-paste bug. The intended validation is silently bypassed.",
+      "module": "staking",
+      "cwc": {
+        "id": "CWC-029",
+        "name": "Tautological Logic",
+        "severity": "Low"
+      },
+      "location": {
+        "path": "/tmp/strike/staking/validators/staking.ak",
+        "byte_start": 1051,
+        "byte_end": 1193,
+        "line_start": 30,
+        "column_start": 3,
+        "line_end": 35,
+        "column_end": 4
+      },
+      "suggestion": "Replace one side of the comparison with the intended variable or parameter.",
+      "related_findings": [],
+      "semantic_group": "logic",
+      "evidence": {
+        "level": "PatternMatch",
+        "method": "smt-simple-solver",
+        "details": "SMT inconclusive: Expression contains constructs beyond the simple solver's capability (quantifiers, arrays, bit-vectors, or nonlinear arithmetic).",
+        "code_flow": [],
+        "witness": {
+          "constraints_used": 6,
+          "time_ms": 0,
+          "result": "unknown"
+        },
+        "confidence_boost": 0.0
+      }
+    },
+    {
+      "detector": "quantity-of-double-counting",
+      "reliability_tier": "beta",
+      "severity": "high",
+      "confidence": "possible",
+      "title": "Multiple quantity_of calls in staking.spend may allow double-counting",
+      "description": "Handler staking.spend calls `quantity_of` 5 times to check asset quantities. Without verifying mutual exclusivity, an attacker may satisfy multiple checks with overlapping assets.",
+      "module": "staking",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/staking/validators/staking.ak",
+        "byte_start": 1051,
+        "byte_end": 1193,
+        "line_start": 30,
+        "column_start": 3,
+        "line_end": 35,
+        "column_end": 4
+      },
+      "suggestion": "Use `value.tokens` or `value.without_lovelace` for exact value matching instead of multiple independent quantity_of checks.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": {
+        "level": "PatternMatch",
+        "method": "smt-simple-solver",
+        "details": "SMT inconclusive: Expression contains constructs beyond the simple solver's capability (quantifiers, arrays, bit-vectors, or nonlinear arithmetic).",
+        "code_flow": [],
+        "witness": {
+          "constraints_used": 6,
+          "time_ms": 0,
+          "result": "unknown"
+        },
+        "confidence_boost": 0.0
+      }
+    },
+    {
+      "detector": "quantity-of-double-counting",
+      "reliability_tier": "beta",
+      "severity": "high",
+      "confidence": "possible",
+      "title": "Multiple quantity_of calls in staking.mint may allow double-counting",
+      "description": "Handler staking.mint calls `quantity_of` 7 times to check asset quantities. Without verifying mutual exclusivity, an attacker may satisfy multiple checks with overlapping assets.",
+      "module": "staking",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/staking/validators/staking.ak",
+        "byte_start": 4633,
+        "byte_end": 4708,
+        "line_start": 144,
+        "column_start": 3,
+        "line_end": 144,
+        "column_end": 78
+      },
+      "suggestion": "Use `value.tokens` or `value.without_lovelace` for exact value matching instead of multiple independent quantity_of checks.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": {
+        "level": "PatternMatch",
+        "method": "smt-simple-solver",
+        "details": "SMT inconclusive: Expression contains constructs beyond the simple solver's capability (quantifiers, arrays, bit-vectors, or nonlinear arithmetic).",
+        "code_flow": [],
+        "witness": {
+          "constraints_used": 6,
+          "time_ms": 0,
+          "result": "unknown"
+        },
+        "confidence_boost": 0.0
+      }
+    },
+    {
+      "detector": "missing-validity-range",
+      "reliability_tier": "stable",
+      "severity": "medium",
+      "confidence": "definite",
+      "title": "Time-sensitive datum but no validity_range check in staking.spend",
+      "description": "Datum field(s) [staked_at] suggest time-sensitive logic but handler never accesses transaction.validity_range.",
+      "module": "staking",
+      "cwc": {
+        "id": "CWC-006",
+        "name": "Time Lock Bypass",
+        "severity": "High"
+      },
+      "location": {
+        "path": "/tmp/strike/staking/validators/staking.ak",
+        "byte_start": 1051,
+        "byte_end": 1193,
+        "line_start": 30,
+        "column_start": 3,
+        "line_end": 35,
+        "column_end": 4
+      },
+      "suggestion": "Check validity_range against the time field(s) to enforce temporal constraints.",
+      "related_findings": [],
+      "semantic_group": null,
+      "evidence": {
+        "level": "Corroborated",
+        "method": "tx-scenario-generation,tx-simulation-rejected",
+        "details": "Exploit scenario generated for runtime simulation; Exploit transaction rejected by validator: UPLC evaluation failed: EmptyList(Con(ProtoList(Data, []))). This may indicate a false positive for missing-validity-range.",
+        "code_flow": [],
+        "witness": {
+          "rejection_error": "UPLC evaluation failed: EmptyList(Con(ProtoList(Data, [])))",
+          "detector": "missing-validity-range"
+        },
+        "confidence_boost": 0.3
+      }
+    },
+    {
+      "detector": "incomplete-value-extraction",
+      "reliability_tier": "experimental",
+      "severity": "medium",
+      "confidence": "possible",
+      "title": "Incomplete Value check via quantity_of in staking.mint",
+      "description": "Handler staking.mint uses quantity_of to check specific asset quantities but doesn't validate the full Value. Other native assets may be drained.",
+      "module": "staking",
+      "cwc": {
+        "id": "CWC-024",
+        "name": "Quantity Tracking",
+        "severity": "Medium"
+      },
+      "location": {
+        "path": "/tmp/strike/staking/validators/staking.ak",
+        "byte_start": 4633,
+        "byte_end": 4708,
+        "line_start": 144,
+        "column_start": 3,
+        "line_end": 144,
+        "column_end": 78
+      },
+      "suggestion": "Complement quantity_of checks with assets.match for full Value validation.",
+      "related_findings": [],
+      "semantic_group": "cardano-semantics",
+      "evidence": null
+    },
+    {
+      "detector": "withdraw-amount-check",
+      "reliability_tier": "stable",
+      "severity": "medium",
+      "confidence": "possible",
+      "title": "Withdrawal existence-only check in staking.spend",
+      "description": "Handler staking.spend checks withdrawal existence but not the amount. An attacker can invoke the staking script with a 0-amount withdrawal.",
+      "module": "staking",
+      "cwc": {
+        "id": "CWC-013",
+        "name": "Withdrawal Vulnerability",
+        "severity": "High"
+      },
+      "location": {
+        "path": "/tmp/strike/staking/validators/staking.ak",
+        "byte_start": 1051,
+        "byte_end": 1193,
+        "line_start": 30,
+        "column_start": 3,
+        "line_end": 35,
+        "column_end": 4
+      },
+      "suggestion": "Verify the withdrawal amount is > 0 or matches an expected value.",
+      "related_findings": [],
+      "semantic_group": "cardano-semantics",
+      "evidence": null
+    }
+  ],
+  "total": 6
+}

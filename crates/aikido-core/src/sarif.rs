@@ -451,7 +451,7 @@ pub fn findings_to_sarif(
             tool: SarifTool {
                 driver: SarifDriver {
                     name: "aikido".to_string(),
-                    version: "0.1.0".to_string(),
+                    version: "0.3.0".to_string(),
                     information_uri: "https://github.com/Bajuzjefe/aikido".to_string(),
                     rules,
                 },

@@ -1,0 +1,514 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 5 0 R 6 0 R 7 0 R 8 0 R 9 0 R 10 0 R] /Count 7 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 11 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 12 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 13 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 14 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 15 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 16 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 17 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+11 0 obj
+<< /Length 2718 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(AIKIDO SECURITY AUDIT REPORT) Tj T*
+(============================) Tj T*
+() Tj T*
+(Project: strike-finance/perpetuals v0.0.0) Tj T*
+(Date: 2026-02-25) Tj T*
+(Tool: aikido v0.2.0) Tj T*
+() Tj T*
+(1. EXECUTIVE SUMMARY) Tj T*
+(--------------------) Tj T*
+() Tj T*
+(This automated security audit analyzed 38 modules \(14 validators, 24 libraries\) of the) Tj T*
+(  strike-finance/perpetuals project.) Tj T*
+() Tj T*
+(Findings summary:) Tj T*
+(  Critical: 2) Tj T*
+(  High:     12) Tj T*
+(  Medium:   12) Tj T*
+(  Low:      0) Tj T*
+(  Info:     8) Tj T*
+(  Total:    34) Tj T*
+() Tj T*
+(2. METHODOLOGY) Tj T*
+(--------------) Tj T*
+() Tj T*
+(Analysis performed using aikido, a static analysis tool for Aiken) Tj T*
+(smart contracts. The tool examines:) Tj T*
+(  - Typed AST patterns for known vulnerability classes) Tj T*
+(  - Handler body signals \(field accesses, function calls, taint\)) Tj T*
+(  - Cross-module dependency analysis) Tj T*
+(  - UPLC compiled code metrics) Tj T*
+() Tj T*
+(Each finding includes severity, confidence, and remediation guidance.) Tj T*
+() Tj T*
+(3. FINDINGS) Tj T*
+(-----------) Tj T*
+() Tj T*
+(Finding #1: [Critical] Minting policy liquidity_mint doesn't validate minted tokens) Tj T*
+(  Detector: missing-minting-policy-check) Tj T*
+(  Module: liquidity_mint) Tj T*
+(  Location: validators/liquidity_mint.ak:21) Tj T*
+(Description: Mint handler never accesses the transaction's mint field. An attacker could) Tj T*
+(    mint arbitrary token names under this policy.) Tj T*
+(Recommendation: Check `self.mint` \(or `transaction.mint`\) to validate token names and) Tj T*
+(    quantities.) Tj T*
+() Tj T*
+(Finding #2: [Critical] Unrestricted minting policy liquidity_mint) Tj T*
+(  Detector: unrestricted-minting) Tj T*
+(  Module: liquidity_mint) Tj T*
+(  Location: validators/liquidity_mint.ak:21) Tj T*
+(Description: Mint handler has no authorization checks \(no signatories, inputs, mint, or) Tj T*
+(    reference input validation\). Anyone can mint tokens.) Tj T*
+(Recommendation: Add authorization: check `self.extra_signatories` for an admin key, or) Tj T*
+(    verify a specific input UTXO is consumed.) Tj T*
+() Tj T*
+(Finding #3: [High] Lower bound time manipulation risk in orders.spend) Tj T*
+(  Detector: missing-validity-range) Tj T*
+(  Module: orders) Tj T*
+(  Location: validators/orders.ak:44) Tj T*
+(Description: Handler uses get_lower_bound for time-sensitive logic with field\(s\)) Tj T*
+(    [entered_position_time] but never checks the upper bound. An attacker can set the) Tj T*
+(    lower bound arbitrarily far in the past, manipulating time-based calculations) Tj T*
+(    \(interest accrual, fee computation, deadline checks\).) Tj T*
+ET
+endstream
+endobj
+12 0 obj
+<< /Length 3804 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(Recommendation: Use get_upper_bound instead of get_lower_bound for time-sensitive) Tj T*
+(    calculations. The upper bound cannot be set arbitrarily into the past.) Tj T*
+() Tj T*
+(Finding #4: [High] Lower bound time manipulation risk in position_mint.mint) Tj T*
+(  Detector: missing-validity-range) Tj T*
+(  Module: position_mint) Tj T*
+(  Location: validators/position_mint.ak:45) Tj T*
+(Description: Handler uses get_lower_bound for time-sensitive logic with field\(s\)) Tj T*
+(    [entered_position_time] but never checks the upper bound. An attacker can set the) Tj T*
+(    lower bound arbitrarily far in the past, manipulating time-based calculations) Tj T*
+(    \(interest accrual, fee computation, deadline checks\).) Tj T*
+(Recommendation: Use get_upper_bound instead of get_lower_bound for time-sensitive) Tj T*
+(    calculations. The upper bound cannot be set arbitrarily into the past.) Tj T*
+() Tj T*
+(Finding #5: [High] Unsafe Option datum deconstruction in manage_positions.spend) Tj T*
+(  Detector: unsafe-datum-deconstruction) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Datum parameter 'datum' is Option<T> but handler never uses `expect) Tj T*
+(    Some\(..\) = datum`. Accessing the datum without safe deconstruction may cause runtime) Tj T*
+(    errors.) Tj T*
+(Recommendation: Use `expect Some\(datum\) = datum_opt` to safely deconstruct the Optional) Tj T*
+(    datum.) Tj T*
+() Tj T*
+(Finding #6: [High] Handler orders.spend contains division that may fail on zero) Tj T*
+(  Detector: division-by-zero-risk) Tj T*
+(  Module: orders) Tj T*
+(  Location: validators/orders.ak:44) Tj T*
+(Description: Division or modulo operation detected. If the denominator is derived from) Tj T*
+(    redeemer or datum input, an attacker could cause division by zero, failing the) Tj T*
+(    transaction.) Tj T*
+(  Recommendation: Guard division with `expect denominator > 0` before the operation.) Tj T*
+() Tj T*
+(Finding #7: [High] Handler position_mint.mint contains division that may fail on zero) Tj T*
+(  Detector: division-by-zero-risk) Tj T*
+(  Module: position_mint) Tj T*
+(  Location: validators/position_mint.ak:45) Tj T*
+(Description: Division or modulo operation detected. If the denominator is derived from) Tj T*
+(    redeemer or datum input, an attacker could cause division by zero, failing the) Tj T*
+(    transaction.) Tj T*
+(  Recommendation: Guard division with `expect denominator > 0` before the operation.) Tj T*
+() Tj T*
+(Finding #8: [High] Multiple quantity_of calls in manage_positions.spend may allow) Tj T*
+(  double-counting) Tj T*
+(  Detector: quantity-of-double-counting) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Handler manage_positions.spend calls `quantity_of` 8 times to check asset) Tj T*
+(    quantities. Without verifying mutual exclusivity, an attacker may satisfy multiple) Tj T*
+(    checks with overlapping assets.) Tj T*
+(Recommendation: Use `value.tokens` or `value.without_lovelace` for exact value matching) Tj T*
+(    instead of multiple independent quantity_of checks.) Tj T*
+() Tj T*
+(Finding #9: [High] Multiple quantity_of calls in orders.spend may allow double-counting) Tj T*
+(  Detector: quantity-of-double-counting) Tj T*
+(  Module: orders) Tj T*
+(  Location: validators/orders.ak:44) Tj T*
+(Description: Handler orders.spend calls `quantity_of` 3 times to check asset quantities.) Tj T*
+(    Without verifying mutual exclusivity, an attacker may satisfy multiple checks with) Tj T*
+(    overlapping assets.) Tj T*
+(Recommendation: Use `value.tokens` or `value.without_lovelace` for exact value matching) Tj T*
+(    instead of multiple independent quantity_of checks.) Tj T*
+ET
+endstream
+endobj
+13 0 obj
+<< /Length 3791 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+() Tj T*
+(Finding #10: [High] Potential withdraw-zero trick in liquidity_mint.mint) Tj T*
+(  Detector: withdraw-zero-trick) Tj T*
+(  Module: liquidity_mint) Tj T*
+(  Location: validators/liquidity_mint.ak:21) Tj T*
+(Description: Handler liquidity_mint.mint uses withdrawal-based authorization but only) Tj T*
+(    checks for withdrawal existence \(e.g., dict.has_key\), not the amount. An attacker) Tj T*
+(    can satisfy this check with a zero withdrawal.) Tj T*
+(Recommendation: Use `dict.get` to retrieve the withdrawal amount and verify it is greater) Tj T*
+(    than zero: `expect Some\(amount\) = dict.get\(self.withdrawals, key\)` then `amount >) Tj T*
+(    0`.) Tj T*
+() Tj T*
+(Finding #11: [High] Potential withdraw-zero trick in pool.spend) Tj T*
+(  Detector: withdraw-zero-trick) Tj T*
+(  Module: pool) Tj T*
+(  Location: validators/pool.ak:14) Tj T*
+(Description: Handler pool.spend uses withdrawal-based authorization but only checks for) Tj T*
+(    withdrawal existence \(e.g., dict.has_key\), not the amount. An attacker can satisfy) Tj T*
+(    this check with a zero withdrawal.) Tj T*
+(Recommendation: Use `dict.get` to retrieve the withdrawal amount and verify it is greater) Tj T*
+(    than zero: `expect Some\(amount\) = dict.get\(self.withdrawals, key\)` then `amount >) Tj T*
+(    0`.) Tj T*
+() Tj T*
+(Finding #12: [High] Redeemer-tainted arithmetic in orders.spend) Tj T*
+(  Detector: unsafe-redeemer-arithmetic) Tj T*
+(  Module: orders) Tj T*
+(  Location: validators/orders.ak:44) Tj T*
+(Description: Handler orders.spend uses division and multiplication with redeemer-derived) Tj T*
+(    variables \(tainted: [redeemer]\). The redeemer is attacker-controlled — using it) Tj T*
+(    directly in arithmetic risks division-by-zero, overflow, or precision manipulation.) Tj T*
+(Recommendation: Validate redeemer values before arithmetic: `expect redeemer.value > 0` or) Tj T*
+(    use datum-sourced values instead.) Tj T*
+() Tj T*
+(Finding #13: [High] Redeemer-tainted arithmetic in position_mint.mint) Tj T*
+(  Detector: unsafe-redeemer-arithmetic) Tj T*
+(  Module: position_mint) Tj T*
+(  Location: validators/position_mint.ak:45) Tj T*
+(Description: Handler position_mint.mint uses division and multiplication with) Tj T*
+(    redeemer-derived variables \(tainted: [redeemer]\). The redeemer is) Tj T*
+(    attacker-controlled — using it directly in arithmetic risks division-by-zero,) Tj T*
+(    overflow, or precision manipulation.) Tj T*
+(Recommendation: Validate redeemer values before arithmetic: `expect redeemer.value > 0` or) Tj T*
+(    use datum-sourced values instead.) Tj T*
+() Tj T*
+(Finding #14: [High] Value conservation not verified in manage_positions.spend) Tj T*
+(  Detector: invariant-violation) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Handler manage_positions.spend performs value arithmetic and produces outputs) Tj T*
+(    but doesn't appear to verify that total value is conserved.) Tj T*
+(  Recommendation: Add a check that sum\(output_values\) == sum\(input_values\) - fees.) Tj T*
+() Tj T*
+(Finding #15: [Medium] Handler manage_positions.spend doesn't constrain staking credential) Tj T*
+(  on outputs) Tj T*
+(  Detector: insufficient-staking-control) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Outputs check the payment credential but not the staking credential. An) Tj T*
+(    attacker can provide an address with their staking key to steal staking rewards.) Tj T*
+(Recommendation: Also verify `output.address.stake_credential` matches the expected value.) Tj T*
+() Tj T*
+(Finding #16: [Medium] Potential cheap spam vulnerability in validator 'manage_positions') Tj T*
+ET
+endstream
+endobj
+14 0 obj
+<< /Length 3826 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(  Detector: cheap-spam-vulnerability) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Validator 'manage_positions' processes outputs but doesn't enforce minimum) Tj T*
+(    value requirements or use an auth token. An attacker could create many small UTXOs at) Tj T*
+(    the script address cheaply.) Tj T*
+(Recommendation: Add minimum deposit requirements, require an auth token, or validate) Tj T*
+(    output values.) Tj T*
+() Tj T*
+(Finding #17: [Medium] Handler manage_positions.spend contains integer subtraction that may) Tj T*
+(  underflow) Tj T*
+(  Detector: integer-underflow-risk) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Handler manage_positions.spend uses integer subtraction. If the subtrahend is) Tj T*
+(    derived from user input \(redeemer/datum\), the result could go negative, causing) Tj T*
+(    unexpected behavior in value calculations.) Tj T*
+(Recommendation: Guard subtraction with `expect b <= a` before computing `a - b`, or use) Tj T*
+(    saturating arithmetic patterns.) Tj T*
+() Tj T*
+(Finding #18: [Medium] Handler orders.spend contains integer subtraction that may underflow) Tj T*
+(  Detector: integer-underflow-risk) Tj T*
+(  Module: orders) Tj T*
+(  Location: validators/orders.ak:44) Tj T*
+(Description: Handler orders.spend uses integer subtraction. If the subtrahend is derived) Tj T*
+(    from user input \(redeemer/datum\), the result could go negative, causing unexpected) Tj T*
+(    behavior in value calculations.) Tj T*
+(Recommendation: Guard subtraction with `expect b <= a` before computing `a - b`, or use) Tj T*
+(    saturating arithmetic patterns.) Tj T*
+() Tj T*
+(Finding #19: [Medium] Datum fields 'liquidity_total_asset_amount', 'total_lended_amount') Tj T*
+(  not validated in pool.spend) Tj T*
+(  Detector: missing-datum-field-validation) Tj T*
+(  Module: pool) Tj T*
+(  Location: validators/pool.ak:14) Tj T*
+(Description: Handler pool.spend accepts datum type 'PoolDatum' with financial fields) Tj T*
+(    'liquidity_total_asset_amount', 'total_lended_amount' but never accesses them. These) Tj T*
+(    fields may be manipulated by an attacker if not validated.) Tj T*
+(Recommendation: Validate datum fields: `expect datum.liquidity_total_asset_amount > 0`,) Tj T*
+(    `expect datum.total_lended_amount > 0`) Tj T*
+() Tj T*
+(Finding #20: [Medium] Datum fields 'interest_rate', 'max_leverage_factor',) Tj T*
+(  'maintain_margin_amount' not validated in settings.spend) Tj T*
+(  Detector: missing-datum-field-validation) Tj T*
+(  Module: settings) Tj T*
+(  Location: validators/settings.ak:18) Tj T*
+(Description: Handler settings.spend accepts datum type 'SettingsDatum' with financial) Tj T*
+(    fields 'interest_rate', 'max_leverage_factor', 'maintain_margin_amount' but never) Tj T*
+(    accesses them. These fields may be manipulated by an attacker if not validated.) Tj T*
+(Recommendation: Validate datum fields: `expect datum.interest_rate > 0`, `expect) Tj T*
+(    datum.max_leverage_factor > 0`, `expect datum.maintain_margin_amount > 0`) Tj T*
+() Tj T*
+(Finding #21: [Medium] Potential rounding error in orders.spend) Tj T*
+(  Detector: rounding-error-risk) Tj T*
+(  Module: orders) Tj T*
+(  Location: validators/orders.ak:44) Tj T*
+(Description: Handler orders.spend contains both integer division and multiplication.) Tj T*
+(    Integer division truncates, so `\(a / b\) * c` loses precision compared to `\(a * c\)) Tj T*
+(    / b`. Verify the order of operations preserves maximum precision.) Tj T*
+(Recommendation: Reorder operations to multiply before dividing: `a * c / b` instead of `a) Tj T*
+(    / b * c`. For complex formulas, consider using a common denominator approach.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+15 0 obj
+<< /Length 4023 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(Finding #22: [Medium] Potential rounding error in position_mint.mint) Tj T*
+(  Detector: rounding-error-risk) Tj T*
+(  Module: position_mint) Tj T*
+(  Location: validators/position_mint.ak:45) Tj T*
+(Description: Handler position_mint.mint contains both integer division and multiplication.) Tj T*
+(    Integer division truncates, so `\(a / b\) * c` loses precision compared to `\(a * c\)) Tj T*
+(    / b`. Verify the order of operations preserves maximum precision.) Tj T*
+(Recommendation: Reorder operations to multiply before dividing: `a * c / b` instead of `a) Tj T*
+(    / b * c`. For complex formulas, consider using a common denominator approach.) Tj T*
+() Tj T*
+(Finding #23: [Medium] Potential unchecked fee calculation in manage_positions.spend) Tj T*
+(  Detector: fee-calculation-unchecked) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Handler manage_positions.spend performs subtraction with redeemer-derived) Tj T*
+(    values and produces outputs. If the subtracted amount \(fee, deduction\) comes from) Tj T*
+(    the redeemer, an attacker can manipulate it to drain funds or bypass fee collection.) Tj T*
+(Recommendation: Derive fee amounts from datum fields or protocol parameters, not from the) Tj T*
+(    redeemer. If redeemer-based, validate bounds: `expect redeemer.fee >= min_fee &&) Tj T*
+(    redeemer.fee <= max_fee`.) Tj T*
+() Tj T*
+(Finding #24: [Medium] Incomplete Value check via quantity_of in manage_positions.spend) Tj T*
+(  Detector: incomplete-value-extraction) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Handler manage_positions.spend uses quantity_of to check specific asset) Tj T*
+(    quantities but doesn't validate the full Value. Other native assets may be drained.) Tj T*
+(Recommendation: Complement quantity_of checks with assets.match for full Value validation.) Tj T*
+() Tj T*
+(Finding #25: [Medium] Incomplete Value check via quantity_of in position_mint.mint) Tj T*
+(  Detector: incomplete-value-extraction) Tj T*
+(  Module: position_mint) Tj T*
+(  Location: validators/position_mint.ak:45) Tj T*
+(Description: Handler position_mint.mint uses quantity_of to check specific asset) Tj T*
+(    quantities but doesn't validate the full Value. Other native assets may be drained.) Tj T*
+(Recommendation: Complement quantity_of checks with assets.match for full Value validation.) Tj T*
+() Tj T*
+(Finding #26: [Medium] State machine issue: Close in manage_positions.spend) Tj T*
+(  Detector: state-machine-violation) Tj T*
+(  Module: manage_positions) Tj T*
+(  Description: Terminal action 'Close' doesn't access mint field \(may need token burn\)) Tj T*
+(  Recommendation: Access the mint field and verify tokens are burned.) Tj T*
+() Tj T*
+(Finding #27: [Info] Handler manage_positions.spend produces outputs without minimum ADA) Tj T*
+(  check) Tj T*
+(  Detector: missing-min-ada-check) Tj T*
+(  Module: manage_positions) Tj T*
+(  Location: validators/manage_positions.ak:40) Tj T*
+(Description: Handler creates outputs but doesn't verify the minimum ADA \(lovelace\)) Tj T*
+(    requirement. Cardano requires every UTXO to contain a minimum amount of ADA. Note: The) Tj T*
+(    Cardano ledger enforces this as a protocol rule — transactions with outputs below) Tj T*
+(    the minimum are rejected at submission time, so this is not exploitable but may cause) Tj T*
+(    unexpected transaction failures.) Tj T*
+(Recommendation: Ensure outputs include sufficient ADA using) Tj T*
+(    `value.from_lovelace\(2_000_000\)` or check with `value.lovelace_of\(output.value\) >=) Tj T*
+(    min_required`.) Tj T*
+() Tj T*
+(Finding #28: [Info] Handler orders.withdraw produces outputs without minimum ADA check) Tj T*
+(  Detector: missing-min-ada-check) Tj T*
+(  Module: orders) Tj T*
+(  Location: validators/orders.ak:190) Tj T*
+(Description: Handler creates outputs but doesn't verify the minimum ADA \(lovelace\)) Tj T*
+ET
+endstream
+endobj
+16 0 obj
+<< /Length 3891 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(    requirement. Cardano requires every UTXO to contain a minimum amount of ADA. Note: The) Tj T*
+(    Cardano ledger enforces this as a protocol rule — transactions with outputs below) Tj T*
+(    the minimum are rejected at submission time, so this is not exploitable but may cause) Tj T*
+(    unexpected transaction failures.) Tj T*
+(Recommendation: Ensure outputs include sufficient ADA using) Tj T*
+(    `value.from_lovelace\(2_000_000\)` or check with `value.lovelace_of\(output.value\) >=) Tj T*
+(    min_required`.) Tj T*
+() Tj T*
+(Finding #29: [Info] Handler position_mint.mint produces outputs without minimum ADA check) Tj T*
+(  Detector: missing-min-ada-check) Tj T*
+(  Module: position_mint) Tj T*
+(  Location: validators/position_mint.ak:45) Tj T*
+(Description: Handler creates outputs but doesn't verify the minimum ADA \(lovelace\)) Tj T*
+(    requirement. Cardano requires every UTXO to contain a minimum amount of ADA. Note: The) Tj T*
+(    Cardano ledger enforces this as a protocol rule — transactions with outputs below) Tj T*
+(    the minimum are rejected at submission time, so this is not exploitable but may cause) Tj T*
+(    unexpected transaction failures.) Tj T*
+(Recommendation: Ensure outputs include sufficient ADA using) Tj T*
+(    `value.from_lovelace\(2_000_000\)` or check with `value.lovelace_of\(output.value\) >=) Tj T*
+(    min_required`.) Tj T*
+() Tj T*
+(Finding #30: [Info] Unreachable function 'validate_batcher_license') Tj T*
+(  Detector: dead-code-path) Tj T*
+(  Module: utils) Tj T*
+(Description: Function 'validate_batcher_license' in module 'utils' is not reachable from) Tj T*
+(    any validator entry point via the call graph.) Tj T*
+(Recommendation: Remove the unused function or verify it is called through a dynamic) Tj T*
+(    pattern not captured by static analysis.) Tj T*
+() Tj T*
+(Finding #31: [Info] Unreachable function 'calculate_rebalance_asset_sent_to_pool') Tj T*
+(  Detector: dead-code-path) Tj T*
+(  Module: math) Tj T*
+(Description: Function 'calculate_rebalance_asset_sent_to_pool' in module 'math' is not) Tj T*
+(    reachable from any validator entry point via the call graph.) Tj T*
+(Recommendation: Remove the unused function or verify it is called through a dynamic) Tj T*
+(    pattern not captured by static analysis.) Tj T*
+() Tj T*
+(Finding #32: [Info] Validator 'position_mint' has 6 parameters \(max recommended: 4\)) Tj T*
+(  Detector: excessive-validator-params) Tj T*
+(  Module: position_mint) Tj T*
+(  Location: validators/position_mint.ak:45) Tj T*
+(Description: Parameters: orders_script_hash, t_manage_positions_script_hash,) Tj T*
+(    pool_nft_policy_id, pool_nft_asset_name, settings_nft_policy_id,) Tj T*
+(    settings_nft_asset_name. Consider grouping related parameters.) Tj T*
+(  Recommendation: Group related parameters into a configuration datum or reference script.) Tj T*
+() Tj T*
+(Finding #33: [Info] No function calls in always_fail.spend — possible unused imports) Tj T*
+(  Detector: unused-import) Tj T*
+(  Module: always_fail) Tj T*
+(  Location: validators/always_fail.ak:4) Tj T*
+(Description: Handler 'always_fail.spend' references variables but calls no functions. Most) Tj T*
+(    validators use stdlib functions \(list.has, interval checks, etc\). This may indicate) Tj T*
+(    unused imports or missing validation logic.) Tj T*
+(  Recommendation: Review imports and add the expected validation logic.) Tj T*
+() Tj T*
+(Finding #34: [Info] Multiple quantity_of calls in position_mint.mint may allow) Tj T*
+(  double-counting) Tj T*
+(  Detector: quantity-of-double-counting) Tj T*
+(  Module: position_mint) Tj T*
+(  Location: validators/position_mint.ak:45) Tj T*
+(Description: Handler position_mint.mint calls `quantity_of` 5 times to check asset) Tj T*
+(    quantities. Without verifying mutual exclusivity, an attacker may satisfy multiple) Tj T*
+ET
+endstream
+endobj
+17 0 obj
+<< /Length 683 >>
+stream
+BT
+/F1 9 Tf
+72 740 Td
+11 TL
+(    checks with overlapping assets.) Tj T*
+(Recommendation: Use `value.tokens` or `value.without_lovelace` for exact value matching) Tj T*
+(    instead of multiple independent quantity_of checks.) Tj T*
+() Tj T*
+(4. RECOMMENDATIONS) Tj T*
+(------------------) Tj T*
+() Tj T*
+(CRITICAL/HIGH severity findings should be addressed before) Tj T*
+(deployment. Review each finding and apply the suggested fix.) Tj T*
+() Tj T*
+(MEDIUM severity findings indicate potential issues that should) Tj T*
+(be evaluated in the context of the project's threat model.) Tj T*
+() Tj T*
+(---) Tj T*
+(Generated by aikido) Tj T*
+(https://github.com/Bajuzjefe/aikido) Tj T*
+ET
+endstream
+endobj
+xref
+0 18
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000152 00000 n 
+0000000220 00000 n 
+0000000347 00000 n 
+0000000474 00000 n 
+0000000601 00000 n 
+0000000728 00000 n 
+0000000855 00000 n 
+0000000982 00000 n 
+0000001110 00000 n 
+0000003880 00000 n 
+0000007736 00000 n 
+0000011579 00000 n 
+0000015457 00000 n 
+0000019532 00000 n 
+0000023475 00000 n 
+trailer
+<< /Size 18 /Root 1 0 R >>
+startxref
+24209
+%%EOF

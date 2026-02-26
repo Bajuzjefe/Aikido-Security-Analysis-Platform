@@ -147,7 +147,7 @@ fn test_report_generation() {
         false,
     );
 
-    assert!(report.contains("AIKIDO v0.2.0"));
+    assert!(report.contains("AIKIDO v0.3.0"));
     assert!(report.contains("sentaku/contracts"));
     assert!(report.contains("VALIDATOR: position"));
     assert!(report.contains("Parameters: oracle_pkh"));

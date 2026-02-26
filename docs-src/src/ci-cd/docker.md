@@ -7,7 +7,7 @@ Aikido provides a pre-built Docker image that includes everything needed to anal
 The official image is hosted on GitHub Container Registry:
 
 ```
-ghcr.io/bajuzjefe/aikido:0.2.0
+ghcr.io/bajuzjefe/aikido:0.3.0
 ```
 
 The image is based on `debian:bookworm-slim` and includes `git` (required for `--diff` and `--git` modes) and `ca-certificates` (required for fetching the Aiken stdlib on first compilation).
@@ -17,7 +17,7 @@ The image is based on `debian:bookworm-slim` and includes `git` (required for `-
 Mount your Aiken project directory into the container and pass the path as the first argument:
 
 ```bash
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.2.0 /project
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project
 ```
 
 The output is printed to stdout. All CLI flags work the same as the native binary:
@@ -25,15 +25,15 @@ The output is printed to stdout. All CLI flags work the same as the native binar
 ```bash
 # JSON output
 docker run --rm -v $(pwd):/project \
-  ghcr.io/bajuzjefe/aikido:0.2.0 /project --format json
+  ghcr.io/bajuzjefe/aikido:0.3.0 /project --format json
 
 # SARIF output
 docker run --rm -v $(pwd):/project \
-  ghcr.io/bajuzjefe/aikido:0.2.0 /project --format sarif > results.sarif
+  ghcr.io/bajuzjefe/aikido:0.3.0 /project --format sarif > results.sarif
 
 # Filter and gate
 docker run --rm -v $(pwd):/project \
-  ghcr.io/bajuzjefe/aikido:0.2.0 /project --min-severity medium --fail-on high
+  ghcr.io/bajuzjefe/aikido:0.3.0 /project --min-severity medium --fail-on high
 ```
 
 ## Volume mounting
@@ -44,7 +44,7 @@ The container expects the Aiken project to be mounted at the path you pass as th
 
 ```bash
 docker run --rm -v /path/to/my-project:/project \
-  ghcr.io/bajuzjefe/aikido:0.2.0 /project
+  ghcr.io/bajuzjefe/aikido:0.3.0 /project
 ```
 
 **Config file** -- if you use a custom `.aikido.toml` location, mount it and pass `--config`:
@@ -53,7 +53,7 @@ docker run --rm -v /path/to/my-project:/project \
 docker run --rm \
   -v $(pwd):/project \
   -v /path/to/custom-config.toml:/config.toml:ro \
-  ghcr.io/bajuzjefe/aikido:0.2.0 /project --config /config.toml
+  ghcr.io/bajuzjefe/aikido:0.3.0 /project --config /config.toml
 ```
 
 **Output files** -- to write output to the host filesystem, redirect or mount an output directory:
@@ -61,13 +61,13 @@ docker run --rm \
 ```bash
 # Redirect stdout
 docker run --rm -v $(pwd):/project \
-  ghcr.io/bajuzjefe/aikido:0.2.0 /project --format sarif > results.sarif
+  ghcr.io/bajuzjefe/aikido:0.3.0 /project --format sarif > results.sarif
 
 # Mount output directory for PDF
 docker run --rm \
   -v $(pwd):/project \
   -v $(pwd)/reports:/reports \
-  ghcr.io/bajuzjefe/aikido:0.2.0 /project --format pdf > /reports/audit.pdf
+  ghcr.io/bajuzjefe/aikido:0.3.0 /project --format pdf > /reports/audit.pdf
 ```
 
 **Stdlib cache** -- Aiken downloads the standard library on first compilation. To avoid re-downloading on every run, mount a persistent cache volume:
@@ -76,7 +76,7 @@ docker run --rm \
 docker run --rm \
   -v $(pwd):/project \
   -v aikido-cache:/root/.aiken \
-  ghcr.io/bajuzjefe/aikido:0.2.0 /project
+  ghcr.io/bajuzjefe/aikido:0.3.0 /project
 ```
 
 ## CI usage
@@ -88,7 +88,7 @@ docker run --rm \
   run: |
     docker run --rm \
       -v ${{ github.workspace }}:/project \
-      ghcr.io/bajuzjefe/aikido:0.2.0 \
+      ghcr.io/bajuzjefe/aikido:0.3.0 \
       /project --format sarif > aikido-results.sarif || true
 
 - name: Upload SARIF
@@ -104,7 +104,7 @@ docker run --rm \
 ```yaml
 aikido-sast:
   stage: test
-  image: ghcr.io/bajuzjefe/aikido:0.2.0
+  image: ghcr.io/bajuzjefe/aikido:0.3.0
   script:
     - aikido . --format gitlab-sast > gl-sast-report.json || true
     - aikido . --fail-on high --quiet
@@ -123,7 +123,7 @@ For any CI system that supports Docker:
 ```bash
 docker run --rm \
   -v "${WORKSPACE}:/project" \
-  ghcr.io/bajuzjefe/aikido:0.2.0 \
+  ghcr.io/bajuzjefe/aikido:0.3.0 \
   /project --fail-on high --quiet
 ```
 
