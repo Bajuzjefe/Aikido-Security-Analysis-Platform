@@ -132,7 +132,7 @@ dependencies = [
 
 [[package]]
 name = "aikido-cli"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "aikido-core",
  "clap",
@@ -142,7 +142,7 @@ dependencies = [
 
 [[package]]
 name = "aikido-core"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "aiken-lang",
  "aiken-project",

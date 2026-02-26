@@ -1,0 +1,272 @@
+[
+  {
+    "id": "CWC-001",
+    "name": "Missing Signature Verification",
+    "description": "The validator does not verify that the transaction is signed by the expected party (e.g., the asset owner, admin, or oracle). An attacker can submit transactions that manipulate protocol state or drain funds without authorization. This is the most common vulnerability in Cardano smart contracts and the root cause of many exploits.",
+    "severity": "critical",
+    "detectors": ["missing-signature-check"],
+    "remediation": "Require that the transaction's extra_signatories list contains the expected public key hash. Use a dedicated authorization helper that checks list.has(ctx.transaction.extra_signatories, owner_pkh) in every redeemer branch.",
+    "references": ["CWE-862", "CWE-285"]
+  },
+  {
+    "id": "CWC-002",
+    "name": "Unrestricted Token Minting",
+    "description": "The minting policy does not adequately restrict who can mint or how many tokens can be created. Without proper checks on the minting redeemer, transaction signatories, or token quantities, an attacker can mint arbitrary amounts of protocol tokens, diluting value or forging authentication tokens.",
+    "severity": "critical",
+    "detectors": ["unrestricted-minting", "missing-minting-policy-check"],
+    "remediation": "Ensure the minting policy validates the transaction signer, enforces maximum mint quantities, and verifies token names. For one-shot minting, consume a specific UTxO to guarantee uniqueness.",
+    "references": ["CWE-770", "CWE-284"]
+  },
+  {
+    "id": "CWC-003",
+    "name": "Datum Integrity Violation",
+    "description": "The validator does not ensure that the datum attached to continuing outputs is correct or present. An attacker can replace the datum with arbitrary data, corrupt protocol state, or omit the datum entirely, causing the UTxO to become unspendable or the state machine to enter an invalid state.",
+    "severity": "critical",
+    "detectors": ["arbitrary-datum-in-output", "missing-datum-in-script-output", "state-transition-integrity"],
+    "remediation": "Validate that continuing outputs carry an inline datum that matches the expected state transition. Compare old and new datum fields explicitly and ensure that only authorized fields change according to the redeemer action.",
+    "references": ["CWE-20", "CWE-345"]
+  },
+  {
+    "id": "CWC-004",
+    "name": "Value Not Preserved",
+    "description": "The validator does not verify that the value (ADA and native assets) in continuing outputs matches expectations. An attacker can siphon funds by constructing transactions where the continuing UTxO holds less value than required, using semantic comparison gaps to bypass checks.",
+    "severity": "critical",
+    "detectors": ["value-not-preserved", "value-preservation-gap", "value-comparison-semantics"],
+    "remediation": "Explicitly check that the continuing output value is greater than or equal to the expected amount. Use value arithmetic that accounts for all native assets, not just ADA. Prefer exact equality checks where possible.",
+    "references": ["CWE-682", "CWE-697"]
+  },
+  {
+    "id": "CWC-005",
+    "name": "Missing UTxO Authentication",
+    "description": "The validator does not authenticate the UTxO being spent, allowing an attacker to satisfy the script with a different UTxO than intended. In double satisfaction attacks, a single UTxO can satisfy multiple script inputs, causing one to execute without proper validation.",
+    "severity": "critical",
+    "detectors": ["missing-utxo-authentication", "double-satisfaction"],
+    "remediation": "Authenticate inputs by checking for a protocol token (NFT) in the spent UTxO. Each script input should verify its own authentication token is present. For multi-input transactions, ensure each validator checks a unique token.",
+    "references": ["CWE-287", "CWE-345"]
+  },
+  {
+    "id": "CWC-006",
+    "name": "Time Lock Bypass",
+    "description": "The validator does not check the transaction's validity interval, allowing time-sensitive operations to be executed outside their intended window. Attackers can submit transactions with wide or absent validity ranges to bypass deadlines, lock periods, or vesting schedules.",
+    "severity": "high",
+    "detectors": ["missing-validity-range"],
+    "remediation": "Access tx.validity_range and assert that the interval falls within the expected bounds. For deadlines, check that the upper bound is before the cutoff. For lock periods, check that the lower bound is after the unlock time.",
+    "references": ["CWE-367", "CWE-613"]
+  },
+  {
+    "id": "CWC-007",
+    "name": "Oracle Manipulation",
+    "description": "The validator uses oracle data without verifying its authenticity or freshness. An attacker can provide stale or forged oracle data to manipulate price feeds, exchange rates, or other external inputs, causing the protocol to make decisions based on incorrect information.",
+    "severity": "high",
+    "detectors": ["oracle-manipulation-risk", "oracle-freshness-not-checked"],
+    "remediation": "Verify that oracle data is signed by the trusted oracle provider and that its timestamp falls within an acceptable freshness window. Cross-reference the oracle datum's last-updated field against the transaction validity range.",
+    "references": ["CWE-345", "CWE-829"]
+  },
+  {
+    "id": "CWC-008",
+    "name": "Integer Arithmetic Vulnerability",
+    "description": "The validator performs arithmetic operations without guarding against underflow, overflow, division by zero, or rounding errors. Since Plutus uses arbitrary-precision integers, underflow below zero can produce unexpected negative values, division by zero causes script failure, and rounding can leak value over many transactions.",
+    "severity": "high",
+    "detectors": ["integer-underflow-risk", "division-by-zero-risk", "rounding-error-risk"],
+    "remediation": "Add explicit guards before arithmetic: check divisors are non-zero, ensure subtraction operands do not underflow, and use truncation-safe rounding that favors the protocol (round against the user). Consider using safe math helper functions.",
+    "references": ["CWE-190", "CWE-191", "CWE-369"]
+  },
+  {
+    "id": "CWC-009",
+    "name": "Redeemer Validation Failure",
+    "description": "The validator does not properly validate or handle all redeemer variants. Missing pattern matches can cause unexpected behavior, and performing arithmetic directly on redeemer-supplied values without bounds checking allows attackers to inject malicious inputs.",
+    "severity": "high",
+    "detectors": ["missing-redeemer-validation", "non-exhaustive-redeemer", "unsafe-redeemer-arithmetic"],
+    "remediation": "Pattern-match exhaustively on all redeemer constructors with an explicit fail branch for unrecognized variants. Validate redeemer-supplied numeric values (amounts, indices) against expected bounds before using them in computation.",
+    "references": ["CWE-20", "CWE-129"]
+  },
+  {
+    "id": "CWC-010",
+    "name": "Unsafe Datum Handling",
+    "description": "The validator destructures or accesses datum fields unsafely, fails to validate expected datum fields, or is vulnerable to datum tampering. Unsafe pattern matching on datum constructors can cause script failures, while missing field validation allows attackers to inject crafted datums that pass structural checks but contain malicious values.",
+    "severity": "high",
+    "detectors": ["unsafe-datum-deconstruction", "missing-datum-field-validation", "datum-tampering-risk"],
+    "remediation": "Use safe datum deconstruction with expect or when clauses. Validate all security-critical datum fields (owner, deadline, amounts) after extraction. Compare datum fields against expected values derived from the redeemer and protocol state.",
+    "references": ["CWE-20", "CWE-502"]
+  },
+  {
+    "id": "CWC-011",
+    "name": "Token Name Confusion",
+    "description": "The validator does not validate token names in minting or spending logic, allowing an attacker to mint tokens with unexpected names, duplicate existing asset names, or mint tokens under policies they should not control. This can break protocol invariants that depend on token name uniqueness.",
+    "severity": "high",
+    "detectors": ["token-name-not-validated", "duplicate-asset-name-risk", "other-token-minting"],
+    "remediation": "Explicitly check that minted token names match the expected value derived from the redeemer or datum. Verify that the flattened mint list contains only the expected policy and asset name pairs. Reject any unexpected token names.",
+    "references": ["CWE-20", "CWE-290"]
+  },
+  {
+    "id": "CWC-012",
+    "name": "Output Address Manipulation",
+    "description": "The validator does not verify the destination address of transaction outputs. An attacker can redirect funds to an address they control by constructing a transaction where the continuing output goes to a different script or wallet address than the protocol expects.",
+    "severity": "high",
+    "detectors": ["output-address-not-validated"],
+    "remediation": "Check that continuing outputs are sent to the validator's own script address (for state continuity) or to the expected recipient address (for payouts). Compare the full address including the payment and staking credentials.",
+    "references": ["CWE-601", "CWE-862"]
+  },
+  {
+    "id": "CWC-013",
+    "name": "Withdrawal Vulnerability",
+    "description": "The validator is susceptible to the withdraw-zero trick, where an attacker registers a staking credential and submits a zero-ADA withdrawal to force script execution as a side effect, or the validator does not properly check withdrawal amounts, allowing unauthorized fund extraction.",
+    "severity": "high",
+    "detectors": ["withdraw-zero-trick", "withdraw-amount-check"],
+    "remediation": "If using the withdraw-zero pattern intentionally for delegation, ensure the validator recognizes it and applies appropriate authorization. Otherwise, validate that withdrawal amounts match expected values and that the withdrawer is authorized.",
+    "references": ["CWE-862", "CWE-20"]
+  },
+  {
+    "id": "CWC-014",
+    "name": "Burn Verification Failure",
+    "description": "The validator does not verify that tokens are properly burned when protocol logic requires it. Missing burn verification allows tokens to persist after they should have been destroyed, potentially allowing replay attacks or inconsistent protocol state. Incomplete burn flows leave orphaned tokens.",
+    "severity": "high",
+    "detectors": ["missing-burn-verification", "missing-token-burn", "incomplete-burn-flow"],
+    "remediation": "When protocol actions require token burning (e.g., closing a position, redeeming a receipt), verify that the flattened mint list contains a negative quantity for the expected policy ID and asset name. Ensure all related tokens are burned together.",
+    "references": ["CWE-672", "CWE-404"]
+  },
+  {
+    "id": "CWC-015",
+    "name": "State Transition Violation",
+    "description": "The validator does not enforce valid state transitions or fails to update state when required. Missing state updates can leave the protocol in an inconsistent state, while missing state machine validation allows arbitrary transitions that bypass intended protocol flow.",
+    "severity": "high",
+    "detectors": ["missing-state-update", "state-machine-violation"],
+    "remediation": "Define the valid state machine transitions explicitly and check that each redeemer action produces a valid next state. Verify that the output datum reflects the expected state change and that no intermediate states are skipped.",
+    "references": ["CWE-372", "CWE-841"]
+  },
+  {
+    "id": "CWC-016",
+    "name": "Resource Exhaustion",
+    "description": "The validator processes unbounded data structures (lists, maps, datum fields, or value entries) without size limits, or uses unconstrained recursion. An attacker can craft inputs that cause the validator to exceed execution unit limits, making the UTxO unspendable, or causing denial-of-service by bloating protocol operations.",
+    "severity": "medium",
+    "detectors": ["unbounded-list-iteration", "unbounded-datum-size", "unbounded-value-size", "unconstrained-recursion", "unbounded-protocol-operations"],
+    "remediation": "Impose explicit bounds on list lengths, datum sizes, and recursion depth. Use pagination or batching for operations that process variable-length data. Set maximum limits in the datum or parameterize the validator with bounds.",
+    "references": ["CWE-400", "CWE-674", "CWE-770"]
+  },
+  {
+    "id": "CWC-017",
+    "name": "Denial of Service",
+    "description": "The protocol design allows UTxO contention (multiple users competing for the same UTxO) or cheap spam (low-cost transactions that degrade protocol performance). These patterns can be exploited to block legitimate users from interacting with the protocol.",
+    "severity": "medium",
+    "detectors": ["utxo-contention-risk", "cheap-spam-vulnerability"],
+    "remediation": "Use UTxO-per-user patterns instead of a single global UTxO. Add minimum deposit or fee requirements to make spam uneconomical. Consider batching or off-chain aggregation for high-throughput operations.",
+    "references": ["CWE-400", "CWE-770"]
+  },
+  {
+    "id": "CWC-018",
+    "name": "Insufficient Access Control",
+    "description": "The validator does not properly control access to staking operations or fails to verify input credentials. Missing staking control allows unauthorized delegation changes, while missing input credential checks allow attackers to spend inputs they should not have access to.",
+    "severity": "medium",
+    "detectors": ["insufficient-staking-control", "missing-input-credential-check"],
+    "remediation": "Verify the transaction signer matches the expected credential for staking operations. Check that inputs consumed by the transaction belong to the expected addresses or carry the required authentication tokens.",
+    "references": ["CWE-862", "CWE-863"]
+  },
+  {
+    "id": "CWC-019",
+    "name": "Unsafe Pattern Matching",
+    "description": "The validator uses unsafe pattern matching that can fail at runtime, partial patterns that do not cover all constructors, or unsafe list head access on potentially empty lists. These patterns cause unintended script failures that can lock funds or enable denial-of-service.",
+    "severity": "medium",
+    "detectors": ["unsafe-match-comparison", "unsafe-partial-pattern", "unsafe-list-head"],
+    "remediation": "Use exhaustive pattern matching with explicit handling for all constructors. Guard list head access with is_empty checks or use safe alternatives like list.head() with a default. Use when clauses for conditional matching.",
+    "references": ["CWE-252", "CWE-476"]
+  },
+  {
+    "id": "CWC-020",
+    "name": "Hardcoded Configuration",
+    "description": "The validator contains hardcoded addresses, key hashes, or magic numbers that should be parameterized. Hardcoded values make the contract inflexible, error-prone during deployment, and difficult to audit. Magic numbers obscure business logic intent.",
+    "severity": "medium",
+    "detectors": ["hardcoded-addresses", "magic-numbers"],
+    "remediation": "Parameterize the validator with configuration values passed as constructor parameters. Use named constants for magic numbers and document their purpose. Store mutable configuration in a datum-based config UTxO.",
+    "references": ["CWE-547", "CWE-798"]
+  },
+  {
+    "id": "CWC-021",
+    "name": "Reference Script Vulnerability",
+    "description": "The validator does not prevent reference scripts from being attached to its UTxOs. An attacker can attach a reference script to a protocol UTxO, increasing its minimum ADA requirement and potentially making it unspendable if the protocol does not account for the additional overhead.",
+    "severity": "medium",
+    "detectors": ["reference-script-injection"],
+    "remediation": "Check that continuing outputs do not carry a reference script unless the protocol explicitly requires it. Verify output.reference_script == None for state-carrying UTxOs.",
+    "references": ["CWE-400", "CWE-20"]
+  },
+  {
+    "id": "CWC-022",
+    "name": "Fee Manipulation",
+    "description": "The validator computes fees or charges without proper validation, allowing attackers to manipulate fee calculations to extract extra value or pay less than required. Unchecked fee arithmetic can lead to rounding exploits or fee-skipping attacks.",
+    "severity": "medium",
+    "detectors": ["fee-calculation-unchecked"],
+    "remediation": "Validate fee calculations against expected bounds. Use protocol-defined fee schedules stored in a config datum. Ensure fee rounding favors the protocol (round up fees, round down rewards).",
+    "references": ["CWE-682", "CWE-20"]
+  },
+  {
+    "id": "CWC-023",
+    "name": "Cross-Validator Incoherence",
+    "description": "Multiple validators in the protocol do not coordinate their checks, creating gaps where an action validated by one script is not properly constrained by another. Uncoordinated multi-validator designs can allow state inconsistencies across UTxOs managed by different scripts.",
+    "severity": "medium",
+    "detectors": ["cross-validator-gap", "uncoordinated-multi-validator", "uncoordinated-state-transfer"],
+    "remediation": "Use a shared protocol token that all validators check to ensure coordinated execution. Define clear validator interaction protocols and verify cross-validator invariants in each script. Consider using a single coordinating validator with forwarding logic.",
+    "references": ["CWE-362", "CWE-367"]
+  },
+  {
+    "id": "CWC-024",
+    "name": "Quantity Tracking",
+    "description": "The validator incorrectly counts token quantities (e.g., double-counting from repeated quantity_of calls), uses insufficient multi-asset comparison that misses assets, or incompletely extracts value components. These flaws allow attackers to manipulate perceived balances.",
+    "severity": "medium",
+    "detectors": ["quantity-of-double-counting", "multi-asset-comparison-bypass", "incomplete-value-extraction"],
+    "remediation": "Use a single quantity_of call per asset per handler and store the result. Compare full Value objects rather than individual token quantities. When extracting value components, ensure all policy IDs and asset names are accounted for.",
+    "references": ["CWE-682", "CWE-131"]
+  },
+  {
+    "id": "CWC-025",
+    "name": "Identity Forgery",
+    "description": "The validator's identity token mechanism can be forged or bypassed. If the protocol uses an NFT as an authentication token but does not properly validate its provenance (policy ID, asset name, uniqueness), an attacker can mint a counterfeit token and use it to impersonate the protocol.",
+    "severity": "medium",
+    "detectors": ["identity-token-forgery"],
+    "remediation": "Verify identity tokens by their full asset ID (policy ID + asset name), not just by name. Ensure the minting policy guarantees uniqueness (e.g., one-shot minting). Check that exactly one identity token exists in the transaction inputs.",
+    "references": ["CWE-290", "CWE-287"]
+  },
+  {
+    "id": "CWC-026",
+    "name": "Path-Sensitive Vulnerability",
+    "description": "Advanced analysis detects potential vulnerabilities that are only exploitable along specific execution paths. Path-sensitive guard checks identify conditions where security-critical checks are bypassed on certain branches, and taint analysis tracks untrusted data flowing to sensitive sinks.",
+    "severity": "medium",
+    "detectors": ["path-sensitive-guard-check", "precise-taint-to-sink"],
+    "remediation": "Ensure that security checks (signature verification, value validation, datum integrity) are present on ALL execution paths, not just the happy path. Review branch conditions that gate security-critical logic.",
+    "references": ["CWE-691", "CWE-807"]
+  },
+  {
+    "id": "CWC-027",
+    "name": "Dead Code",
+    "description": "The validator contains unreachable code paths, dead branches that can never execute, or empty handler bodies. While not directly exploitable, dead code increases the attack surface, wastes execution budget, and may indicate incomplete implementation or logic errors.",
+    "severity": "low",
+    "detectors": ["dead-code-path", "dead-branch-detection", "empty-handler-body"],
+    "remediation": "Remove unreachable code paths and dead branches. If an empty handler is intentional (e.g., a no-op redeemer), add an explicit comment. Use the Aiken compiler's warnings to identify unused code.",
+    "references": ["CWE-561"]
+  },
+  {
+    "id": "CWC-028",
+    "name": "Missing Protocol Enforcement",
+    "description": "The validator does not enforce protocol-level constraints such as requiring a protocol token in transactions, validating output counts to prevent UTxO splitting or duplication, or ensuring minimum ADA requirements are met. These missing checks can allow protocol invariant violations.",
+    "severity": "low",
+    "detectors": ["missing-protocol-token", "output-count-validation", "missing-min-ada-check"],
+    "remediation": "Require a protocol authentication token (NFT) in all protocol transactions. Validate that the number of continuing outputs matches the expected count. Check that outputs meet the minimum ADA requirement to prevent dust UTxOs.",
+    "references": ["CWE-284", "CWE-20"]
+  },
+  {
+    "id": "CWC-029",
+    "name": "Tautological Logic",
+    "description": "The validator contains comparisons that are always true or always false, invariant conditions that can never be violated, or datum field bounds that are trivially satisfied. These indicate logic errors where the intended check has been rendered meaningless by the implementation.",
+    "severity": "low",
+    "detectors": ["tautological-comparison", "invariant-violation", "datum-field-bounds"],
+    "remediation": "Review tautological conditions and replace them with meaningful checks. Verify that invariants are actually constraining and that datum field bounds reflect real business requirements. Remove or fix always-true guards.",
+    "references": ["CWE-570", "CWE-571"]
+  },
+  {
+    "id": "CWC-030",
+    "name": "Code Quality",
+    "description": "The validator contains code quality issues such as redundant checks, shadowed variables, unused parameters, unused imports, unused library modules, excessive parameter counts, or redeemer branches that always fail. These issues do not directly cause vulnerabilities but degrade readability and may mask real bugs.",
+    "severity": "info",
+    "detectors": ["redundant-check", "shadowed-variable", "unused-validator-parameter", "unused-import", "unused-library-module", "excessive-validator-params", "fail-only-redeemer-branch"],
+    "remediation": "Remove redundant checks and unused code. Rename shadowed variables for clarity. Reduce validator parameter count by grouping related values into a configuration struct. Investigate fail-only branches for missing logic.",
+    "references": ["CWE-561", "CWE-563"]
+  }
+]

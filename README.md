@@ -475,3 +475,5 @@ Detectors are derived from real vulnerabilities found in published Cardano smart
 ## License
 
 MIT
+
+<!-- Current detector count: 75 -->
