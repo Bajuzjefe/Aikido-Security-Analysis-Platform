@@ -1,0 +1,40 @@
+[[fixtures]]
+name = "simple-treasury"
+project = "../fixtures/simple-treasury"
+accuracy = ".aikido-accuracy.toml"
+
+[[fixtures]]
+name = "token-minter"
+project = "../fixtures/token-minter"
+accuracy = ".aikido-accuracy.toml"
+
+[[fixtures]]
+name = "escrow-contract"
+project = "../fixtures/escrow-contract"
+accuracy = ".aikido-accuracy.toml"
+
+[[fixtures]]
+name = "lending-protocol"
+project = "../fixtures/lending-protocol"
+accuracy = ".aikido-accuracy.toml"
+
+[[fixtures]]
+name = "dex-contracts"
+project = "../fixtures/dex-contracts"
+accuracy = ".aikido-accuracy.toml"
+
+[[fixtures]]
+name = "referral-system"
+project = "../fixtures/referral-system"
+accuracy = ".aikido-accuracy.toml"
+
+[quality_gates]
+min_true_positives = 10
+min_precision = 0.35
+max_false_positive_rate = 0.65
+min_annotation_coverage = 0.05
+min_reviewed_coverage = 0.05
+max_unlabeled_triggered_cases = 260
+max_unreviewed_triggered_cases = 0
+max_unreviewed_labeled_cases = 0
+max_unreviewed_rate = 0.0

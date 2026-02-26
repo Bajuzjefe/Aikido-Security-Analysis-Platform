@@ -1,0 +1,215 @@
+{
+  "preamble": {
+    "title": "lenfi/lending",
+    "description": "Lending protocol for aikido testing (inspired by Lenfi)",
+    "version": "0.1.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.21+unknown"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "pool.lending_pool.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/lenfi~1lending~1types~1PoolDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/lenfi~1lending~1types~1PoolAction"
+        }
+      },
+      "parameters": [
+        {
+          "title": "oracle_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "590312010100229800aba2aba1aab9faab9eaab9dab9a9bae002488888896600264653001300800198041804800cdc3a400530080024888966002600460126ea800e26466453001159800980098061baa0028cc004c03cc034dd50014c030dd5003c8c040c04400646466446600400400244b3001001801c4c8cc896600266e45221000028acc004cdc7a441000028800c01901244cc014014c05c0110121bae3011001375a602400260260028090c8c8cc004004010896600200300389919912cc004cdc8a441000028acc004cdc7a441000028800c01901344cc014014c0600110131bae3012001375660260026028002809852f5bded8c02900048c040c044c04400644646600200200644b30010018a508acc004c00cc04c0062946266004004602800280790124dc42400091111112cc004c02001a2660046eb0c00cc050dd50059180118029bab300630153754003159800980600344c004c8cc004004dd61802180a9baa00c2259800800c52000899b8048008cc008008c064005017456600266e1d20040068992cc004cdc42410125e8020031337100026eb4c010c054dd500445282026375a602c60286ea803a2b30013370e90030034528c56600266e1d2008006899198019bac30043015375401846006600c6eacc01cc058dd50009bae30163014375401d1323322330020020012259800800c528456600266e3cdd7180c800801c528c4cc008008c06800501520303758602e60306030603060306030603060306030602a6ea8030dd7180b180a1baa00740488091012202440488b201698061baa0079807801a444b300130040028acc004c040dd5005400e2c808a2b300130080028acc004c040dd5005400e2c808a2b30013370e900200144c8c966002602a0050058b2026375a602600260206ea802a2b30013370e9003001456600260206ea802a00716404515980099b874802000a26464b30013015002802c590131bae30130013010375401515980099b874802800a2b3001301037540150038b20228b201c4038807100e201c4038300d300e001370e900018051baa0038b2010180400098021baa0088a4d1365640081",
+      "hash": "ee2e3b514d01bee2514a4109c3a01f0d546b47b36a7f2b1c9cc6da2b"
+    },
+    {
+      "title": "pool.lending_pool.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "parameters": [
+        {
+          "title": "oracle_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "590312010100229800aba2aba1aab9faab9eaab9dab9a9bae002488888896600264653001300800198041804800cdc3a400530080024888966002600460126ea800e26466453001159800980098061baa0028cc004c03cc034dd50014c030dd5003c8c040c04400646466446600400400244b3001001801c4c8cc896600266e45221000028acc004cdc7a441000028800c01901244cc014014c05c0110121bae3011001375a602400260260028090c8c8cc004004010896600200300389919912cc004cdc8a441000028acc004cdc7a441000028800c01901344cc014014c0600110131bae3012001375660260026028002809852f5bded8c02900048c040c044c04400644646600200200644b30010018a508acc004c00cc04c0062946266004004602800280790124dc42400091111112cc004c02001a2660046eb0c00cc050dd50059180118029bab300630153754003159800980600344c004c8cc004004dd61802180a9baa00c2259800800c52000899b8048008cc008008c064005017456600266e1d20040068992cc004cdc42410125e8020031337100026eb4c010c054dd500445282026375a602c60286ea803a2b30013370e90030034528c56600266e1d2008006899198019bac30043015375401846006600c6eacc01cc058dd50009bae30163014375401d1323322330020020012259800800c528456600266e3cdd7180c800801c528c4cc008008c06800501520303758602e60306030603060306030603060306030602a6ea8030dd7180b180a1baa00740488091012202440488b201698061baa0079807801a444b300130040028acc004c040dd5005400e2c808a2b300130080028acc004c040dd5005400e2c808a2b30013370e900200144c8c966002602a0050058b2026375a602600260206ea802a2b30013370e9003001456600260206ea802a00716404515980099b874802000a26464b30013015002802c590131bae30130013010375401515980099b874802800a2b3001301037540150038b20228b201c4038807100e201c4038300d300e001370e900018051baa0038b2010180400098021baa0088a4d1365640081",
+      "hash": "ee2e3b514d01bee2514a4109c3a01f0d546b47b36a7f2b1c9cc6da2b"
+    },
+    {
+      "title": "pool.loan_position.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/lenfi~1lending~1types~1LoanDatum"
+        }
+      },
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "59014101010029800aba2aba1aab9faab9eaab9dab9a48888896600264646644b30013370e900118031baa00189919912cc004cdc3a400060126ea800626644660020026eb0c038c03cc03cc030dd51807004980618051baa0012259800800c528456600266e212000323322330020020012259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01901044cc014014c0540110101bae300f001375a602000260220028080c8c8cc004004dd59808980918079baa30110042259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01901144cc014014c0580110111bae3010001375660220026024002808852f5bded8c0290004528c4cc008008c03c00500a201a8b2010300a001300a300b00130073754003164014600e002600e6010002600e00260066ea801e29344d95900101",
+      "hash": "580a7fe06d02668c6204d6a77f936f6922249a154a2abbc94181169a"
+    },
+    {
+      "title": "pool.loan_position.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59014101010029800aba2aba1aab9faab9eaab9dab9a48888896600264646644b30013370e900118031baa00189919912cc004cdc3a400060126ea800626644660020026eb0c038c03cc03cc030dd51807004980618051baa0012259800800c528456600266e212000323322330020020012259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01901044cc014014c0540110101bae300f001375a602000260220028080c8c8cc004004dd59808980918079baa30110042259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01901144cc014014c0580110111bae3010001375660220026024002808852f5bded8c0290004528c4cc008008c03c00500a201a8b2010300a001300a300b00130073754003164014600e002600e6010002600e00260066ea801e29344d95900101",
+      "hash": "580a7fe06d02668c6204d6a77f936f6922249a154a2abbc94181169a"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Data": {
+      "title": "Data",
+      "description": "Any Plutus data."
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "lenfi/lending/types/LoanDatum": {
+      "title": "LoanDatum",
+      "description": "Datum for individual loan positions.",
+      "anyOf": [
+        {
+          "title": "LoanDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "borrower",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "collateral_amount",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "borrowed_amount",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "interest_accrued",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "start_time",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "lenfi/lending/types/PoolAction": {
+      "title": "PoolAction",
+      "description": "Pool redeemer actions.",
+      "anyOf": [
+        {
+          "title": "Supply",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Withdraw",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "Borrow",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": [
+            {
+              "title": "amount",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        },
+        {
+          "title": "Repay",
+          "dataType": "constructor",
+          "index": 3,
+          "fields": []
+        },
+        {
+          "title": "Liquidate",
+          "dataType": "constructor",
+          "index": 4,
+          "fields": [
+            {
+              "title": "loan_id",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        },
+        {
+          "title": "UpdateConfig",
+          "dataType": "constructor",
+          "index": 5,
+          "fields": []
+        }
+      ]
+    },
+    "lenfi/lending/types/PoolDatum": {
+      "title": "PoolDatum",
+      "description": "Core types for the lending protocol.\n Datum for the lending pool UTXO.",
+      "anyOf": [
+        {
+          "title": "PoolDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "admin",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "oracle_pkh",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "total_supplied",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "total_borrowed",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "interest_rate_bps",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "min_collateral_ratio",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

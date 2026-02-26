@@ -1,0 +1,29 @@
+# Rust build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.*
+
+# Claude Code AI assistant context
+.claude/
+
+
+# Generated website (rebuilt by CI)
+website/
+
+# Fuzz build artifacts
+fuzz/target/
+
+# Aiken build artifacts in fixtures
+fixtures/*/build/

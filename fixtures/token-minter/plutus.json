@@ -1,0 +1,110 @@
+{
+  "preamble": {
+    "title": "test/token-minter",
+    "description": "Token minting validator for aikido testing (inspired by Anastasia-Labs patterns)",
+    "version": "0.1.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.21+unknown"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "minter.token_holder.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/minter~1HolderDatum"
+        }
+      },
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "59011701010029800aba2aba1aba0aab9faab9eaab9dab9a488888896600264653001300800198041804800cc0200092225980099b8748008c01cdd500144c8cc896600266e1d2000300a37540031325980099b8748000c02cdd519198008009bac3010300d375400c44b30010018a6103d87a80008992cc004cdd7980918079baa001006899ba548000cc0440052f5c1133003003301300240346022002807a264660020026eb0c040c044c044c034dd5003112cc00400629422b30015980099b8748008c034dd5180898071baa3011300e3754602200314a314a0806229462660040046024002806100f45900a180718059baa0018b2012300c001300c300d00130083754005164018300800130033754011149a26cac80081",
+      "hash": "3c1b1e30d7282df972df115e9e5ede39e1c7f81dc3a607bdc7be293e"
+    },
+    {
+      "title": "minter.token_holder.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59011701010029800aba2aba1aba0aab9faab9eaab9dab9a488888896600264653001300800198041804800cc0200092225980099b8748008c01cdd500144c8cc896600266e1d2000300a37540031325980099b8748000c02cdd519198008009bac3010300d375400c44b30010018a6103d87a80008992cc004cdd7980918079baa001006899ba548000cc0440052f5c1133003003301300240346022002807a264660020026eb0c040c044c044c034dd5003112cc00400629422b30015980099b8748008c034dd5180898071baa3011300e3754602200314a314a0806229462660040046024002806100f45900a180718059baa0018b2012300c001300c300d00130083754005164018300800130033754011149a26cac80081",
+      "hash": "3c1b1e30d7282df972df115e9e5ede39e1c7f81dc3a607bdc7be293e"
+    },
+    {
+      "title": "minter.token_policy.mint",
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/minter~1MintAction"
+        }
+      },
+      "compiledCode": "589201010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748000c01cdd50014660026eb8c028c020dd50014528cc01cdd5001a444b30013370e9000000c56600260166ea801a00516403115980099b87480080062b3001300b375400d0028b20188b201240248b200c180380098019baa0078a4d1365640041",
+      "hash": "6d954428a09ab07c96d41a32b32289bbefc88277663088ed03ca3eb2"
+    },
+    {
+      "title": "minter.token_policy.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "589201010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748000c01cdd50014660026eb8c028c020dd50014528cc01cdd5001a444b30013370e9000000c56600260166ea801a00516403115980099b87480080062b3001300b375400d0028b20188b201240248b200c180380098019baa0078a4d1365640041",
+      "hash": "6d954428a09ab07c96d41a32b32289bbefc88277663088ed03ca3eb2"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Data": {
+      "title": "Data",
+      "description": "Any Plutus data."
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "minter/HolderDatum": {
+      "title": "HolderDatum",
+      "description": "A spend validator that holds tokens.\n Has a hardcoded address and no signature check.",
+      "anyOf": [
+        {
+          "title": "HolderDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "owner",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "token_count",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "minter/MintAction": {
+      "title": "MintAction",
+      "description": "Minting policy redeemer.",
+      "anyOf": [
+        {
+          "title": "MintTokens",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "BurnTokens",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+# Feature #103: Mutation testing — cargo-mutants configuration
+#
+# Run with: cargo mutants --timeout 120
+# CI: .github/workflows/mutants.yml
+#
+# Excludes tests and integration test modules from mutation to focus
+# on meaningful code mutations in production logic.
+
+# Timeout per mutant (seconds) — higher because aiken compilation is slow
+timeout = 120
+
+# Only mutate library code, not CLI or test modules
+examine_re = ["crates/aikido-core/src/"]
+
+# Skip test modules and test helpers — mutating tests is not useful
+exclude_re = [
+  "tests/",
+  "#\\[cfg\\(test\\)\\]",
+  "mod tests",
+  "fixtures/",
+  "fuzz/",
+  # Skip slow-to-compile integration points
+  "project\\.rs",
+]

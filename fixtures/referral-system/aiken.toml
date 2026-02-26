@@ -1,0 +1,16 @@
+name = "reftest/referral-system"
+version = "0.1.0"
+compiler = "v1.1.21"
+plutus = "v3"
+license = "Apache-2.0"
+description = "Referral system fixture for aikido FP regression testing"
+
+[repository]
+user = "reftest"
+project = "referral-system"
+platform = "github"
+
+[[dependencies]]
+name = "aiken-lang/stdlib"
+version = "v3.0.0"
+source = "github"

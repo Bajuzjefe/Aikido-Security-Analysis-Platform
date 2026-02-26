@@ -1,0 +1,114 @@
+# Summary
+
+[Introduction](introduction.md)
+
+# Getting Started
+
+- [Installation](getting-started/installation.md)
+- [Quick Start](getting-started/quick-start.md)
+- [Your First Scan](getting-started/your-first-scan.md)
+
+# Configuration
+
+- [.aikido.toml Reference](configuration/aikido-toml.md)
+- [Presets](configuration/presets.md)
+- [Per-File Overrides](configuration/per-file.md)
+- [Inline Suppression](configuration/suppression.md)
+
+# Detectors
+
+- [Overview](detectors/overview.md)
+- [Critical](detectors/critical/README.md)
+  - [double-satisfaction](detectors/critical/double-satisfaction.md)
+  - [missing-minting-policy-check](detectors/critical/missing-minting-policy-check.md)
+  - [missing-utxo-authentication](detectors/critical/missing-utxo-authentication.md)
+  - [unrestricted-minting](detectors/critical/unrestricted-minting.md)
+  - [output-address-not-validated](detectors/critical/output-address-not-validated.md)
+- [High](detectors/high/README.md)
+  - [missing-redeemer-validation](detectors/high/missing-redeemer-validation.md)
+  - [missing-signature-check](detectors/high/missing-signature-check.md)
+  - [unsafe-datum-deconstruction](detectors/high/unsafe-datum-deconstruction.md)
+  - [missing-datum-in-script-output](detectors/high/missing-datum-in-script-output.md)
+  - [arbitrary-datum-in-output](detectors/high/arbitrary-datum-in-output.md)
+  - [division-by-zero-risk](detectors/high/division-by-zero-risk.md)
+  - [token-name-not-validated](detectors/high/token-name-not-validated.md)
+  - [value-not-preserved](detectors/high/value-not-preserved.md)
+  - [unsafe-match-comparison](detectors/high/unsafe-match-comparison.md)
+  - [integer-underflow-risk](detectors/high/integer-underflow-risk.md)
+  - [quantity-of-double-counting](detectors/high/quantity-of-double-counting.md)
+  - [state-transition-integrity](detectors/high/state-transition-integrity.md)
+  - [withdraw-zero-trick](detectors/high/withdraw-zero-trick.md)
+  - [other-token-minting](detectors/high/other-token-minting.md)
+  - [unsafe-redeemer-arithmetic](detectors/high/unsafe-redeemer-arithmetic.md)
+  - [value-preservation-gap](detectors/high/value-preservation-gap.md)
+  - [uncoordinated-multi-validator](detectors/high/uncoordinated-multi-validator.md)
+  - [missing-burn-verification](detectors/high/missing-burn-verification.md)
+  - [oracle-manipulation-risk](detectors/high/oracle-manipulation-risk.md)
+- [Medium](detectors/medium/README.md)
+  - [missing-validity-range](detectors/medium/missing-validity-range.md)
+  - [insufficient-staking-control](detectors/medium/insufficient-staking-control.md)
+  - [unbounded-list-iteration](detectors/medium/unbounded-list-iteration.md)
+  - [unbounded-datum-size](detectors/medium/unbounded-datum-size.md)
+  - [unbounded-value-size](detectors/medium/unbounded-value-size.md)
+  - [oracle-freshness-not-checked](detectors/medium/oracle-freshness-not-checked.md)
+  - [non-exhaustive-redeemer](detectors/medium/non-exhaustive-redeemer.md)
+  - [unsafe-list-head](detectors/medium/unsafe-list-head.md)
+  - [hardcoded-addresses](detectors/medium/hardcoded-addresses.md)
+  - [unsafe-partial-pattern](detectors/medium/unsafe-partial-pattern.md)
+  - [unconstrained-recursion](detectors/medium/unconstrained-recursion.md)
+  - [empty-handler-body](detectors/medium/empty-handler-body.md)
+  - [utxo-contention-risk](detectors/medium/utxo-contention-risk.md)
+  - [cheap-spam-vulnerability](detectors/medium/cheap-spam-vulnerability.md)
+  - [missing-datum-field-validation](detectors/medium/missing-datum-field-validation.md)
+  - [missing-token-burn](detectors/medium/missing-token-burn.md)
+  - [missing-state-update](detectors/medium/missing-state-update.md)
+  - [rounding-error-risk](detectors/medium/rounding-error-risk.md)
+  - [missing-input-credential-check](detectors/medium/missing-input-credential-check.md)
+  - [duplicate-asset-name-risk](detectors/medium/duplicate-asset-name-risk.md)
+  - [fee-calculation-unchecked](detectors/medium/fee-calculation-unchecked.md)
+  - [datum-tampering-risk](detectors/medium/datum-tampering-risk.md)
+  - [missing-protocol-token](detectors/medium/missing-protocol-token.md)
+  - [unbounded-protocol-operations](detectors/medium/unbounded-protocol-operations.md)
+- [Low / Info](detectors/low/README.md)
+  - [reference-script-injection](detectors/low/reference-script-injection.md)
+  - [unused-validator-parameter](detectors/low/unused-validator-parameter.md)
+  - [fail-only-redeemer-branch](detectors/low/fail-only-redeemer-branch.md)
+  - [missing-min-ada-check](detectors/low/missing-min-ada-check.md)
+  - [dead-code-path](detectors/low/dead-code-path.md)
+  - [redundant-check](detectors/low/redundant-check.md)
+  - [shadowed-variable](detectors/low/shadowed-variable.md)
+  - [magic-numbers](detectors/low/magic-numbers.md)
+  - [excessive-validator-params](detectors/low/excessive-validator-params.md)
+  - [unused-import](detectors/low/unused-import.md)
+
+# Output Formats
+
+- [Overview](output-formats/overview.md)
+- [Terminal (Text)](output-formats/text.md)
+- [JSON](output-formats/json.md)
+- [SARIF](output-formats/sarif.md)
+- [Markdown](output-formats/markdown.md)
+- [HTML](output-formats/html.md)
+- [PDF](output-formats/pdf.md)
+- [CSV](output-formats/csv.md)
+- [GitLab SAST](output-formats/gitlab-sast.md)
+- [reviewdog (rdjson)](output-formats/reviewdog.md)
+
+# CI/CD Integration
+
+- [GitHub Actions](ci-cd/github-actions.md)
+- [GitLab CI](ci-cd/gitlab-ci.md)
+- [Docker](ci-cd/docker.md)
+
+# Advanced
+
+- [Analysis Techniques](advanced/analysis.md)
+- [Baselines](advanced/baselines.md)
+- [Diff Mode](advanced/diff-mode.md)
+- [Watch Mode](advanced/watch-mode.md)
+- [Remote Repos](advanced/remote-repos.md)
+
+# Reference
+
+- [CLI Reference](reference/cli.md)
+- [Exit Codes](reference/exit-codes.md)

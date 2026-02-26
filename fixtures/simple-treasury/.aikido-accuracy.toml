@@ -1,0 +1,27 @@
+[[labels]]
+detector = "double-satisfaction"
+classification = "TP"
+rationale = "Treasury spend path can be satisfied multiple times when input binding is incomplete."
+audit_id = "SIMPLE-TREASURY-TP-001"
+source = "fixture-simple-treasury"
+
+[[labels]]
+detector = "unsafe-datum-deconstruction"
+classification = "TP"
+rationale = "Datum extraction pattern relies on partial destructuring and should be flagged."
+audit_id = "SIMPLE-TREASURY-TP-002"
+source = "fixture-simple-treasury"
+
+[[labels]]
+detector = "missing-signature-check"
+classification = "TP"
+rationale = "Authorization path lacks robust signature validation in expected vulnerable flow."
+audit_id = "SIMPLE-TREASURY-TP-003"
+source = "fixture-simple-treasury"
+
+[[labels]]
+detector = "unrestricted-minting"
+classification = "FP"
+rationale = "This fixture does not include unrestricted mint policy behavior."
+audit_id = "SIMPLE-TREASURY-FP-001"
+source = "fixture-simple-treasury"

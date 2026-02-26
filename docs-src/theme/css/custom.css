@@ -1,0 +1,189 @@
+/* Aikido Documentation Theme - Dark mode matching website */
+
+:root {
+    --aikido-bg: #0a0a0a;
+    --aikido-surface: #111111;
+    --aikido-border: #1a1a2e;
+    --aikido-mint: #2EFFB5;
+    --aikido-purple: #6366f1;
+    --aikido-text: #e0e0e0;
+    --aikido-text-secondary: #888;
+}
+
+/* Coal theme overrides */
+.coal {
+    --bg: #0a0a0a;
+    --sidebar-bg: #0f0f0f;
+    --sidebar-fg: #c8c8c8;
+    --sidebar-active: #2EFFB5;
+    --sidebar-spacer: #1a1a2e;
+    --links: #2EFFB5;
+    --inline-code-color: #2EFFB5;
+    --theme-popup-bg: #111111;
+    --theme-popup-border: #1a1a2e;
+    --theme-hover: #1a1a2e;
+    --quote-bg: #111111;
+    --quote-border: #6366f1;
+    --table-border-color: #1a1a2e;
+    --table-header-bg: #111111;
+    --table-alternate-bg: #0d0d0d;
+    --searchbar-border-color: #1a1a2e;
+    --searchbar-bg: #111111;
+    --searchbar-fg: #e0e0e0;
+    --searchresults-header-fg: #2EFFB5;
+    --searchresults-border-color: #1a1a2e;
+    --warning-border: #f59e0b;
+}
+
+/* Global font */
+body, .sidebar, .content {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-weight: 600;
+}
+
+code, pre, .hljs {
+    font-family: 'DM Mono', 'Fira Code', 'JetBrains Mono', monospace;
+}
+
+/* Sidebar styling */
+.sidebar .sidebar-scrollbox {
+    background: #0f0f0f;
+}
+
+.sidebar .chapter li.active > a {
+    color: #2EFFB5;
+    border-left: 3px solid #2EFFB5;
+    padding-left: 20px;
+}
+
+.sidebar .chapter li a:hover {
+    color: #2EFFB5;
+}
+
+/* Content area */
+.content main {
+    max-width: 900px;
+}
+
+/* Links */
+.content a {
+    color: #2EFFB5;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.content a:hover {
+    border-bottom-color: #2EFFB5;
+}
+
+/* Code blocks */
+pre {
+    background: #111111 !important;
+    border: 1px solid #1a1a2e;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+code {
+    border-radius: 4px;
+    padding: 2px 6px;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th {
+    background: #111111;
+    color: #2EFFB5;
+    font-weight: 600;
+    text-align: left;
+}
+
+table td, table th {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #1a1a2e;
+}
+
+table tr:nth-child(even) {
+    background: #0d0d0d;
+}
+
+/* Severity badges */
+.severity-critical {
+    color: #ff4444;
+    font-weight: 700;
+}
+
+.severity-high {
+    color: #ff8c00;
+    font-weight: 700;
+}
+
+.severity-medium {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.severity-low {
+    color: #2EFFB5;
+    font-weight: 600;
+}
+
+.severity-info {
+    color: #888;
+    font-weight: 600;
+}
+
+/* Admonitions / blockquotes */
+blockquote {
+    border-left: 4px solid #6366f1;
+    background: #111111;
+    padding: 0.75rem 1rem;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Search results */
+.searchresults a {
+    color: #2EFFB5;
+}
+
+/* Navigation arrows */
+.nav-chapters {
+    color: #2EFFB5;
+}
+
+.nav-chapters:hover {
+    color: #fff;
+}
+
+/* Menu bar */
+.menu-bar {
+    background: #0a0a0a;
+    border-bottom: 1px solid #1a1a2e;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1a1a2e;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2a2a3e;
+}

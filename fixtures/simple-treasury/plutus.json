@@ -1,0 +1,97 @@
+{
+  "preamble": {
+    "title": "test/simple-treasury",
+    "description": "Simple treasury validator for aikido testing (inspired by SundaeSwap treasury)",
+    "version": "0.1.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.21+unknown"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "treasury.treasury.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/treasury~1TreasuryDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/treasury~1TreasuryRedeemer"
+        }
+      },
+      "compiledCode": "59014301010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e2653001300c00198061806800cc024dd5002c4cc896600266e1d2000002899198008009bac3002300d375400a44b30010018a508acc00566002600e601a6ea8c040c038dd5180818071baa30100018a518a50403114a313300200230110014030807a2b30013005002899b8848000c8cc004004dd6180118069baa0052259800800c52000899b8048008cc008008c04400500f4528a014402860126ea80148c034c038c03800522225980099b874800000a2b3001300e37540130018b201e8acc004c01c00a2b3001300e37540130018b201e8acc004cdc3a400800515980098071baa009800c5900f45900c201840303009375400716401c30070013003375400f149a26cac80081",
+      "hash": "d857952b53f44b4b2a627930a7fc232862a427a2040535e3d0211d04"
+    },
+    {
+      "title": "treasury.treasury.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59014301010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e2653001300c00198061806800cc024dd5002c4cc896600266e1d2000002899198008009bac3002300d375400a44b30010018a508acc00566002600e601a6ea8c040c038dd5180818071baa30100018a518a50403114a313300200230110014030807a2b30013005002899b8848000c8cc004004dd6180118069baa0052259800800c52000899b8048008cc008008c04400500f4528a014402860126ea80148c034c038c03800522225980099b874800000a2b3001300e37540130018b201e8acc004c01c00a2b3001300e37540130018b201e8acc004cdc3a400800515980098071baa009800c5900f45900c201840303009375400716401c30070013003375400f149a26cac80081",
+      "hash": "d857952b53f44b4b2a627930a7fc232862a427a2040535e3d0211d04"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "treasury/TreasuryDatum": {
+      "title": "TreasuryDatum",
+      "description": "Treasury datum tracks locked funds.",
+      "anyOf": [
+        {
+          "title": "TreasuryDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "admin",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "deadline",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "total_deposited",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "treasury/TreasuryRedeemer": {
+      "title": "TreasuryRedeemer",
+      "description": "Treasury redeemer actions.",
+      "anyOf": [
+        {
+          "title": "Withdraw",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Reorganize",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "Deposit",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+[[labels]]
+detector = "double-satisfaction"
+classification = "TP"
+rationale = "Lending flow can re-satisfy spend constraints under modeled vulnerable branch."
+audit_id = "LENDING-TP-001"
+source = "fixture-lending-protocol"
+
+[[labels]]
+detector = "missing-redeemer-validation"
+classification = "TP"
+rationale = "Redeemer branch checks are intentionally incomplete in fixture scenario."
+audit_id = "LENDING-TP-002"
+source = "fixture-lending-protocol"
+
+[[labels]]
+detector = "state-transition-integrity"
+classification = "TP"
+rationale = "State update checks are incomplete for an expected vulnerable transition."
+audit_id = "LENDING-TP-003"
+source = "fixture-lending-protocol"
+
+[[labels]]
+detector = "unused-library-module"
+classification = "TP"
+rationale = "Fixture includes intentionally unused library modules for quality-signal coverage."
+audit_id = "LENDING-TP-004"
+source = "fixture-lending-protocol"
+
+[[labels]]
+detector = "dead-code-path"
+classification = "TP"
+rationale = "Fixture contains intentionally unreachable/dead logic paths."
+audit_id = "LENDING-TP-005"
+source = "fixture-lending-protocol"
+
+[[labels]]
+detector = "unrestricted-minting"
+classification = "FP"
+rationale = "No unrestricted minting behavior is expected in this lending fixture."
+audit_id = "LENDING-FP-001"
+source = "fixture-lending-protocol"

@@ -1,0 +1,27 @@
+[[labels]]
+detector = "unrestricted-minting"
+classification = "TP"
+rationale = "Mint handler logic allows mint actions without sufficient constraints in fixture flow."
+audit_id = "TOKEN-MINTER-TP-001"
+source = "fixture-token-minter"
+
+[[labels]]
+detector = "missing-minting-policy-check"
+classification = "TP"
+rationale = "Spend/mint coordination omits explicit mint policy verification in vulnerable path."
+audit_id = "TOKEN-MINTER-TP-002"
+source = "fixture-token-minter"
+
+[[labels]]
+detector = "missing-signature-check"
+classification = "TP"
+rationale = "Expected vulnerable branch lacks signature enforcement for privileged operation."
+audit_id = "TOKEN-MINTER-TP-003"
+source = "fixture-token-minter"
+
+[[labels]]
+detector = "double-satisfaction"
+classification = "FP"
+rationale = "Token-minter fixture does not model a double-satisfaction spend issue."
+audit_id = "TOKEN-MINTER-FP-001"
+source = "fixture-token-minter"

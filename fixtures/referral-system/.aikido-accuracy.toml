@@ -1,0 +1,20 @@
+[[labels]]
+detector = "other-token-minting"
+classification = "TP"
+rationale = "Mint logic uses quantity checks without full multi-asset flattening in expected vulnerable path."
+audit_id = "REFERRAL-TP-001"
+source = "fixture-referral-system"
+
+[[labels]]
+detector = "duplicate-asset-name-risk"
+classification = "FP"
+rationale = "Fold-based counting pattern in fixture should suppress duplicate-asset false positives."
+audit_id = "REFERRAL-FP-001"
+source = "fixture-referral-system"
+
+[[labels]]
+detector = "integer-underflow-risk"
+classification = "FP"
+rationale = "Correlated guards in fixture should suppress integer-underflow false positives."
+audit_id = "REFERRAL-FP-002"
+source = "fixture-referral-system"

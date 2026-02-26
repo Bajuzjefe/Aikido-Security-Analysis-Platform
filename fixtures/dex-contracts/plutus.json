@@ -1,0 +1,246 @@
+{
+  "preamble": {
+    "title": "amm/dex",
+    "description": "DEX AMM contracts for aikido testing (inspired by Minswap/SundaeSwap)",
+    "version": "0.1.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.21+unknown"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "lp_policy.lp_token.mint",
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/amm~1dex~1types~1LPAction"
+        }
+      },
+      "compiledCode": "58a001010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400130070024888966002600460106ea800e33001375c601660126ea800e2b300130023008375400914a314a2803a60106ea8011222598009802800c56600260186ea801e00516403515980099b87480080062b3001300c375400f0028b201a8b201440288b200e180380098019baa0078a4d1365640041",
+      "hash": "33f18ffac0524155288df94e1e89c140768988af3b0b1d5e910096e7"
+    },
+    {
+      "title": "lp_policy.lp_token.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "58a001010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400130070024888966002600460106ea800e33001375c601660126ea800e2b300130023008375400914a314a2803a60106ea8011222598009802800c56600260186ea801e00516403515980099b87480080062b3001300c375400f0028b201a8b201440288b200e180380098019baa0078a4d1365640041",
+      "hash": "33f18ffac0524155288df94e1e89c140768988af3b0b1d5e910096e7"
+    },
+    {
+      "title": "order.swap_order.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/amm~1dex~1types~1OrderDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/amm~1dex~1types~1OrderRedeemer"
+        }
+      },
+      "compiledCode": "5901e801010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748008c01cdd500144c8cc8a60022b30013001300a375400513259800980118059baa007899198008009bac300f30103010300d375400c44b30010018a508acc004cdc49bad30103011301130113011300e37540066466446600400400244b3001001801c4c8cc896600266e452201000028acc004cdc7a441000028800c01901244cc014014c05c0110121bae3011001375a602400260260028090c8c8cc004004dd59809980a18089baa30130042259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01901344cc014014c0600110131bae3012001375660260026028002809852f5bded8c0290004528c4cc008008c04400500c201e899199119801001000912cc00400629422b30013371e6eb8c04400400e2946266004004602400280690101bac300f30103010301030103010301030103010300d375400c6eb8c038c030dd5000a014300d300b3754005164025300a375400d300d003488966002600800515980098071baa009801c5900f456600266e1d20020028acc004c038dd5004c00e2c807a2c806100c0c02cc030004dc3a400060106ea800a2c8030600e00260066ea801e29344d95900101",
+      "hash": "1d0dede68cf7ad5d565f4f80ce2aa0b468fc6518591a81926f365ba5"
+    },
+    {
+      "title": "order.swap_order.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "5901e801010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748008c01cdd500144c8cc8a60022b30013001300a375400513259800980118059baa007899198008009bac300f30103010300d375400c44b30010018a508acc004cdc49bad30103011301130113011300e37540066466446600400400244b3001001801c4c8cc896600266e452201000028acc004cdc7a441000028800c01901244cc014014c05c0110121bae3011001375a602400260260028090c8c8cc004004dd59809980a18089baa30130042259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01901344cc014014c0600110131bae3012001375660260026028002809852f5bded8c0290004528c4cc008008c04400500c201e899199119801001000912cc00400629422b30013371e6eb8c04400400e2946266004004602400280690101bac300f30103010301030103010301030103010300d375400c6eb8c038c030dd5000a014300d300b3754005164025300a375400d300d003488966002600800515980098071baa009801c5900f456600266e1d20020028acc004c038dd5004c00e2c807a2c806100c0c02cc030004dc3a400060106ea800a2c8030600e00260066ea801e29344d95900101",
+      "hash": "1d0dede68cf7ad5d565f4f80ce2aa0b468fc6518591a81926f365ba5"
+    },
+    {
+      "title": "pool.amm_pool.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/amm~1dex~1types~1PoolDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/amm~1dex~1types~1PoolRedeemer"
+        }
+      },
+      "compiledCode": "5902f301010029800aba2aba1aba0aab9faab9eaab9dab9a488888896600264653001300800198041804800cdc3a400530080024888966002600460106ea800e2653001300d00198069807000cdc3a400091119912cc004c00c00626464b300130150028024590121bad3013001300f37540151598009804000c566002601e6ea802a00516404115980099b874801000626464b300130150028024590121bad3013001300f375401515980099b87480180062b3001300f37540150028b20208b201a4034806900d0acc004c004c030dd500144cc89660026006601c6ea800633001230133014001919199119801001000912cc00400600713233225980099b914881000028acc004cdc7a441000028800c01901444cc014014c0680110141bae3013001375a6028002602c00280a0c8c8cc004004010896600200300389919912cc004cdc8a441000028acc004cdc7a441000028800c01901544cc014014c06c0110151bae30140013756602a002602e00280a852f5bded8c02900048c04cc050c05000644b30010018a4001133700900119801001180a800a02498071baa00a911919800800801912cc00400629422b3001300330160018a51899801001180b800a022405137109000244444446644b3001300c0058992cc004cc014dd61804180c9baa01123371200460146eacc02cc068dd5000c4c01000629410171bad301b301837540271598009808802c4cc010dd61803980c1baa01023371000660126eacc028c064dd5000c56600266e1d20040058acc004cdc4241a01e6eb4c06cc060dd5009c4c00cc004dd61803980c1baa0108a5040591300330013758600e60306ea8041016202c4058600c6eacc01cc058dd51803980b1baa30193016375401060080088b201a3010300d375400464660020026eb0c044c038dd5003112cc0040062980103d87a80008992cc004cdd7980998081baa001006899ba548000cc0480052f5c113300300330140024038602400280822c8058c030dd50040c024dd5001c590070c020004c00cdd5004452689b2b200201",
+      "hash": "432ef078244142e343d8bfbccc8aef25175d5e038a9db1f6651067db"
+    },
+    {
+      "title": "pool.amm_pool.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "5902f301010029800aba2aba1aba0aab9faab9eaab9dab9a488888896600264653001300800198041804800cdc3a400530080024888966002600460106ea800e2653001300d00198069807000cdc3a400091119912cc004c00c00626464b300130150028024590121bad3013001300f37540151598009804000c566002601e6ea802a00516404115980099b874801000626464b300130150028024590121bad3013001300f375401515980099b87480180062b3001300f37540150028b20208b201a4034806900d0acc004c004c030dd500144cc89660026006601c6ea800633001230133014001919199119801001000912cc00400600713233225980099b914881000028acc004cdc7a441000028800c01901444cc014014c0680110141bae3013001375a6028002602c00280a0c8c8cc004004010896600200300389919912cc004cdc8a441000028acc004cdc7a441000028800c01901544cc014014c06c0110151bae30140013756602a002602e00280a852f5bded8c02900048c04cc050c05000644b30010018a4001133700900119801001180a800a02498071baa00a911919800800801912cc00400629422b3001300330160018a51899801001180b800a022405137109000244444446644b3001300c0058992cc004cc014dd61804180c9baa01123371200460146eacc02cc068dd5000c4c01000629410171bad301b301837540271598009808802c4cc010dd61803980c1baa01023371000660126eacc028c064dd5000c56600266e1d20040058acc004cdc4241a01e6eb4c06cc060dd5009c4c00cc004dd61803980c1baa0108a5040591300330013758600e60306ea8041016202c4058600c6eacc01cc058dd51803980b1baa30193016375401060080088b201a3010300d375400464660020026eb0c044c038dd5003112cc0040062980103d87a80008992cc004cdd7980998081baa001006899ba548000cc0480052f5c113300300330140024038602400280822c8058c030dd50040c024dd5001c590070c020004c00cdd5004452689b2b200201",
+      "hash": "432ef078244142e343d8bfbccc8aef25175d5e038a9db1f6651067db"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "amm/dex/types/LPAction": {
+      "title": "LPAction",
+      "description": "LP token minting actions.",
+      "anyOf": [
+        {
+          "title": "MintLP",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "BurnLP",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "amm/dex/types/OrderDatum": {
+      "title": "OrderDatum",
+      "description": "Order datum for batched swaps.",
+      "anyOf": [
+        {
+          "title": "OrderDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "owner",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "token_in_policy",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "token_in_name",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "amount_in",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "min_amount_out",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "deadline",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "amm/dex/types/OrderRedeemer": {
+      "title": "OrderRedeemer",
+      "description": "Order redeemer.",
+      "anyOf": [
+        {
+          "title": "Execute",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Cancel",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "amm/dex/types/PoolDatum": {
+      "title": "PoolDatum",
+      "description": "Core types for the DEX AMM protocol.\n Datum for AMM liquidity pool.",
+      "anyOf": [
+        {
+          "title": "PoolDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "reserve_a",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "reserve_b",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "total_lp_tokens",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "fee_numerator",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "fee_denominator",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "pool_nft_policy",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "lp_token_policy",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        }
+      ]
+    },
+    "amm/dex/types/PoolRedeemer": {
+      "title": "PoolRedeemer",
+      "description": "Pool redeemer actions.",
+      "anyOf": [
+        {
+          "title": "Swap",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "min_received",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        },
+        {
+          "title": "AddLiquidity",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "RemoveLiquidity",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": [
+            {
+              "title": "lp_amount",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        },
+        {
+          "title": "CollectFees",
+          "dataType": "constructor",
+          "index": 3,
+          "fields": []
+        }
+      ]
+    }
+  }
+}

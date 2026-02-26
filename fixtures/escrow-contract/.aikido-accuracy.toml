@@ -1,0 +1,13 @@
+[[labels]]
+detector = "fail-only-redeemer-branch"
+classification = "TP"
+rationale = "Escrow fixture intentionally includes a fail-only branch pattern for redeemer handling."
+audit_id = "ESCROW-TP-001"
+source = "fixture-escrow-contract"
+
+[[labels]]
+detector = "double-satisfaction"
+classification = "FP"
+rationale = "Escrow fixture does not include repeated satisfaction of the same input reference."
+audit_id = "ESCROW-FP-001"
+source = "fixture-escrow-contract"

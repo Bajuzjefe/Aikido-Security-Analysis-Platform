@@ -1,0 +1,321 @@
+{
+  "preamble": {
+    "title": "sentaku/contracts",
+    "description": "Sentaku binary options on-chain settlement validators",
+    "version": "0.1.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.21+unknown"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "position.position.spend",
+      "datum": {
+        "title": "datum_opt",
+        "schema": {
+          "$ref": "#/definitions/sentaku~1contracts~1datum~1PositionDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/sentaku~1contracts~1redeemer~1PositionRedeemer"
+        }
+      },
+      "parameters": [
+        {
+          "title": "oracle_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        },
+        {
+          "title": "operator_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "5905740101002229800aba2aba1aab9faab9eaab9dab9a9bae0039bae0024888888896600264653001300900198049805000cdc3a400530090024888966002600460146ea800e33001300b3754007370e90024dc3a4001300a375400891111919912cc004c01401226464646644b3001301a0038992cc004c02cc05cdd5000c4c8c8c8ca60026eb8c0780066eb4c0780126eb4c07800e6eb8c0780092222598009811802c4c966002602800315980098109baa00b808c590224566002603000315980098109baa00b808c590224566002602a00315980098109baa00b808c5902245901f203e407c603e6ea802a2c8108603c002603a002603800260306ea80062c80b0c0640162c80c0dd6980b800980b801180b800980b00098091baa00b8acc004c0240122b3001301237540170028b20268b202040402b30013003300f375400319800980918081baa001911919800800801912cc00400629422b30013371e6eb8c05800400e2946266004004602e002809101548c04cc050c050c050c050c050c050c050c050006464b30013009301137540031375a602860246ea80062c8080c04cc044dd5180998089baa301330143014301430143014301430143011375400291112cc004c01cc04cdd5006c4c8ca60026030003375a60306032003300300c980c00124444b3001337126eb4c020c068dd50050014660024603a603c0032301d301e301e301e0019180e980f180f000a444b30015980099b8f37906eb8c008c074dd500200d44c96600266e2520000018acc004cdc4800a4101a61d198009bae3003301e375400b3371464b300130120018a450100008acc004c05800629110101008acc004c04c00629110102008acc004cdc3a400c003148810103008a45010400407480e901d203a301d37546004603c6ea8038cdc54c00528d20109bad3020301e375400abc94c00528d20109bad3004301e375400abc94dd71801180f1baa0055caa2c80e22c80e0cdc08029bad3003301d375400916406d15980099baf00798009801180e9baa00d9bad301f302030203020302030203020301d375401b375a603e603a6ea80112225980099b870020018a60103d87b80008acc004c04cc07cdd5001c56600266e200080062980103d87980008a6103d87a8000407915980099b880010028a60103d87980008a6103d87a8000407880f101e22b30013370e00c6644b3001301200189919b810013370666e08004dd6981118119811981198119811981198119811981198101baa010482827004cdc1001240091598009809800c400a29000203a40746eb4c07cc080c080c080c080c080c074dd5006980e1baa007899912cc004c04800a3300137586006603e6ea80566eb8c014c07cdd5007c02100145660026026005198009bac3003301f375402b375c600a603e6ea803e010800a26601c6eb0c034c07cdd500a80da03a407460386ea801c888c8cc004004010896600200314a115980099192cc004c05cc08cdd5000c56600266e3cdd7181318121baa001006899b89005323322330020020012259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01902844cc014014c0b40110281bae3027001375a605000260520028140c8c8cc004004dd5980698139baa0052259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01902944cc014014c0b80110291bae3028001375660520026054002814852f5bded8c029000452820448a504088604a60466ea8c094c08cdd50009812000c528c4cc008008c09400502020468b20368b20368b20364590180c060004c050dd5006c56600266e24cdc01bad3002301437540089040785929180080544cc00cdd61801180a1baa00a0108b202440488b201c3012005301130120044590090c024004c014dd5004c52689b2b20061",
+      "hash": "09b13c57b4fdb8f53c801295899eac8aa3400a599219a2bb7f289686"
+    },
+    {
+      "title": "position.position.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "parameters": [
+        {
+          "title": "oracle_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        },
+        {
+          "title": "operator_pkh",
+          "schema": {
+            "$ref": "#/definitions/ByteArray"
+          }
+        }
+      ],
+      "compiledCode": "5905740101002229800aba2aba1aab9faab9eaab9dab9a9bae0039bae0024888888896600264653001300900198049805000cdc3a400530090024888966002600460146ea800e33001300b3754007370e90024dc3a4001300a375400891111919912cc004c01401226464646644b3001301a0038992cc004c02cc05cdd5000c4c8c8c8ca60026eb8c0780066eb4c0780126eb4c07800e6eb8c0780092222598009811802c4c966002602800315980098109baa00b808c590224566002603000315980098109baa00b808c590224566002602a00315980098109baa00b808c5902245901f203e407c603e6ea802a2c8108603c002603a002603800260306ea80062c80b0c0640162c80c0dd6980b800980b801180b800980b00098091baa00b8acc004c0240122b3001301237540170028b20268b202040402b30013003300f375400319800980918081baa001911919800800801912cc00400629422b30013371e6eb8c05800400e2946266004004602e002809101548c04cc050c050c050c050c050c050c050c050006464b30013009301137540031375a602860246ea80062c8080c04cc044dd5180998089baa301330143014301430143014301430143011375400291112cc004c01cc04cdd5006c4c8ca60026030003375a60306032003300300c980c00124444b3001337126eb4c020c068dd50050014660024603a603c0032301d301e301e301e0019180e980f180f000a444b30015980099b8f37906eb8c008c074dd500200d44c96600266e2520000018acc004cdc4800a4101a61d198009bae3003301e375400b3371464b300130120018a450100008acc004c05800629110101008acc004c04c00629110102008acc004cdc3a400c003148810103008a45010400407480e901d203a301d37546004603c6ea8038cdc54c00528d20109bad3020301e375400abc94c00528d20109bad3004301e375400abc94dd71801180f1baa0055caa2c80e22c80e0cdc08029bad3003301d375400916406d15980099baf00798009801180e9baa00d9bad301f302030203020302030203020301d375401b375a603e603a6ea80112225980099b870020018a60103d87b80008acc004c04cc07cdd5001c56600266e200080062980103d87980008a6103d87a8000407915980099b880010028a60103d87980008a6103d87a8000407880f101e22b30013370e00c6644b3001301200189919b810013370666e08004dd6981118119811981198119811981198119811981198101baa010482827004cdc1001240091598009809800c400a29000203a40746eb4c07cc080c080c080c080c080c074dd5006980e1baa007899912cc004c04800a3300137586006603e6ea80566eb8c014c07cdd5007c02100145660026026005198009bac3003301f375402b375c600a603e6ea803e010800a26601c6eb0c034c07cdd500a80da03a407460386ea801c888c8cc004004010896600200314a115980099192cc004c05cc08cdd5000c56600266e3cdd7181318121baa001006899b89005323322330020020012259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01902844cc014014c0b40110281bae3027001375a605000260520028140c8c8cc004004dd5980698139baa0052259800800c00e2646644b3001337229101000028acc004cdc7a441000028800c01902944cc014014c0b80110291bae3028001375660520026054002814852f5bded8c029000452820448a504088604a60466ea8c094c08cdd50009812000c528c4cc008008c09400502020468b20368b20368b20364590180c060004c050dd5006c56600266e24cdc01bad3002301437540089040785929180080544cc00cdd61801180a1baa00a0108b202440488b201c3012005301130120044590090c024004c014dd5004c52689b2b20061",
+      "hash": "09b13c57b4fdb8f53c801295899eac8aa3400a599219a2bb7f289686"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "sentaku/contracts/datum/PositionDatum": {
+      "title": "PositionDatum",
+      "description": "Inline datum locked at each position UTXO.\n Contains all parameters needed to validate settlement on-chain.",
+      "anyOf": [
+        {
+          "title": "PositionDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "position_id",
+              "description": "Unique position identifier (deterministic hash of creation params)",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "owner",
+              "description": "Owner's payment public key hash (28 bytes, Blake2b-224 of Ed25519 pubkey)",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "symbol",
+              "description": "Traded asset symbol",
+              "$ref": "#/definitions/sentaku~1contracts~1types~1Symbol"
+            },
+            {
+              "title": "direction",
+              "description": "Prediction direction",
+              "$ref": "#/definitions/sentaku~1contracts~1types~1Direction"
+            },
+            {
+              "title": "duration",
+              "description": "Option duration",
+              "$ref": "#/definitions/sentaku~1contracts~1types~1Duration"
+            },
+            {
+              "title": "stake_lovelace",
+              "description": "Stake amount in lovelace",
+              "$ref": "#/definitions/sentaku~1contracts~1types~1Lovelace"
+            },
+            {
+              "title": "entry_price",
+              "description": "Entry price at position open (micro-USD, PRICE_SCALE = 1_000_000)",
+              "$ref": "#/definitions/sentaku~1contracts~1types~1Price"
+            },
+            {
+              "title": "opened_at",
+              "description": "POSIX time (ms) at which position was opened",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "expires_at",
+              "description": "POSIX time (ms) at which position expires",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "platform_fee_bps",
+              "description": "Platform fee in basis points at time of opening (e.g. 100 = 1%)",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "sentaku/contracts/redeemer/OracleAttestation": {
+      "title": "OracleAttestation",
+      "description": "Oracle-signed price attestation.\n\n Message format (deterministic, 17 bytes):\n   symbol_index (1 byte) ++ price (8 bytes big-endian) ++ observed_at (8 bytes big-endian)\n\n Validator verifies Ed25519 signature over this message and checks that\n blake2b_224(oracle_pubkey) matches the parameterized oracle pubkey hash.",
+      "anyOf": [
+        {
+          "title": "OracleAttestation",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "price",
+              "description": "The attested settlement price (micro-USD, PRICE_SCALE = 1_000_000)",
+              "$ref": "#/definitions/sentaku~1contracts~1types~1Price"
+            },
+            {
+              "title": "observed_at",
+              "description": "POSIX time (ms) at which the price was observed",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "signature",
+              "description": "Ed25519 signature (64 bytes) over the deterministic message",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "oracle_pubkey",
+              "description": "Oracle's Ed25519 public key (32 bytes) — verified against parameterized hash",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        }
+      ]
+    },
+    "sentaku/contracts/redeemer/PositionRedeemer": {
+      "title": "PositionRedeemer",
+      "description": "Redeemer for spending a position UTXO.",
+      "anyOf": [
+        {
+          "title": "Settle",
+          "description": "Normal settlement with oracle attestation after expiry.\n Validator checks: oracle sig, freshness, payout math, result correctness, outputs.",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "attestation",
+              "$ref": "#/definitions/sentaku~1contracts~1redeemer~1OracleAttestation"
+            },
+            {
+              "title": "result",
+              "$ref": "#/definitions/sentaku~1contracts~1types~1PositionResult"
+            },
+            {
+              "title": "payout_lovelace",
+              "$ref": "#/definitions/sentaku~1contracts~1types~1Lovelace"
+            }
+          ]
+        },
+        {
+          "title": "EmergencyReclaim",
+          "description": "Emergency reclaim by operator after extended timeout (24h past expiry).\n All funds go to operator. Safety net if oracle is unavailable.",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "sentaku/contracts/types/Direction": {
+      "title": "Direction",
+      "description": "Binary option direction",
+      "anyOf": [
+        {
+          "title": "Above",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Below",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "sentaku/contracts/types/Duration": {
+      "title": "Duration",
+      "description": "Duration identifier",
+      "anyOf": [
+        {
+          "title": "H1",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "H4",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "H12",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": []
+        },
+        {
+          "title": "H24",
+          "dataType": "constructor",
+          "index": 3,
+          "fields": []
+        }
+      ]
+    },
+    "sentaku/contracts/types/Lovelace": {
+      "title": "Lovelace",
+      "dataType": "integer"
+    },
+    "sentaku/contracts/types/PositionResult": {
+      "title": "PositionResult",
+      "description": "Position outcome",
+      "anyOf": [
+        {
+          "title": "Win",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Lose",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "Push",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": []
+        }
+      ]
+    },
+    "sentaku/contracts/types/Price": {
+      "title": "Price",
+      "dataType": "integer"
+    },
+    "sentaku/contracts/types/Symbol": {
+      "title": "Symbol",
+      "description": "Asset symbol identifier — matches off-chain SUPPORTED_SYMBOLS",
+      "anyOf": [
+        {
+          "title": "BTC",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "ETH",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "SOL",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": []
+        },
+        {
+          "title": "ADA",
+          "dataType": "constructor",
+          "index": 3,
+          "fields": []
+        },
+        {
+          "title": "SNEK",
+          "dataType": "constructor",
+          "index": 4,
+          "fields": []
+        }
+      ]
+    }
+  }
+}
