@@ -31,7 +31,7 @@ pub fn findings_to_rdjson(findings: &[Finding], project_root: Option<&str>) -> S
                 "code": {
                     "value": f.detector_name,
                     "url": format!(
-                        "https://github.com/Bajuzjefe/aikido/blob/main/docs/detectors/{}.md",
+                        "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/blob/main/docs/detectors/{}.md",
                         f.detector_name
                     )
                 }
@@ -75,7 +75,7 @@ pub fn findings_to_rdjson(findings: &[Finding], project_root: Option<&str>) -> S
     let output = serde_json::json!({
         "source": {
             "name": "aikido",
-            "url": "https://github.com/Bajuzjefe/aikido"
+            "url": "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform"
         },
         "diagnostics": diagnostics
     });
@@ -95,7 +95,7 @@ mod tests {
         assert_eq!(parsed["source"]["name"], "aikido");
         assert_eq!(
             parsed["source"]["url"],
-            "https://github.com/Bajuzjefe/aikido"
+            "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform"
         );
         assert!(parsed["diagnostics"].as_array().unwrap().is_empty());
     }

@@ -1,14 +1,23 @@
-# Aikido
+<p align="center">
+  <img src="aikido-og.png" alt="Aikido - Security analysis platform for Aiken smart contracts on Cardano" width="100%" />
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
+  <img src="https://img.shields.io/badge/rust-%3E%3D1.88.0-orange.svg" alt="Rust" />
+  <img src="https://img.shields.io/badge/tests-1186%2B-brightgreen.svg" alt="Tests" />
+  <img src="https://img.shields.io/badge/detectors-75-2EFFB5.svg" alt="Detectors" />
+  <img src="https://img.shields.io/badge/crashes-0-2EFFB5.svg" alt="Crashes" />
+  <img src="https://img.shields.io/badge/audit_coverage-85%25-2EFFB5.svg" alt="Audit Coverage" />
+</p>
+
+---
 
 **Security analysis platform for [Aiken](https://aiken-lang.org/) smart contracts on Cardano.**
 
 Aikido goes beyond static analysis. It combines a 75-detector suite with SMT verification, transaction simulation, compliance analysis, protocol pattern detection, and grammar-aware fuzzing to find vulnerabilities in Aiken smart contracts before they reach mainnet. Multi-lane analysis cross-correlates evidence across techniques, producing findings with source context, severity ratings, CWE/CWC classifications, and actionable remediation guidance.
 
 Built in Rust. Fast. Zero configuration required.
-
-**1186+ tests | 75 detectors | 11 analysis modules | 10+ real-world projects validated | 0 crashes**
-
-Current detector count: **75**
 
 ---
 
@@ -35,16 +44,16 @@ Cardano smart contracts are immutable once deployed. A vulnerability in producti
 brew install Bajuzjefe/tap/aikido
 
 # Cargo (Rust >= 1.88.0)
-cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
 
 # npm (wrapper)
 npx aikido-aiken /path/to/project
 
 # Docker
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.1 /project
 
 # From source
-git clone https://github.com/Bajuzjefe/aikido.git
+git clone https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform.git
 cd aikido && cargo build --release
 ```
 
@@ -58,7 +67,7 @@ aikido /path/to/your-aiken-project
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  AIKIDO v0.3.0  Static Analysis Report
+  AIKIDO v0.3.1  Static Analysis Report
   Project: test/simple-treasury v0.1.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -89,29 +98,60 @@ aikido /path/to/your-aiken-project
 
 Aikido uses a multi-lane approach where independent analysis techniques cross-validate each other:
 
-### Detector Suite (75 detectors)
-Cross-module interprocedural analysis that follows function calls across module boundaries. Taint tracking from untrusted redeemer fields to critical operations. Symbolic execution with constraint propagation. Delegation-aware suppression for withdraw-zero patterns. Transitive function signal merging with fixed-point convergence. Datum continuity tracking.
+```mermaid
+graph TB
+    subgraph Input
+        A[Aiken Project] --> B[Typed AST]
+    end
 
-### Compliance Analysis
-Securify2-style dual-pattern system: every security property has both a compliance pattern (safe) and a violation pattern (unsafe). 10 security property variants. Reduces false positives by requiring positive evidence of violation rather than absence of safety.
+    subgraph Analysis Lanes
+        B --> C[Detector Suite<br/>75 detectors]
+        B --> D[Compliance<br/>Securify2-style]
+        B --> E[SMT Verification<br/>Cardano axioms]
+        B --> F[Tx Simulation<br/>exploit generation]
+        B --> G[Protocol Detection<br/>DeFi classification]
+        B --> H[Fuzz Lane<br/>grammar-aware]
+    end
 
-### SMT Verification
-Solver-independent interface with Cardano domain axioms (value conservation, signature semantics, minting policy). Constraint solving for reachability analysis and property verification.
+    subgraph Evidence Correlation
+        C --> I[Evidence Framework]
+        D --> I
+        E --> I
+        F --> I
+        G --> I
+        H --> I
+    end
 
-### Transaction Simulation
-ScriptContext builder that generates concrete exploit scenarios. Tests 6 detector categories against simulated transactions to confirm exploitability.
+    I --> J[PatternMatch]
+    J --> K[PathVerified]
+    K --> L[SmtProven]
+    L --> M[SimulationConfirmed]
+    M --> N[Corroborated]
 
-### Protocol Pattern Detection
-Automatic DeFi protocol classification (DEX, Lending, Staking, DAO, NFT, Options, Escrow). Token flow analysis and authority pattern detection. Protocol-specific detector tuning.
+    N --> O[Report<br/>9 output formats]
 
-### Evidence Framework
-5-level evidence hierarchy: **PatternMatch** → **PathVerified** → **SmtProven** → **SimulationConfirmed** → **Corroborated**. Higher evidence levels indicate higher confidence. SARIF output includes full codeFlow enrichment.
+    style C fill:#2EFFB5,color:#0a0a0a
+    style D fill:#2EFFB5,color:#0a0a0a
+    style E fill:#2EFFB5,color:#0a0a0a
+    style F fill:#2EFFB5,color:#0a0a0a
+    style G fill:#2EFFB5,color:#0a0a0a
+    style H fill:#2EFFB5,color:#0a0a0a
+    style I fill:#111111,color:#e0e0e0
+    style O fill:#111111,color:#e0e0e0
+```
 
-### CWC Registry
-30 Cardano Weakness Classification entries mapping all 75 detectors to Cardano-specific vulnerability categories.
+### Lane Details
 
-### Scorecard
-Detector quality tracking: **Experimental** → **Beta** → **Stable** promotion with quality gates based on false positive rates and ecosystem validation.
+| Lane | What it does |
+|------|-------------|
+| **Detector Suite** | Cross-module interprocedural analysis, taint tracking, symbolic execution, delegation-aware suppression, transitive signal merging, datum continuity tracking |
+| **Compliance** | Securify2-style dual-pattern system: every security property has compliance (safe) and violation (unsafe) patterns. 10 security property variants |
+| **SMT Verification** | Solver-independent interface with Cardano domain axioms (value conservation, signature semantics, minting policy). Constraint solving for reachability |
+| **Tx Simulation** | ScriptContext builder generates concrete exploit scenarios. Tests 6 detector categories against simulated transactions |
+| **Protocol Detection** | Automatic DeFi protocol classification (DEX, Lending, Staking, DAO, NFT, Options, Escrow). Token flow and authority analysis |
+| **Fuzz Lane** | Grammar-aware Cardano transaction generation, Echidna-style stateful protocol fuzzing, deterministic PRNG |
+
+Supporting modules: **CWC Registry** (30 entries mapping all 75 detectors), **Scorecard** (Experimental -> Beta -> Stable promotion with quality gates), **SSA IR** (phi nodes, dominators, use-def chains).
 
 ---
 
@@ -153,7 +193,8 @@ Validated against **10+ real-world Aiken smart contract projects** with **zero c
 
 75 detectors mapped to CWE identifiers.
 
-### Critical (5)
+<details>
+<summary><strong>Critical (5)</strong></summary>
 
 | Detector | CWE | Description |
 |----------|-----|-------------|
@@ -163,7 +204,10 @@ Validated against **10+ real-world Aiken smart contract projects** with **zero c
 | `unrestricted-minting` | CWE-862 | Minting policy with no authorization check at all |
 | `output-address-not-validated` | CWE-20 | Outputs sent to unchecked addresses |
 
-### High (19)
+</details>
+
+<details>
+<summary><strong>High (19)</strong></summary>
 
 | Detector | CWE | Description |
 |----------|-----|-------------|
@@ -187,7 +231,10 @@ Validated against **10+ real-world Aiken smart contract projects** with **zero c
 | `missing-burn-verification` | CWE-862 | Token burning without proper verification |
 | `oracle-manipulation-risk` | CWE-20 | Oracle data used without manipulation safeguards |
 
-### Medium (22)
+</details>
+
+<details>
+<summary><strong>Medium (24)</strong></summary>
 
 | Detector | CWE | Description |
 |----------|-----|-------------|
@@ -216,7 +263,10 @@ Validated against **10+ real-world Aiken smart contract projects** with **zero c
 | `missing-protocol-token` | CWE-862 | State transition without protocol token verification |
 | `unbounded-protocol-operations` | CWE-400 | Both input and output lists iterated without bounds |
 
-### Low / Info (12)
+</details>
+
+<details>
+<summary><strong>Low / Info (12)</strong></summary>
 
 | Detector | Severity | Description |
 |----------|----------|-------------|
@@ -230,6 +280,8 @@ Validated against **10+ real-world Aiken smart contract projects** with **zero c
 | `magic-numbers` | Info | Unexplained numeric literals |
 | `excessive-validator-params` | Info | Too many validator parameters |
 | `unused-import` | Info | Imported module with no function calls |
+
+</details>
 
 Each detector has detailed documentation with vulnerable examples, safe examples, and remediation guidance. Use `aikido --explain <detector-name>` or see `docs/detectors/`.
 
@@ -304,7 +356,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Aikido
-        run: cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+        run: cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
       - name: Run analysis
         run: aikido . --format sarif --fail-on high > results.sarif
       - name: Upload SARIF
@@ -317,7 +369,7 @@ jobs:
 ### Docker
 
 ```bash
-docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.0 /project --format json
+docker run --rm -v $(pwd):/project ghcr.io/bajuzjefe/aikido:0.3.1 /project --format json
 ```
 
 ---
@@ -356,7 +408,7 @@ aikido/
 │   ├── aikido-core/           # Library: analysis engine
 │   │   ├── src/
 │   │   │   ├── project.rs            # Aiken project loading & compilation
-│   │   │   ├── ast_walker.rs         # Typed AST traversal → ModuleInfo
+│   │   │   ├── ast_walker.rs         # Typed AST traversal -> ModuleInfo
 │   │   │   ├── body_analysis.rs      # Handler body signal extraction + taint tracking
 │   │   │   ├── call_graph.rs         # Function dependency graph
 │   │   │   ├── cross_module.rs       # Cross-module interprocedural analysis
@@ -394,7 +446,7 @@ aikido/
 ### Building from Source
 
 ```bash
-git clone https://github.com/Bajuzjefe/aikido.git
+git clone https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform.git
 cd aikido
 cargo build --release          # Binary at target/release/aikido
 cargo test                     # Run test suite (1186+ tests)

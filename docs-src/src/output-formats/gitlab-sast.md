@@ -16,7 +16,7 @@ aikido-sast:
   stage: test
   image: rust:latest
   before_script:
-    - cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+    - cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
   script:
     - aikido . --format gitlab-sast --quiet > gl-sast-report.json 2>/dev/null || true
   artifacts:
@@ -52,7 +52,7 @@ aikido-sast:
   stage: test
   image: rust:latest
   before_script:
-    - cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+    - cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
   script:
     - aikido . --format gitlab-sast --quiet > gl-sast-report.json
     - aikido . --fail-on high --quiet
@@ -92,7 +92,7 @@ Aikido generates GitLab SAST format version 15.0.7:
           "type": "aikido_rule",
           "name": "double-satisfaction",
           "value": "double-satisfaction",
-          "url": "https://github.com/Bajuzjefe/aikido/blob/main/docs/detectors/double-satisfaction.md"
+          "url": "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/blob/main/docs/detectors/double-satisfaction.md"
         }
       ],
       "location": {
@@ -107,7 +107,7 @@ Aikido generates GitLab SAST format version 15.0.7:
     "scanner": {
       "id": "aikido",
       "name": "Aikido",
-      "url": "https://github.com/Bajuzjefe/aikido",
+      "url": "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform",
       "vendor": {
         "name": "aikido"
       },

@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Aikido
-        run: cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+        run: cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
 
       - name: Install reviewdog
         uses: reviewdog/action-setup@v1
@@ -72,7 +72,7 @@ The rdjson output follows the [reviewdog Diagnostic Format](https://github.com/r
 {
   "source": {
     "name": "aikido",
-    "url": "https://github.com/Bajuzjefe/aikido"
+    "url": "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform"
   },
   "diagnostics": [
     {
@@ -80,7 +80,7 @@ The rdjson output follows the [reviewdog Diagnostic Format](https://github.com/r
       "severity": "ERROR",
       "code": {
         "value": "double-satisfaction",
-        "url": "https://github.com/Bajuzjefe/aikido/blob/main/docs/detectors/double-satisfaction.md"
+        "url": "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/blob/main/docs/detectors/double-satisfaction.md"
       },
       "location": {
         "path": "validators/pool.ak",

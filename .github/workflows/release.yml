@@ -81,7 +81,9 @@ jobs:
       - name: Generate checksums
         run: |
           cd artifacts
-          find . -name 'aikido-*.tar.gz' -exec sha256sum {} \; | sed 's|.*/||' > checksums.sha256
+          find . -name 'aikido-*.tar.gz' | while read f; do
+            sha256sum "$f" | awk -v name="$(basename "$f")" '{print $1 "  " name}'
+          done > checksums.sha256
           cat checksums.sha256
 
       - name: Create Release

@@ -26,7 +26,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v4
-      - uses: Bajuzjefe/aikido@v1
+      - uses: Bajuzjefe/Aikido-Security-Analysis-Platform@v1
         with:
           project-path: "."
           fail-on: high
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Aikido
-        run: cargo install --git https://github.com/Bajuzjefe/aikido aikido-cli
+        run: cargo install --git https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform aikido-cli
 
       - name: Run analysis
         run: aikido . --format sarif > results.sarif
@@ -79,14 +79,14 @@ Aikido generates a compliant SARIF v2.1.0 log with the following structure:
         "driver": {
           "name": "aikido",
           "version": "0.1.0",
-          "informationUri": "https://github.com/Bajuzjefe/aikido",
+          "informationUri": "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform",
           "rules": [
             {
               "id": "double-satisfaction",
               "shortDescription": {
                 "text": "Detects validators vulnerable to double satisfaction attacks"
               },
-              "helpUri": "https://github.com/Bajuzjefe/aikido/blob/main/docs/detectors/double-satisfaction.md",
+              "helpUri": "https://github.com/Bajuzjefe/Aikido-Security-Analysis-Platform/blob/main/docs/detectors/double-satisfaction.md",
               "defaultConfiguration": {
                 "level": "error"
               },

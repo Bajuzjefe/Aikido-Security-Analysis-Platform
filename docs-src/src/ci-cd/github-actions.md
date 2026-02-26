@@ -117,7 +117,7 @@ on:
 
 jobs:
   aikido:
-    uses: Bajuzjefe/aikido/.github/workflows/aikido.yml@main
+    uses: Bajuzjefe/Aikido-Security-Analysis-Platform/.github/workflows/aikido.yml@main
     permissions:
       security-events: write
     with:
@@ -143,7 +143,7 @@ If you prefer not to compile from source in CI, use the pre-built Docker image:
   run: |
     docker run --rm \
       -v ${{ github.workspace }}:/project \
-      ghcr.io/bajuzjefe/aikido:0.3.0 \
+      ghcr.io/bajuzjefe/aikido:0.3.1 \
       /project --format sarif > aikido-results.sarif || true
 ```
 
