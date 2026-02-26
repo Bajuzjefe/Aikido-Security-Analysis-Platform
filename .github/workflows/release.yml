@@ -48,7 +48,7 @@ jobs:
       - name: Build
         run: |
           if [ "${{ matrix.cross }}" = "true" ]; then
-            cross build --release --target ${{ matrix.target }} --bin aikido
+            cross build --release --target ${{ matrix.target }} --bin aikido --features vendored-openssl
           else
             cargo build --release --target ${{ matrix.target }} --bin aikido
           fi
@@ -109,9 +109,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract version tag
+      - name: Extract version tag and lowercase repo
         id: version
-        run: echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+          echo "repo=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -119,5 +121,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.version.outputs.tag }}
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ steps.version.outputs.repo }}:${{ steps.version.outputs.tag }}
+            ghcr.io/${{ steps.version.outputs.repo }}:latest

@@ -5,7 +5,11 @@
 # Usage: docker run --rm -v $(pwd):/project aikido /project
 # CI:    docker run --rm -v $(pwd):/project aikido /project --format sarif > results.sarif
 
-FROM rust:1.86-slim AS builder
+FROM rust:1.88-slim AS builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pkg-config libssl-dev make perl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
 COPY . .

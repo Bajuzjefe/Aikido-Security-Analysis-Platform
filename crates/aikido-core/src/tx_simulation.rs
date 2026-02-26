@@ -1141,9 +1141,6 @@ fn merge_evidence(existing: Option<Evidence>, incoming: Evidence) -> Evidence {
 /// When a simulation confirms that an exploit transaction is accepted by the
 /// validator, this produces `SimulationConfirmed` level evidence with a high
 /// confidence boost.
-// TODO: integrate with evidence.rs when available — currently returns a
-// standalone Evidence struct. The caller is responsible for attaching it
-// to the Finding.
 pub fn simulation_to_evidence(
     result: &SimulationResult,
     scenario: &ExploitScenario,

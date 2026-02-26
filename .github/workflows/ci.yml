@@ -50,25 +50,16 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Run new module unit tests
         run: |
-          cargo test --lib -p aikido-core \
-            evidence:: \
-            cwc:: \
-            scorecard:: \
-            ssa:: \
-            compliance:: \
-            smt:: \
-            path_analysis:: \
-            invariant_spec:: \
-            protocol_patterns:: \
-            tx_simulation:: \
-            fuzz_lane:: \
-            2>&1 | tee multi-lane-tests.txt
+          MODULES="evidence cwc scorecard ssa compliance smt path_analysis invariant_spec protocol_patterns tx_simulation fuzz_lane"
+          for mod in $MODULES; do
+            cargo test --lib -p aikido-core "${mod}::" 2>&1
+          done | tee multi-lane-tests.txt
       - name: Verify minimum new test count
         run: |
-          PASSED=$(grep -oP '\d+ passed' multi-lane-tests.txt | head -1 | grep -oP '\d+')
-          echo "New module tests passed: $PASSED"
-          if [ "$PASSED" -lt 400 ]; then
-            echo "FAIL: Expected at least 400 new module tests, got $PASSED"
+          PASSED=$(grep -oP '\d+ passed' multi-lane-tests.txt | grep -oP '\d+' | awk '{s+=$1} END {print s+0}')
+          echo "New module tests passed: ${PASSED}"
+          if [ "${PASSED}" -lt 400 ]; then
+            echo "FAIL: Expected at least 400 new module tests, got ${PASSED}"
             exit 1
           fi
       - name: Upload test results

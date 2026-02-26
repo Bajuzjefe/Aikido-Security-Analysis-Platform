@@ -1,7 +1,8 @@
 {
   "name": "aikido-aiken",
   "version": "0.3.0",
-  "description": "Static analysis tool for Aiken smart contracts (Cardano)",
+  "description": "Security analysis platform for Aiken smart contracts (Cardano)",
+  "author": "Bajuzjefe",
   "license": "MIT",
   "repository": {
     "type": "git",
